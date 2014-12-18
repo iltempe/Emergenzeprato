@@ -9,7 +9,11 @@ Gli script "parse_and_tweet.php" e "parse_and_tweet_risk.php" vanno eseguiti con
 
 Si preleva i dati delle fonti Lamma, Biometeo e CFR Toscana e si tuittano i dati su @pratopioggia
 
-L'account @pratopioggia rituitta inoltre tutti i tweet #pratopioggia e le foto Instagram #pratopioggia
+L'account @pratopioggia rituitta tutti i tweet #pratopioggia e le foto Instagram #pratopioggia
+
+Inoltre tutti i tweet taggati #pratopioggia con localizzazione vengono mappati su pratosmart.org
+
+Per info pratosmart.org
 
 Qui la presentazione del progetto
 
