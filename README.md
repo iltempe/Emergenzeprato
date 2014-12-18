@@ -1,4 +1,4 @@
-XML-parser-pratopioggia
+Pratopioggia-parse and tweet
 =======================
 
 Parser fonti XML per il progetto pratopioggia in #emergenzahack
