@@ -3,9 +3,9 @@ XML-parser-pratopioggia
 
 Parser fonti XML per il progetto pratopioggia in #emergenzahack
 
-Le fonti sono elencate al termine del file.
+Le fonti sono dati aperti della regione Toscana e sono elencate al termine del file.
 
-Lo script va eseguito con la periodicità con cui si vuole tuittare le informazioni. 
+Gli script "parse_and_tweet.php" e "parse_and_tweet_risk.php" vanno eseguiti con la periodicità con cui si vuole tuittare le informazioni, è possibile creare secondo lo stesso approccio tanti script quanti se ne vogliono.
 
 Si preleva i dati delle fonti Lamma, Biometeo e CFR Toscana e si tuittano i dati su @pratopioggia
 
