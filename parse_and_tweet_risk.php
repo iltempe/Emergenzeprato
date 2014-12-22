@@ -281,7 +281,7 @@ if($sir_xml->rischi->rischio[4]->area[8]->impatto != "nessuno")
 
 //monitoraggio temperatura
  
- $json_string = file_get_contents("http://api.wunderground.com/api/35e826e307f0a35e/conditions/q/pws:ITOSCANA124.json"); 
+ $json_string = file_get_contents("http://api.wunderground.com/api/"key"/conditions/q/pws:ITOSCANA124.json"); 
  $parsed_json = json_decode($json_string); 
  $location = $parsed_json->{'location'}->{'city'}; 
  $temp_c = $parsed_json->{'current_observation'}->{'temp_c'};
