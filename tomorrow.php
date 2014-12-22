@@ -1,6 +1,6 @@
 <?php
 
-//Parser and tweeter per XML #pratopioggia
+//Parser and tweeter per XML #pratopioggia previsioni per domani
 //by MT
 
 // Include twitteroauth
@@ -24,10 +24,10 @@ $biometeo_eng_xml=simplexml_load_file("http://data.biometeo.it/PRATO/PRATO_ENG.x
 $lamma_xml=simplexml_load_file("http://www.lamma.rete.toscana.it/previ/ita/xml/comuni_web/dati/prato.xml") or die("Errore nella ricerca del file relativo alla previsione LAMMA");
 
 //XML data parsing for @pratopioggia
-$lamma_str=("Previsioni #meteo #Lamma #prato: " .$lamma_xml->previsione[0]->simbolo[descr]." Temperature min " .$lamma_xml->previsione[0]->temp[0]. " max " .$lamma_xml->previsione[0]->temp[1]);
+$lamma_str=("Previsioni domani #meteo #Lamma #prato: " .$lamma_xml->previsione[4]->simbolo[descr]." Temperature min " .$lamma_xml->previsione[4]->temp[0]. " max " .$lamma_xml->previsione[4]->temp[1]);
 
-$biometeo_ita_str=("Previsioni #Biometeo #prato: mat " .$biometeo_ita_xml->localita->AA_des_m_oggi. " pom " .$biometeo_ita_xml->localita->AA_des_p_oggi. " sera " .$biometeo_ita_xml->localita->AA_des_s_oggi);
-$biometeo_eng_str=("Forecast #Biometeo #prato: mor " .$biometeo_eng_xml->localita->AA_des_m_oggi. " aft " .$biometeo_eng_xml->localita->AA_des_p_oggi. " eve " .$biometeo_eng_xml->localita->AA_des_s_oggi);
+$biometeo_ita_str=("Previsioni domani #Biometeo #prato: mat " .$biometeo_ita_xml->localita->AA_des_m_domani. " pom " .$biometeo_ita_xml->localita->AA_des_p_domani. " sera " .$biometeo_ita_xml->localita->AA_des_s_domani);
+$biometeo_eng_str=("Forecast tomorrow #Biometeo #prato: mor " .$biometeo_eng_xml->localita->AA_des_m_domani. " aft " .$biometeo_eng_xml->localita->AA_des_p_domani. " eve " .$biometeo_eng_xml->localita->AA_des_s_domani);
 
 // Create object
 $tweet = new TwitterOAuth($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);

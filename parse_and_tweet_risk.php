@@ -18,7 +18,6 @@ print_r("Oggi è il ".$today);
 
 //Gestione Rischio Regione Toscana
 $sir_xml=simplexml_load_file("http://www.sir.toscana.it/supports/xml/risks/".$today.".xml"); 
-echo "http://www.sir.toscana.it/supports/xml/risks/".$today.".xml";
 
 if ($sir_xml==false)
 	{
@@ -27,59 +26,44 @@ if ($sir_xml==false)
 }else{
 
 //In zona B2
-$sir_str_1_1=("Rischio idrogeologico-idraulico Comune di Prato (B2): " .$sir_xml->rischi->rischio[0]->area[5]->impatto);
-print_r($sir_str_1_1);
+$sir_str_1_1=("#cfr rischio #idrogeologico #allertameteoTOS #Prato (B2): " .$sir_xml->rischi->rischio[0]->area[5]->impatto);
 
-$sir_str_2_1=("Rischio vento Comune di Prato (B2): " .$sir_xml->rischi->rischio[1]->area[5]->impatto);
-print_r($sir_str_2_1);
+$sir_str_2_1=("#cfr rischio #vento #allertameteoTOS #Prato (B2): " .$sir_xml->rischi->rischio[1]->area[5]->impatto);
 
-$sir_str_3_1=("Rischio mareggiate Comune di Prato (B2): " .$sir_xml->rischi->rischio[2]->area[5]->impatto);
-print_r($sir_str_3_1);
+$sir_str_3_1=("#cfr rischio #mareggiate #allertameteoTOS #Prato (B2): " .$sir_xml->rischi->rischio[2]->area[5]->impatto);
 
-$sir_str_4_1=("Rischio neve Comune di Prato (B2): " .$sir_xml->rischi->rischio[3]->area[5]->impatto);
-print_r($sir_str_4_1);
+$sir_str_4_1=("#cfr rischio #neve #allertameteoTOS #Prato (B2): " .$sir_xml->rischi->rischio[3]->area[5]->impatto);
 
-$sir_str_5_1=("Rischio ghiaccio Comune di Prato (B2): " .$sir_xml->rischi->rischio[4]->area[5]->impatto);
-print_r($sir_str_5_1);
+$sir_str_5_1=("#cfr rischio #ghiaccio #allertameteoTOS #Prato (B2): " .$sir_xml->rischi->rischio[4]->area[5]->impatto);
 
 //In zona B3
-$sir_str_1_2=("Rischio idrogeologico-idraulico Comuni di Prato Carmignano Montemurlo Poggio a Caiano Vaiano Vernio (B3): " .$sir_xml->rischi->rischio[0]->area[6]->impatto);
-print_r($sir_str_1_2);
+$sir_str_1_2=("#cfr rischio #idrogeologico #allertameteoTOS #Prato #Carmignano #Montemurlo #PoggioaCaiano #Vaiano #Vernio (B3): " .$sir_xml->rischi->rischio[0]->area[6]->impatto);
 
-$sir_str_2_2=("Rischio vento Comuni di Prato Carmignano Montemurlo Poggio a Caiano Vaiano Vernio (B3): " .$sir_xml->rischi->rischio[1]->area[6]->impatto);
-print_r($sir_str_2_2);
+$sir_str_2_2=("#cfr rischio #vento #allertameteoTOS #Prato #Carmignano #Montemurlo #PoggioaCaiano #Vaiano #Vernio (B3): " .$sir_xml->rischi->rischio[1]->area[6]->impatto);
 
-$sir_str_3_2=("Rischio mareggiate Comuni di Prato Carmignano Montemurlo Poggio a Caiano Vaiano Vernio (B3): " .$sir_xml->rischi->rischio[2]->area[6]->impatto);
-print_r($sir_str_3_2);
+$sir_str_3_2=("#cfr rischio #mareggiate #allertameteoTOS #Prato #Carmignano #Montemurlo #PoggioaCaiano #Vaiano #Vernio (B3): " .$sir_xml->rischi->rischio[2]->area[6]->impatto);
 
-$sir_str_4_2=("Rischio neve Comuni di Prato Carmignano Montemurlo Poggio a Caiano Vaiano Vernio (B3): " .$sir_xml->rischi->rischio[3]->area[6]->impatto);
-print_r($sir_str_4_2);
+$sir_str_4_2=("#cfr rischio #neve #allertameteoTOS #Prato #Carmignano #Montemurlo #PoggioaCaiano #Vaiano #Vernio (B3): " .$sir_xml->rischi->rischio[3]->area[6]->impatto);
 
-$sir_str_5_2=("Rischio ghiaccio Comuni di Prato Carmignano Montemurlo Poggio a Caiano Vaiano Vernio (B3): " .$sir_xml->rischi->rischio[4]->area[6]->impatto);
-print_r($sir_str_5_2);
+$sir_str_5_2=("#cfr rischio #ghiaccio #allertameteoTOS #Prato #Carmignano #Montemurlo #PoggioaCaiano #Vaiano #Vernio (B3): " .$sir_xml->rischi->rischio[4]->area[6]->impatto);
 
 //In zona B5
-$sir_str_1_3=("Rischio idrogeologico-idraulico Comuni di Vernio Cantagallo (B5): " .$sir_xml->rischi->rischio[0]->area[8]->impatto);
-print_r($sir_str_1_3);
+$sir_str_1_3=("#cfr rischio #idrogeologico #allertameteoTOS #Vernio #Cantagallo (B5): " .$sir_xml->rischi->rischio[0]->area[8]->impatto);
 
-$sir_str_2_3=("Rischio vento Comuni di Vernio Cantagallo (B5): " .$sir_xml->rischi->rischio[1]->area[8]->impatto);
-print_r($sir_str_2_3);
+$sir_str_2_3=("#cfr rischio #vento #allertameteoTOS #Vernio #Cantagallo (B5): " .$sir_xml->rischi->rischio[1]->area[8]->impatto);
 
-$sir_str_3_3=("Rischio mareggiate Comuni di Vernio Cantagallo (B5): " .$sir_xml->rischi->rischio[2]->area[8]->impatto);
-print_r($sir_str_3_3);
+$sir_str_3_3=("#cfr rischio #mareggiate #allertameteoTOS #Vernio #Cantagallo (B5): " .$sir_xml->rischi->rischio[2]->area[8]->impatto);
 
-$sir_str_4_3=("Rischio neve Comuni di Vernio Cantagallo (B5): " .$sir_xml->rischi->rischio[3]->area[8]->impatto);
-print_r($sir_str_4_3);
+$sir_str_4_3=("#cfr rischio #neve #allertameteoTOS #Vernio #Cantagallo (B5): " .$sir_xml->rischi->rischio[3]->area[8]->impatto);
 
-$sir_str_5_3=("Rischio ghiaccio Comuni di Vernio Cantagallo (B5): " .$sir_xml->rischi->rischio[4]->area[8]->impatto);
-print_r($sir_str_5_3);
-
+$sir_str_5_3=("#cfr rischio #ghiaccio #allertameteoTOS #Vernio #Cantagallo (B5): " .$sir_xml->rischi->rischio[4]->area[8]->impatto);
 
 // Create object
 $tweet = new TwitterOAuth($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);
 
 if($sir_xml->rischi->rischio[0]->area[5]->impatto != "nessuno")
 {
+	print_r($sir_str_1_1);
 	// Set status message
 	$tweetMessage = $sir_str_1_1;
 	// Check for 140 characters
@@ -92,6 +76,7 @@ if($sir_xml->rischi->rischio[0]->area[5]->impatto != "nessuno")
 
 if($sir_xml->rischi->rischio[1]->area[5]->impatto != "nessuno")
 {
+	print_r($sir_str_2_1);
 	// Set status message
 	$tweetMessage = $sir_str_2_1;
 
@@ -105,6 +90,7 @@ if($sir_xml->rischi->rischio[1]->area[5]->impatto != "nessuno")
 
 if($sir_xml->rischi->rischio[2]->area[5]->impatto != "nessuno")
 {
+	print_r($sir_str_3_1);
 	// Set status message
 	$tweetMessage = $sir_str_3_1;
 
@@ -118,6 +104,7 @@ if($sir_xml->rischi->rischio[2]->area[5]->impatto != "nessuno")
 
 if($sir_xml->rischi->rischio[3]->area[5]->impatto != "nessuno")
 {
+	print_r($sir_str_4_1);
 	// Set status message
 	$tweetMessage = $sir_str_4_1;
 
@@ -131,6 +118,7 @@ if($sir_xml->rischi->rischio[3]->area[5]->impatto != "nessuno")
 	
 if($sir_xml->rischi->rischio[4]->area[5]->impatto != "nessuno")
 {
+	print_r($sir_str_5_1);
 	// Set status message
 	$tweetMessage = $sir_str_5_1;
 
@@ -145,7 +133,8 @@ sleep(60);
 	
 	
 if($sir_xml->rischi->rischio[0]->area[6]->impatto != "nessuno")
-{	
+{
+	print_r($sir_str_1_2);
 	// Set status message
 	$tweetMessage = $sir_str_1_2;
 
@@ -159,6 +148,7 @@ if($sir_xml->rischi->rischio[0]->area[6]->impatto != "nessuno")
 
 if($sir_xml->rischi->rischio[1]->area[6]->impatto != "nessuno")
 {
+	print_r($sir_str_2_2);
 	// Set status message
 	$tweetMessage = $sir_str_2_2;
 
@@ -172,7 +162,8 @@ if($sir_xml->rischi->rischio[1]->area[6]->impatto != "nessuno")
 
 if($sir_xml->rischi->rischio[2]->area[6]->impatto != "nessuno")
 {
-
+	print_r($sir_str_3_2);
+	
 	// Set status message
 	$tweetMessage = $sir_str_3_2;
 
@@ -186,6 +177,7 @@ if($sir_xml->rischi->rischio[2]->area[6]->impatto != "nessuno")
 
 if($sir_xml->rischi->rischio[3]->area[6]->impatto != "nessuno")
 {
+	print_r($sir_str_4_2);
 	// Set status message
 	$tweetMessage = $sir_str_4_2;
 
@@ -199,6 +191,7 @@ if($sir_xml->rischi->rischio[3]->area[6]->impatto != "nessuno")
 
 if($sir_xml->rischi->rischio[4]->area[6]->impatto != "nessuno")
 {
+	print_r($sir_str_5_2);
 	// Set status message
 	$tweetMessage = $sir_str_5_2;
 
@@ -215,6 +208,7 @@ sleep(60);
 ////
 if($sir_xml->rischi->rischio[0]->area[8]->impatto != "nessuno")
 {
+	print_r($sir_str_1_3);
 	// Set status message
 	$tweetMessage = $sir_str_1_3;
 
@@ -228,6 +222,7 @@ if($sir_xml->rischi->rischio[0]->area[8]->impatto != "nessuno")
 
 if($sir_xml->rischi->rischio[1]->area[8]->impatto != "nessuno")
 {
+	print_r($sir_str_2_3);
 	// Set status message
 	$tweetMessage = $sir_str_2_3;
 
@@ -240,6 +235,7 @@ if($sir_xml->rischi->rischio[1]->area[8]->impatto != "nessuno")
 }
 if($sir_xml->rischi->rischio[2]->area[8]->impatto != "nessuno")
 {
+	print_r($sir_str_3_3);
 
 	// Set status message
 	$tweetMessage = $sir_str_3_3;
@@ -254,6 +250,8 @@ if($sir_xml->rischi->rischio[2]->area[8]->impatto != "nessuno")
 	
 if($sir_xml->rischi->rischio[3]->area[8]->impatto != "nessuno")
 {
+	print_r($sir_str_4_3);
+
 	// Set status message
 	$tweetMessage = $sir_str_4_3;
 
@@ -267,6 +265,8 @@ if($sir_xml->rischi->rischio[3]->area[8]->impatto != "nessuno")
 
 if($sir_xml->rischi->rischio[4]->area[8]->impatto != "nessuno")
 {
+	print_r($sir_str_5_3);
+
 	// Set status message
 	$tweetMessage = $sir_str_5_3;
 
