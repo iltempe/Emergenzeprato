@@ -279,18 +279,6 @@ if($sir_xml->rischi->rischio[4]->area[8]->impatto != "nessuno")
 }
 }
 
-//monitoraggio temperatura
- 
- $json_string = file_get_contents("http://api.wunderground.com/api/"key"/conditions/q/pws:ITOSCANA124.json"); 
- $parsed_json = json_decode($json_string); 
- $location = $parsed_json->{'location'}->{'city'}; 
- $temp_c = $parsed_json->{'current_observation'}->{'temp_c'};
- echo "Current temperature in ${location} is: ${temp_c}\n"; 
- 
- $tweetMessage="La temperatura attuale è: ${temp_c}";
- $tweet->post('statuses/update', array('status' => $tweetMessage));
-
-
 //Fonti
 //http://www.sir.toscana.it/supports/xml/risks/20141202.xml
 
