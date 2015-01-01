@@ -16,6 +16,7 @@ Inoltre tutti i tweet taggati #pratopioggia con localizzazione vengono mappati s
 Per info pratosmart.org
 
 Qui la presentazione del progetto
+http://pratosmart.teo-soft.com/pratopioggia/
 
 https://docs.google.com/presentation/d/1yeZxMVFpiL8zfhG52U2zi8MRjWqDWiptkiPIeef9ntg/pub?start=false&loop=false&delayms=3000
 
