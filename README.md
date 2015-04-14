@@ -1,7 +1,7 @@
-Pratopioggia-parse and tweet
+Emergenzeprato-parse and tweet
 =======================
 
-Parser fonti XML per il progetto pratopioggia in #emergenzahack
+Parser fonti XML per il progetto emergenzeprato in #emergenzahack
 
 Le fonti sono dati aperti della regione Toscana e sono elencate al termine del file.
 
@@ -9,14 +9,14 @@ Gli script "parse_and_tweet.php" e "parse_and_tweet_risk.php" vanno eseguiti con
 
 Si preleva i dati delle fonti Lamma, Biometeo e CFR Toscana e si tuittano i dati su @pratopioggia
 
-L'account @pratopioggia rituitta tutti i tweet #pratopioggia e le foto Instagram #pratopioggia
+L'account @emergenzeprato rituitta tutti i tweet #pratopioggia e le foto Instagram #pratopioggia
 
 Inoltre tutti i tweet taggati #pratopioggia con localizzazione vengono mappati su pratosmart.org
 
 Per info pratosmart.org
 
 Qui la presentazione del progetto
-http://pratosmart.teo-soft.com/pratopioggia/
+http://pratosmart.teo-soft.com/emergenzeprato/
 
 https://docs.google.com/presentation/d/1yeZxMVFpiL8zfhG52U2zi8MRjWqDWiptkiPIeef9ntg/pub?start=false&loop=false&delayms=3000 (CC-BY-SA)
 
