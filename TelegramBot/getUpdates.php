@@ -17,7 +17,7 @@ include("Telegram.php");
 include("getdata.php");
 
 
-$bot_id = "133208917:AAHzQnWa_OufD00YUE29uxwyDTxr59WdmNE";
+$bot_id = "";
 $telegram = new Telegram($bot_id);
 $data=new getdata();
 
