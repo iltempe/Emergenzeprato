@@ -21,6 +21,7 @@ $bot_id = "";
 $telegram = new Telegram($bot_id);
 $data=new getdata();
 
+
 // Get all the new updates and set the new correct update_id
 $req = $telegram->getUpdates();
 for ($i = 0; $i < $telegram-> UpdateCount(); $i++) {
@@ -36,6 +37,11 @@ for ($i = 0; $i < $telegram-> UpdateCount(); $i++) {
 	}
 	if ($text == "meteo") {
 		$reply = $data->getdata();
+		$content = array('chat_id' => $chat_id, 'text' => $reply);
+		$telegram->sendMessage($content);
+	}
+	if ($text == "previsioni") {
+		$reply = $data->getdata_tomorrow();
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
 	}
