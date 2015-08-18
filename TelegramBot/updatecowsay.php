@@ -2,7 +2,6 @@
 /**
  * Telegram Cowsay Bot Example.
  * Add @cowmooobot to try it!
- * @author Gabriele Grillo <gabry.grillo@alice.it>
  */
 include("Telegram.php");
 

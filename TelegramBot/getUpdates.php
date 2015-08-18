@@ -2,7 +2,7 @@
 /**
  * Telegram Bot Example whitout WebHook.
  * It uses getUpdates Telegram's API.
- * @author Gabriele Grillo <gabry.grillo@alice.it>
+ * designed starting from https://github.com/Eleirbag89/TelegramBotPHP
  
  Done! Congratulations on your new bot. 
  You will find it at telegram.me/emergenzeprato_bot. 

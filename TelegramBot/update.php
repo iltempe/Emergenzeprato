@@ -2,6 +2,8 @@
 /**
  * Telegram Bot example.
  * @author Gabriele Grillo <gabry.grillo@alice.it>
+  * designed starting from https://github.com/Eleirbag89/TelegramBotPHP
+
  */
 include("Telegram.php");
 
