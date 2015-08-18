@@ -7,10 +7,10 @@
 require_once('twitteroauth.php');
 
 // Set keys
-$consumerKey = 'XjDBrc7Gson7nIr4zJtElMoBr';
-$consumerSecret = 'SoHDr3rmAVuN5lBFmMGBMa6IJgwU3fRh1Ae8kiep2w0MWPoL32';
-$accessToken = '2916596878-58ZHviCQS5iLn6ibv1G50VQJi7hXzAx9HHjdGmz';
-$accessTokenSecret = 'HMk3SHn3G8Jn03R2v7bPJ8LzWnwbTcLTZDcWi3o048R9C';
+$consumerKey = '';
+$consumerSecret = '';
+$accessToken = '';
+$accessTokenSecret = '';
 
 date_default_timezone_set('UTC');
 $today = date("Ymd");                           // data di oggi
