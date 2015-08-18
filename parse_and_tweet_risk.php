@@ -7,14 +7,14 @@
 require_once('twitteroauth.php');
 
 // Set keys
-$consumerKey = '';
-$consumerSecret = '';
-$accessToken = '';
-$accessTokenSecret = '';
+$consumerKey = 'XjDBrc7Gson7nIr4zJtElMoBr';
+$consumerSecret = 'SoHDr3rmAVuN5lBFmMGBMa6IJgwU3fRh1Ae8kiep2w0MWPoL32';
+$accessToken = '2916596878-58ZHviCQS5iLn6ibv1G50VQJi7hXzAx9HHjdGmz';
+$accessTokenSecret = 'HMk3SHn3G8Jn03R2v7bPJ8LzWnwbTcLTZDcWi3o048R9C';
 
 date_default_timezone_set('UTC');
 $today = date("Ymd");                           // data di oggi
-print_r("Oggi è il ".$today);
+print_r("Pratopioggia Rischi - Oggi è il ".$today);
 
 //Gestione Rischio Regione Toscana
 $sir_xml=simplexml_load_file("http://www.sir.toscana.it/supports/xml/risks/".$today.".xml"); 
