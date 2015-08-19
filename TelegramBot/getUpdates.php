@@ -1,3 +1,5 @@
+#!/usr/bin/php
+
 <?php
 /**
  * Telegram Bot Example whitout WebHook.
@@ -17,10 +19,11 @@ include("Telegram.php");
 include("getdata.php");
 
 
-$bot_id = "";
+$bot_id = "133208917:AAHzQnWa_OufD00YUE29uxwyDTxr59WdmNE";
 $telegram = new Telegram($bot_id);
 $data=new getdata();
 
+print_r("start...");
 
 // Get all the new updates and set the new correct update_id
 $req = $telegram->getUpdates();

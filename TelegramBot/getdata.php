@@ -22,9 +22,9 @@ $lamma_str=("Previsioni Meteo di oggi per Prato (Lamma): " .$lamma_xml->previsio
 $biometeo_ita_str=(" Previsioni Biometeo di oggi per Prato: mattino " .$biometeo_ita_xml->localita->AA_des_m_oggi. " pomeriggio " .$biometeo_ita_xml->localita->AA_des_p_oggi. " sera " .$biometeo_ita_xml->localita->AA_des_s_oggi);
 $biometeo_eng_str=(" Forecast Biometeo for Prato: morning " .$biometeo_eng_xml->localita->AA_des_m_oggi. " afternoon " .$biometeo_eng_xml->localita->AA_des_p_oggi. " evening " .$biometeo_eng_xml->localita->AA_des_s_oggi);
 
-print_r($data);
 // Set status message
 $data = $lamma_str. " " .$biometeo_ita_str. " " .$biometeo_eng_str;
+print_r($data);
 
 return $data;
 
