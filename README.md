@@ -22,7 +22,12 @@ https://docs.google.com/presentation/d/1yeZxMVFpiL8zfhG52U2zi8MRjWqDWiptkiPIeef9
 ----------
 
 Aggiunto anche Telegram bot (sviluppato a partire da https://github.com/Eleirbag89/TelegramBotPHP). 
-Per usare Telegram:
+- Creare un bot su Telegram 
+- definire i comandi da inviare e gestire con getUpdates.php
+- definire come prelevare i dati con getdata.php
+- Creare un Cron Job per eseguire getUpadates.php ad intervalli di tempo regolari (per emergenzeprato è eseguito ogni minuto).
+
+Per usare Emergenzeprato su Telegram:
 - aggiungere  @emergenzeprato_bot su Telegram
 - inviare a emergenzeprato la parola "meteo" o "previsioni" per ricevere rispettivamente il meteo e il biometeo del giorno o del giorno dopo.
 
