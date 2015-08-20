@@ -18,12 +18,12 @@ For a description of the Bot API, see this page: https://core.telegram.org/bots/
 include("Telegram.php");
 include("getdata.php");
 
+date_default_timezone_set('Europe/Rome');
+$today = date("Y-m-d H:i:s"); 
 
 $bot_id = "";
 $telegram = new Telegram($bot_id);
 $data=new getdata();
-
-print_r("start...");
 
 // Get all the new updates and set the new correct update_id
 $req = $telegram->getUpdates();
@@ -38,15 +38,23 @@ for ($i = 0; $i < $telegram-> UpdateCount(); $i++) {
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
 	}
-	if ($text == "meteo") {
+	if ($text == "/meteo") {
 		$reply = $data->getdata();
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
+		print($today. " meteo sent \r\n");
 	}
-	if ($text == "previsioni") {
+	if ($text == "/previsioni") {
 		$reply = $data->getdata_tomorrow();
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
+		print($today. " previsioni sent \r\n");
+	}
+	if ($text == "/rischi") {
+		$reply = $data->getdata_risk();
+		$content = array('chat_id' => $chat_id, 'text' => $reply);
+		$telegram->sendMessage($content);
+		print($today. " rischi sent \r\n");
 	}
 	if ($text == "/test") {
 		if ($telegram->messageFromGroup()) {
