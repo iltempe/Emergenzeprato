@@ -23,7 +23,7 @@ Aggiunto anche Telegram bot (sviluppato a partire da https://github.com/Eleirbag
 
 Per usare Emergenzeprato su Telegram:
 - aggiungere  @emergenzeprato_bot su Telegram
-- inviare a emergenzeprato la parola "meteo" o "previsioni" per ricevere rispettivamente il meteo e il biometeo del giorno o del giorno dopo.
+- inviare a emergenzeprato i comandi per ricevere gli aggiornamenti come indicato qui http://pratosmart.teo-soft.com/emergenzeprato-cresce-telegram-per-sapere-il-meteo-a-prato/
 
 --------
 
