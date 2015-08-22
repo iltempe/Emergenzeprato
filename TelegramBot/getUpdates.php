@@ -15,8 +15,9 @@ Use this token to access the HTTP API:
 For a description of the Bot API, see this page: https://core.telegram.org/bots/api
  */
 
-include("Telegram.php");
+
 include("getdata.php");
+include("Telegram.php");
 
 date_default_timezone_set('Europe/Rome');
 $today = date("Y-m-d H:i:s"); 
@@ -34,40 +35,34 @@ for ($i = 0; $i < $telegram-> UpdateCount(); $i++) {
 	$chat_id = $telegram->ChatID();
 
 	if ($text == "/start") {
-		$reply = "Working";
-		$content = array('chat_id' => $chat_id, 'text' => $reply);
+		 $option = array( array("meteo","previsioni", "rischi", "crediti") );
+    	// Crea la tastiera
+    	$keyb = $telegram->buildKeyBoard($option, $onetime=false);
+    	$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "Benvenuto in emergenzaprato, seleziona la tua opzione per essere aggiornato");
 		$telegram->sendMessage($content);
 	}
-	if ($text == "/meteo") {
+	if ($text == "/meteo" || $text == "meteo") {
 		$reply = $data->getdata();
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
 		print($today. " meteo sent \r\n");
 	}
-	if ($text == "/previsioni") {
+	if ($text == "/previsioni" || $text == "previsioni") {
 		$reply = $data->getdata_tomorrow();
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
 		print($today. " previsioni sent \r\n");
 	}
-	if ($text == "/rischi") {
+	if ($text == "/rischi" || $text == "rischi") {
 		$reply = $data->getdata_risk();
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
 		print($today. " rischi sent \r\n");
 	}
-	if ($text == "/test") {
-		if ($telegram->messageFromGroup()) {
-			$reply = "Chat Group";
-		} else {
-			$reply = "Private Chat";
-		}
-        // Create option for the custom keyboard. Array of array string
-        $option = array( array("A", "B"), array("C", "D") );
-        // Get the keyboard
-		$keyb = $telegram->buildKeyBoard($option);
-		$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => $reply);
-		$telegram->sendMessage($content);
+	if ($text == "/crediti" || $text == "crediti") {
+	 $reply = "Applicazione sviluppata da Matteo Tempestini, dettagli e fonti dei dati presenti su : http://pratosmart.teo-soft.com/emergenzeprato/";
+     $content = array('chat_id' => $chat_id, 'text' => $reply);
+     $telegram->sendMessage($content);		
 	}
 }
 
