@@ -15,8 +15,7 @@ Use this token to access the HTTP API:
 For a description of the Bot API, see this page: https://core.telegram.org/bots/api
  */
 
-
-include("getdata.php");
+include(dirname(__FILE__).'/../getdata.php');
 include("Telegram.php");
 
 date_default_timezone_set('Europe/Rome');
@@ -40,29 +39,31 @@ for ($i = 0; $i < $telegram-> UpdateCount(); $i++) {
     	$keyb = $telegram->buildKeyBoard($option, $onetime=false);
     	$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "Benvenuto in emergenzaprato, seleziona la tua opzione per essere aggiornato");
 		$telegram->sendMessage($content);
+		print($today. " new chat started " .$chat_id. "\r\n");
 	}
 	if ($text == "/meteo" || $text == "meteo") {
 		$reply = $data->getdata();
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
-		print($today. " meteo sent \r\n");
+		print($today. " meteo sent " .$chat_id. "\r\n");
 	}
 	if ($text == "/previsioni" || $text == "previsioni") {
 		$reply = $data->getdata_tomorrow();
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
-		print($today. " previsioni sent \r\n");
+		print($today. " previsioni sent " .$chat_id. "\r\n");
 	}
 	if ($text == "/rischi" || $text == "rischi") {
 		$reply = $data->getdata_risk();
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
-		print($today. " rischi sent \r\n");
+		print($today. " rischi sent " .$chat_id. "\r\n");
 	}
 	if ($text == "/crediti" || $text == "crediti") {
 	 $reply = "Applicazione sviluppata da Matteo Tempestini, dettagli e fonti dei dati presenti su : http://pratosmart.teo-soft.com/emergenzeprato/";
      $content = array('chat_id' => $chat_id, 'text' => $reply);
-     $telegram->sendMessage($content);		
+     $telegram->sendMessage($content);
+     print($today. " crediti sent " .$chat_id. "\r\n");		
 	}
 }
 

@@ -29,7 +29,8 @@ $data = $lamma_str. " " .$biometeo_ita_str. " " .$biometeo_eng_str;
 
 return $data;
 
-	}
+}
+
 public function getdata_tomorrow() {
 
 //biometeo
@@ -51,7 +52,7 @@ $data = $lamma_str. " " .$biometeo_ita_str. " " .$biometeo_eng_str;
 
 return $data;
 
-	}
+}
 
 
 public function getdata_risk() {
