@@ -37,7 +37,7 @@ for ($i = 0; $i < $telegram-> UpdateCount(); $i++) {
 		 $option = array( array("meteo","previsioni", "rischi", "crediti") );
     	// Crea la tastiera
     	$keyb = $telegram->buildKeyBoard($option, $onetime=false);
-    	$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "Benvenuto in emergenzaprato, seleziona la tua opzione per essere aggiornato");
+    	$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "Benvenuto in emergenzeprato, seleziona la tua opzione per essere aggiornato");
 		$telegram->sendMessage($content);
 		print($today. " new chat started " .$chat_id. "\r\n");
 	}

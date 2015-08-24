@@ -6,10 +6,7 @@
 class getdata {
 
 
-	public function getdata() {
-
-                       // data di oggi
-//print_r("Oggi è il ".$today);
+public function getdata() {
 
 //biometeo
 $biometeo_ita_xml=simplexml_load_file("http://data.biometeo.it/PRATO/PRATO_ITA.xml") or die("Errore nella ricerca del file relativo al biometeo ITA");
@@ -46,7 +43,6 @@ $lamma_str=("Previsioni Meteo per domani a Prato (Lamma): " .$lamma_xml->previsi
 $biometeo_ita_str=("\r\nPrevisioni domani dal Biometeo per Prato: mattino " .$biometeo_ita_xml->localita->AA_des_m_domani. "\r\n pomeriggio " .$biometeo_ita_xml->localita->AA_des_p_domani. "\r\n sera " .$biometeo_ita_xml->localita->AA_des_s_domani);
 $biometeo_eng_str=("\r\nForecast for tomorrow from Biometeo Prato: morning " .$biometeo_eng_xml->localita->AA_des_m_domani. "\r\n afternoon " .$biometeo_eng_xml->localita->AA_des_p_domani. "\r\n evening " .$biometeo_eng_xml->localita->AA_des_s_domani);
 
-//print_r($data);
 // Set status message
 $data = $lamma_str. " " .$biometeo_ita_str. " " .$biometeo_eng_str;
 
@@ -58,14 +54,14 @@ return $data;
 public function getdata_risk() {
 
 date_default_timezone_set('UTC');
- $today = date("Ymd");   
+$today = date("Ymd");   
 
 //Gestione Rischio Regione Toscana
 $sir_xml=simplexml_load_file("http://www.sir.toscana.it/supports/xml/risks_395/".$today.".xml"); 
 
 if ($sir_xml==false)
 	{
-	//print_r("Errore nella ricerca del file relativo al rischio");
+	print("Errore nella ricerca del file relativo al rischio");
 	$data="Rischi di oggi non ancora disponibili, riprova tra un po' ";
 	
 }else{
