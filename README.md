@@ -1,7 +1,7 @@
 Emergenzeprato data manager
 ===========================
 
-Parser fonti XML per il progetto @emergenzeprato
+Parser fonti per il progetto @emergenzeprato
 
 Le fonti sono dati aperti della regione Toscana e sono elencate al termine del file.
 
@@ -14,6 +14,7 @@ L'account @emergenzeprato rituitta tutti i tweet con tag ben precisi e le foto I
 Inoltre tutti i tweet taggati #pratopioggia con localizzazione vengono mappati su pratosmart.org
 
 ----------
+TELEGRAM
 
 Aggiunto anche Telegram bot (sviluppato a partire da https://github.com/Eleirbag89/TelegramBotPHP). 
 - Creare un bot su Telegram 
@@ -26,6 +27,13 @@ Per usare Emergenzeprato su Telegram:
 - inviare a emergenzeprato i comandi per ricevere gli aggiornamenti come indicato qui http://pratosmart.teo-soft.com/emergenzeprato-cresce-telegram-per-sapere-il-meteo-a-prato/
 
 --------
+SOCIAL NETWORK
+
+Se si vuole integrare con regole sui social network può essere usato IFTT come usato qui
+https://ifttt.com/p/pratopioggia/shared
+
+--------
+INFORMAZIONI
 
 Per info pratosmart.org
 
