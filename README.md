@@ -29,7 +29,7 @@ Per usare Emergenzeprato su Telegram:
 --------
 SOCIAL NETWORK
 
-Se si vuole integrare con regole sui social network può essere usato IFTT come usato qui
+Se si vuole integrare con regole sui social network può essere usato IFTTT come usato qui
 https://ifttt.com/p/pratopioggia/shared
 
 --------
