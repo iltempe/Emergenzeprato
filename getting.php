@@ -145,62 +145,62 @@ public function select_risk_data($when, $zone, $type){
 		 {
 			if($type=="idrogeologico")
 				{
-					$data=xml_file->rischi[0]->rischio[0]->area[7]->impatto;
+					$data=$xml_file->rischi[0]->rischio[0]->area[7]->impatto;
 				}
 			if($type=="idraulico")
 				{
-						$data=xml_file->rischi[0]->rischio[1]->area[7]->impatto; 	
+						$data=$xml_file->rischi[0]->rischio[1]->area[7]->impatto; 	
 				}
 			if($type=="vento")
 				{
-						$data=xml_file->rischi[0]->rischio[2]->area[7]->impatto;
+						$data=$xml_file->rischi[0]->rischio[2]->area[7]->impatto;
 				}
 			if($type=="mareggiate")
 				{
-						$data=xml_file->rischi[0]->rischio[3]->area[7]->impatto; 	
+						$data=$xml_file->rischi[0]->rischio[3]->area[7]->impatto; 	
 				}
 			if($type=="neve")
 				{
-						$data=xml_file->rischi[0]->rischio[4]->area[7]->impatto;
+						$data=$xml_file->rischi[0]->rischio[4]->area[7]->impatto;
 				}
 			if($type=="ghiaccio")
 				{
-						$data=xml_file->rischi[0]->rischio[5]->area[7]->impatto;
+						$data=$xml_file->rischi[0]->rischio[5]->area[7]->impatto;
 				}
 			if($type=="temporali")
 				{
-						$data=xml_file->rischi[0]->rischio[6]->area[7]->impatto;
+						$data=$xml_file->rischi[0]->rischio[6]->area[7]->impatto;
 				}
 
 		 }
 		 else{
 			if($type=="idrogeologico")
 				{
-					$data=xml_file->rischi[0]->rischio[0]->area[19]->impatto;
+					$data=$xml_file->rischi[0]->rischio[0]->area[19]->impatto;
 				}
 			if($type=="idraulico")
 				{
-						$data=xml_file->rischi[0]->rischio[1]->area[19]->impatto; 	
+						$data=$xml_file->rischi[0]->rischio[1]->area[19]->impatto; 	
 				}
 			if($type=="vento")
 				{
-						$data=xml_file->rischi[0]->rischio[2]->area[19]->impatto;
+						$data=$xml_file->rischi[0]->rischio[2]->area[19]->impatto;
 				}
 			if($type=="mareggiate")
 				{
-						$data=xml_file->rischi[0]->rischio[3]->area[19]->impatto; 	
+						$data=$xml_file->rischi[0]->rischio[3]->area[19]->impatto; 	
 				}
 			if($type=="neve")
 				{
-						$data=xml_file->rischi[0]->rischio[4]->area[19]->impatto;
+						$data=$xml_file->rischi[0]->rischio[4]->area[19]->impatto;
 				}
 			if($type=="ghiaccio")
 				{
-						$data=xml_file->rischi[0]->rischio[5]->area[19]->impatto;
+						$data=$xml_file->rischi[0]->rischio[5]->area[19]->impatto;
 				}
 			if($type=="temporali")
 				{
-						$data=xml_file->rischi[0]->rischio[6]->area[19]->impatto;
+						$data=$xml_file->rischi[0]->rischio[6]->area[19]->impatto;
 				}
 		 }
 	}
@@ -210,62 +210,62 @@ public function select_risk_data($when, $zone, $type){
 		 {
 			if($type=="idrogeologico")
 				{
-					$data=xml_file->rischi[1]->rischio[0]->area[7]->impatto;
+					$data=$xml_file->rischi[1]->rischio[0]->area[7]->impatto;
 				}
 			if($type=="idraulico")
 				{
-						$data=xml_file->rischi[1]->rischio[1]->area[7]->impatto; 	
+						$data=$xml_file->rischi[1]->rischio[1]->area[7]->impatto; 	
 				}
 			if($type=="vento")
 				{
-						$data=xml_file->rischi[1]->rischio[2]->area[7]->impatto;
+						$data=$xml_file->rischi[1]->rischio[2]->area[7]->impatto;
 				}
 			if($type=="mareggiate")
 				{
-						$data=xml_file->rischi[1]->rischio[3]->area[7]->impatto; 	
+						$data=$xml_file->rischi[1]->rischio[3]->area[7]->impatto; 	
 				}
 			if($type=="neve")
 				{
-						$data=xml_file->rischi[1]->rischio[4]->area[7]->impatto;
+						$data=$xml_file->rischi[1]->rischio[4]->area[7]->impatto;
 				}
 			if($type=="ghiaccio")
 				{
-						$data=xml_file->rischi[1]->rischio[5]->area[7]->impatto;
+						$data=$xml_file->rischi[1]->rischio[5]->area[7]->impatto;
 				}
 			if($type=="temporali")
 				{
-						$data=xml_file->rischi[1]->rischio[6]->area[7]->impatto;
+						$data=$xml_file->rischi[1]->rischio[6]->area[7]->impatto;
 				}
 
 		 }
 		 else{
 			if($type=="idrogeologico")
 				{
-					$data=xml_file->rischi[1]->rischio[0]->area[19]->impatto;
+					$data=$xml_file->rischi[1]->rischio[0]->area[19]->impatto;
 				}
 			if($type=="idraulico")
 				{
-						$data=xml_file->rischi[1]->rischio[1]->area[19]->impatto; 	
+						$data=$xml_file->rischi[1]->rischio[1]->area[19]->impatto; 	
 				}
 			if($type=="vento")
 				{
-						$data=xml_file->rischi[1]->rischio[2]->area[19]->impatto;
+						$data=$xml_file->rischi[1]->rischio[2]->area[19]->impatto;
 				}
 			if($type=="mareggiate")
 				{
-						$data=xml_file->rischi[1]->rischio[3]->area[19]->impatto; 	
+						$data=$xml_file->rischi[1]->rischio[3]->area[19]->impatto; 	
 				}
 			if($type=="neve")
 				{
-						$data=xml_file->rischi[1]->rischio[4]->area[19]->impatto;
+						$data=$xml_file->rischi[1]->rischio[4]->area[19]->impatto;
 				}
 			if($type=="ghiaccio")
 				{
-						$data=xml_file->rischi[1]->rischio[5]->area[19]->impatto;
+						$data=$xml_file->rischi[1]->rischio[5]->area[19]->impatto;
 				}
 			if($type=="temporali")
 				{
-						$data=xml_file->rischi[1]->rischio[6]->area[19]->impatto;
+						$data=$xml_file->rischi[1]->rischio[6]->area[19]->impatto;
 				}
 		 }
 	}
