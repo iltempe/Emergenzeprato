@@ -96,7 +96,7 @@ return $data;
 }
 
 //seleziona un dato dal lamma specificando oggi/domani e se si tratta di temp max, min o - (previsioni del giorno)
-public select_meteo_data($today,$temp){
+public function select_meteo_data($today,$temp){
 
  $xml_file=get_lamma();
  
@@ -137,7 +137,7 @@ public select_meteo_data($today,$temp){
 }
 
 //seleziona un dato dai rischi specificando se oggi/domani, la zona B/R e il tipo di rischio
-public select_risk_data($when, $zone, $type){
+public function select_risk_data($when, $zone, $type){
 	$xml_file=get_risk();
  	if($when=="oggi")
  	{
