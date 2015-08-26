@@ -61,11 +61,11 @@ public function select_biometeo_data($today, $when, $lang){
 
 if($lang=="ita")
 {
- $xml_file=get_biometeo_ita();
+ $xml_file=$this->get_biometeo_ita();
 }
 else
 {
- $xml_file=get_biometeo_eng();
+ $xml_file=$this->get_biometeo_eng();
 }
 
 if($today=="oggi")
@@ -98,7 +98,7 @@ return $data;
 //seleziona un dato dal lamma specificando oggi/domani e se si tratta di temp max, min o - (previsioni del giorno)
 public function select_meteo_data($today,$temp){
 
- $xml_file=get_lamma();
+ $xml_file=$this->get_lamma();
  
  if($today=="oggi"){
  
@@ -138,7 +138,7 @@ public function select_meteo_data($today,$temp){
 
 //seleziona un dato dai rischi specificando se oggi/domani, la zona B/R e il tipo di rischio
 public function select_risk_data($when, $zone, $type){
-	$xml_file=get_risk();
+	$xml_file=$this->get_risk();
  	if($when=="oggi")
  	{
 		 if($zone=="B")
@@ -278,7 +278,7 @@ public function select_risk_data($when, $zone, $type){
 public function lamma_text($today) {
 
 //string setting
-$lamma_str=("Meteo per Prato (fonte Lamma): " .select_meteo_data($today,"-")."\r\n minime " .select_meteo_data($today,"min"). "\r\n massime " .select_meteo_data($today,"max"));
+$lamma_str=("Meteo per Prato (fonte Lamma): " .$this->select_meteo_data($today,"-")."\r\n minime " .$this->select_meteo_data($today,"min"). "\r\n massime " .$this->select_meteo_data($today,"max"));
 
 return $lamma_str;
 
@@ -287,8 +287,8 @@ return $lamma_str;
 //prepara la stringa per il biometeo di oggi/domani
 public function biometeo_text($today){
 
-	$biometeo_ita_str=("\r\nBiometeo per Prato: mattina " .select_biometeo_data($today,"mattina","ita"). "\r\n pomeriggio " .select_biometeo_data($today,"pomeriggio","ita"). "\r\n sera " .select_biometeo_data($today,"sera","ita"));
-	$biometeo_eng_str=("\r\nBiometeo for Prato: morning " .select_biometeo_data($today,"mattina","eng"). "\r\n afternoon " .select_biometeo_data($today,"pomeriggio","eng"). "\r\n evening " .select_biometeo_data($today,"sera","eng"));
+	$biometeo_ita_str=("\r\nBiometeo per Prato: mattina " .$this->select_biometeo_data($today,"mattina","ita"). "\r\n pomeriggio " .$this->select_biometeo_data($today,"pomeriggio","ita"). "\r\n sera " .$this->select_biometeo_data($today,"sera","ita"));
+	$biometeo_eng_str=("\r\nBiometeo for Prato: morning " .$this->select_biometeo_data($today,"mattina","eng"). "\r\n afternoon " .$this->select_biometeo_data($today,"pomeriggio","eng"). "\r\n evening " .$this->select_biometeo_data($today,"sera","eng"));
 	$biometeo = $biometeo_ita_str. " " .$biometeo_eng_str;
 	return $biometeo;
 }
@@ -298,22 +298,22 @@ public function risk_text($zone,$today)
 {
 	if($zone=="B")
 	{
-	$sir_str_1=("Rischio idrogeologico a Prato: " .select_risk_data($today,"B","idrogeologico"). "\r\n");
-	$sir_str_2=("Rischio idraulico a Prato: " .select_risk_data($today,"B","idraulico"). "\r\n");
-	$sir_str_3=("Rischio vento a Prato: " .select_risk_data($today,"B","vento"). "\r\n");
-	$sir_str_4=("Rischio mareggiate a Prato: " .select_risk_data($today,"B","mareggiate"). "\r\n");
-	$sir_str_5=("Rischio neve a Prato: " .select_risk_data($today,"B","neve"). "\r\n");
-	$sir_str_6=("Rischio ghiaccio a Prato: " .select_risk_data($today,"B","ghiaccio"). "\r\n");
-	$sir_str_7=("Rischio temporali a Prato: " .select_risk_data($today,"B","temporali"). "\r\n");
+	$sir_str_1=("Rischio idrogeologico a Prato: " .$this->select_risk_data($today,"B","idrogeologico"). "\r\n");
+	$sir_str_2=("Rischio idraulico a Prato: " .$this->select_risk_data($today,"B","idraulico"). "\r\n");
+	$sir_str_3=("Rischio vento a Prato: " .$this->select_risk_data($today,"B","vento"). "\r\n");
+	$sir_str_4=("Rischio mareggiate a Prato: " .$this->select_risk_data($today,"B","mareggiate"). "\r\n");
+	$sir_str_5=("Rischio neve a Prato: " .$this->select_risk_data($today,"B","neve"). "\r\n");
+	$sir_str_6=("Rischio ghiaccio a Prato: " .$this->select_risk_data($today,"B","ghiaccio"). "\r\n");
+	$sir_str_7=("Rischio temporali a Prato: " .$this->select_risk_data($today,"B","temporali"). "\r\n");
 	}
 	else{
-	$sir_str_1=("Rischio idrogeologico a Vernio: " .select_risk_data($today,"R","idrogeologico"). "\r\n");
-	$sir_str_2=("Rischio idraulico a Vernio: " .select_risk_data($today,"R","idraulico"). "\r\n");
-	$sir_str_3=("Rischio vento a Vernio: " .select_risk_data($today,"R","vento"). "\r\n");
-	$sir_str_4=("Rischio mareggiate a Vernio: " .select_risk_data($today,"R","mareggiate"). "\r\n");
-	$sir_str_5=("Rischio neve a Vernio: " .select_risk_data($today,"R","neve"). "\r\n");
-	$sir_str_6=("Rischio ghiaccio a Vernio: " .select_risk_data($today,"R","ghiaccio"). "\r\n");
-	$sir_str_7=("Rischio temporali a Vernio: " .select_risk_data($today,"R","temporali"). "\r\n");
+	$sir_str_1=("Rischio idrogeologico a Vernio: " .$this->select_risk_data($today,"R","idrogeologico"). "\r\n");
+	$sir_str_2=("Rischio idraulico a Vernio: " .$this->select_risk_data($today,"R","idraulico"). "\r\n");
+	$sir_str_3=("Rischio vento a Vernio: " .$this->select_risk_data($today,"R","vento"). "\r\n");
+	$sir_str_4=("Rischio mareggiate a Vernio: " .$this->select_risk_data($today,"R","mareggiate"). "\r\n");
+	$sir_str_5=("Rischio neve a Vernio: " .$this->select_risk_data($today,"R","neve"). "\r\n");
+	$sir_str_6=("Rischio ghiaccio a Vernio: " .$this->select_risk_data($today,"R","ghiaccio"). "\r\n");
+	$sir_str_7=("Rischio temporali a Vernio: " .$this->select_risk_data($today,"R","temporali"). "\r\n");
 	}
 	
 	$sir_str = $sir_str_1. $sir_str_2. $sir_str_3. $sir_str_4. $sir_str_5. $sir_str_6. $sir_str_7;
