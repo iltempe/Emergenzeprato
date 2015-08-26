@@ -322,7 +322,7 @@ public function risk_text($zone,$today)
 
 }
 
-        
+}        
 //Fonti
 //http://www.lamma.rete.toscana.it/…/comuni_web/dati/prato.xml
 //http://data.biometeo.it/BIOMETEO.xml
