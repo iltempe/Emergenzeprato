@@ -57,7 +57,7 @@ return $sir_xml;
 
 
 //seleziona un dato del biometeo specificando se si tratta di oggi/domani, mattina/pomeriggio/sera e la lingua ita/eng
-public select_biometeo_data($today, $when, $lang){
+public function select_biometeo_data($today, $when, $lang){
 
 if($lang=="ita")
 {
