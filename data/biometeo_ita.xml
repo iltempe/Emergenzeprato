@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <bollettino>
-	<data_emissione>2015-08-25T10:06:47.600</data_emissione>
+	<data_emissione>2015-08-26T10:03:41.230</data_emissione>
 	<ente>Università di Firenze</ente>
 	<webhome>www.biometeo.it</webhome>
 	<firma>Centro Interdipartimentale di Bioclimatologia (CIBIC)  </firma>
@@ -10,18 +10,18 @@
 		<lon>11°5′47.62″E</lon>
 		<quota>61 m</quota>
 		<CAP_cod>59100</CAP_cod>
-		<data_riferimento_oggi>2015-08-25</data_riferimento_oggi>
+		<data_riferimento_oggi>2015-08-26</data_riferimento_oggi>
 		<classe_data_oggi>oggi</classe_data_oggi>
-		<Tapp_max_oggi>28</Tapp_max_oggi>
-		<Tapp_min_oggi>19</Tapp_min_oggi>
+		<Tapp_max_oggi>31</Tapp_max_oggi>
+		<Tapp_min_oggi>16</Tapp_min_oggi>
 		<Bencla8_oggi>5</Bencla8_oggi>
-		<Bencla15_oggi>6</Bencla15_oggi>
+		<Bencla15_oggi>7</Bencla15_oggi>
 		<Bencla22_oggi>5</Bencla22_oggi>
 		<AA_cod_oggi>1</AA_cod_oggi>
-		<AA_cod_m_oggi>1</AA_cod_m_oggi>
-		<AA_des_m_oggi>Pioggia; </AA_des_m_oggi>
-		<AA_cod_p_oggi>0</AA_cod_p_oggi>
-		<AA_des_p_oggi>Nessun disagio</AA_des_p_oggi>
+		<AA_cod_m_oggi>0</AA_cod_m_oggi>
+		<AA_des_m_oggi>Nessun disagio</AA_des_m_oggi>
+		<AA_cod_p_oggi>1</AA_cod_p_oggi>
+		<AA_des_p_oggi>Disagio da caldo; </AA_des_p_oggi>
 		<AA_cod_s_oggi>0</AA_cod_s_oggi>
 		<AA_des_s_oggi>Nessun disagio</AA_des_s_oggi>
 		<D_cod_oggi>0</D_cod_oggi>
@@ -29,20 +29,20 @@
 		<E_cod_oggi>0</E_cod_oggi>
 		<R_cod_oggi>0</R_cod_oggi>
 		<METEOR_oggi>0</METEOR_oggi>
-		<Cond_cod_oggi>0</Cond_cod_oggi>
-		<Cond_ore_oggi>0</Cond_ore_oggi>
-		<Cond_range_oggi>0</Cond_range_oggi>
+		<Cond_cod_oggi>1</Cond_cod_oggi>
+		<Cond_ore_oggi>4</Cond_ore_oggi>
+		<Cond_range_oggi>15-19</Cond_range_oggi>
 		<Vest_m_oggi>6</Vest_m_oggi>
 		<Vest_p_oggi>8</Vest_p_oggi>
-		<Vest_s_oggi>6</Vest_s_oggi>
-		<Tend_min_4giorno_oggi>4</Tend_min_4giorno_oggi>
+		<Vest_s_oggi>7</Vest_s_oggi>
+		<Tend_min_4giorno_oggi>3</Tend_min_4giorno_oggi>
 		<Tend_max_4giorno_oggi>3</Tend_max_4giorno_oggi>
 		<Tend_min_5giorno_oggi>3</Tend_min_5giorno_oggi>
 		<Tend_max_5giorno_oggi>3</Tend_max_5giorno_oggi>
-		<data_riferimento_domani>2015-08-26</data_riferimento_domani>
+		<data_riferimento_domani>2015-08-27</data_riferimento_domani>
 		<classe_data_domani>domani</classe_data_domani>
-		<Tapp_max_domani>31</Tapp_max_domani>
-		<Tapp_min_domani>16</Tapp_min_domani>
+		<Tapp_max_domani>32</Tapp_max_domani>
+		<Tapp_min_domani>17</Tapp_min_domani>
 		<Bencla8_domani>5</Bencla8_domani>
 		<Bencla15_domani>7</Bencla15_domani>
 		<Bencla22_domani>5</Bencla22_domani>
@@ -58,20 +58,20 @@
 		<E_cod_domani>0</E_cod_domani>
 		<R_cod_domani>0</R_cod_domani>
 		<METEOR_domani>0</METEOR_domani>
-		<Cond_cod_domani>0</Cond_cod_domani>
-		<Cond_ore_domani>0</Cond_ore_domani>
-		<Cond_range_domani>0</Cond_range_domani>
+		<Cond_cod_domani>1</Cond_cod_domani>
+		<Cond_ore_domani>6</Cond_ore_domani>
+		<Cond_range_domani>14-20</Cond_range_domani>
 		<Vest_m_domani>6</Vest_m_domani>
 		<Vest_p_domani>8</Vest_p_domani>
 		<Vest_s_domani>7</Vest_s_domani>
-		<Tend_min_4giorno_domani>4</Tend_min_4giorno_domani>
+		<Tend_min_4giorno_domani>3</Tend_min_4giorno_domani>
 		<Tend_max_4giorno_domani>3</Tend_max_4giorno_domani>
 		<Tend_min_5giorno_domani>3</Tend_min_5giorno_domani>
 		<Tend_max_5giorno_domani>3</Tend_max_5giorno_domani>
-		<data_riferimento_dopodomani>2015-08-27</data_riferimento_dopodomani>
+		<data_riferimento_dopodomani>2015-08-28</data_riferimento_dopodomani>
 		<classe_data_dopodomani>dopodomani</classe_data_dopodomani>
-		<Tapp_max_dopodomani>32</Tapp_max_dopodomani>
-		<Tapp_min_dopodomani>16</Tapp_min_dopodomani>
+		<Tapp_max_dopodomani>34</Tapp_max_dopodomani>
+		<Tapp_min_dopodomani>18</Tapp_min_dopodomani>
 		<Bencla8_dopodomani>5</Bencla8_dopodomani>
 		<Bencla15_dopodomani>7</Bencla15_dopodomani>
 		<Bencla22_dopodomani>5</Bencla22_dopodomani>
@@ -80,20 +80,20 @@
 		<AA_des_m_dopodomani>Nessun disagio</AA_des_m_dopodomani>
 		<AA_cod_p_dopodomani>1</AA_cod_p_dopodomani>
 		<AA_des_p_dopodomani>Disagio da caldo; </AA_des_p_dopodomani>
-		<AA_cod_s_dopodomani>0</AA_cod_s_dopodomani>
-		<AA_des_s_dopodomani>Nessun disagio</AA_des_s_dopodomani>
+		<AA_cod_s_dopodomani>1</AA_cod_s_dopodomani>
+		<AA_des_s_dopodomani>Disagio da caldo; </AA_des_s_dopodomani>
 		<D_cod_dopodomani>0</D_cod_dopodomani>
 		<U_cod_dopodomani>0</U_cod_dopodomani>
 		<E_cod_dopodomani>0</E_cod_dopodomani>
 		<R_cod_dopodomani>0</R_cod_dopodomani>
 		<METEOR_dopodomani>0</METEOR_dopodomani>
-		<Cond_cod_dopodomani>0</Cond_cod_dopodomani>
-		<Cond_ore_dopodomani>0</Cond_ore_dopodomani>
-		<Cond_range_dopodomani>0</Cond_range_dopodomani>
-		<Vest_m_dopodomani>6</Vest_m_dopodomani>
+		<Cond_cod_dopodomani>1</Cond_cod_dopodomani>
+		<Cond_ore_dopodomani>7</Cond_ore_dopodomani>
+		<Cond_range_dopodomani>13-20</Cond_range_dopodomani>
+		<Vest_m_dopodomani>7</Vest_m_dopodomani>
 		<Vest_p_dopodomani>8</Vest_p_dopodomani>
-		<Vest_s_dopodomani>7</Vest_s_dopodomani>
-		<Tend_min_4giorno_dopodomani>4</Tend_min_4giorno_dopodomani>
+		<Vest_s_dopodomani>8</Vest_s_dopodomani>
+		<Tend_min_4giorno_dopodomani>3</Tend_min_4giorno_dopodomani>
 		<Tend_max_4giorno_dopodomani>3</Tend_max_4giorno_dopodomani>
 		<Tend_min_5giorno_dopodomani>3</Tend_min_5giorno_dopodomani>
 		<Tend_max_5giorno_dopodomani>3</Tend_max_5giorno_dopodomani>

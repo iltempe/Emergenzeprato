@@ -1,30 +1,26 @@
 <?php
 
-//storagedata per XML #emergenzeprato
-//by MT 
-//creare nella cartella /data i file .xml template
-//da terminare se troppo lento
-
+//da far girare con CRON nella folder corrente per salvare i file XML nella cartella data
 date_default_timezone_set('UTC');
 $today = date("Ymd");   
 
-//si aggiorna verso le 13
-$xml_1 = file_get_contents("http://www.sir.toscana.it/supports/xml/risks_395/".$today.".xml"); 			// your file is in the string "$xml" now.
-file_put_contents("data/risk.xml", $xml_1); 															// now your xml file is update.
+$biometeo_ITA_file = "http://data.biometeo.it/PRATO/PRATO_ITA.xml";
+$biometeo_ENG_file = "http://data.biometeo.it/PRATO/PRATO_ENG.xml";
+$meteo_file = "http://www.lamma.rete.toscana.it/previ/ita/xml/comuni_web/dati/prato.xml";
+$risk_file = "http://www.sir.toscana.it/supports/xml/risks_395/".$today.".xml";
 
-//si aggiorna verso le 10
-$xml_2 = file_get_contents("http://data.biometeo.it/PRATO/PRATO_ITA.xml"); 								// your file is in the string "$xml" now.
-file_put_contents("data/biometeo_ita.xml", $xml_2); 													// now your xml file is saved.
+store($biometeo_ITA_file, "data/biometeo_ITA.xml");
+store($biometeo_ENG_file, "data/biometeo_ENG.xml");
+store($meteo_file, "data/meteo.xml");
+store($risk_file, "data/risk.xml");
 
-$xml_3 = file_get_contents("http://data.biometeo.it/PRATO/PRATO_ENG.xml"); 								// your file is in the string "$xml" now.
-file_put_contents("data/biometeo_eng.xml", $xml_3); 													// now your xml file is saved.
-
-$xml_4 = file_get_contents("http://www.lamma.rete.toscana.it/previ/ita/xml/comuni_web/dati/prato.xml"); // your file is in the string "$xml" now.
-file_put_contents("data/meteo.xml", $xml_4); 															// now your xml file is saved.
-
-//Fonti
-//http://www.lamma.rete.toscana.it/…/comuni_web/dati/prato.xml
-//http://data.biometeo.it/BIOMETEO.xml
-//http://data.biometeo.it/PRATO/PRATO_ITA.xml
-
+function store($xmlFile,$dest)
+{
+	if( !simplexml_load_file($xmlFile) ) die('Missing file: ' . $xmlFile);
+	else
+	{
+		$s = simplexml_load_file($xmlFile);
+		$s->saveXML($dest);
+	}
+}
 ?>
