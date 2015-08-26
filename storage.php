@@ -1,3 +1,5 @@
+#!/usr/bin/php
+
 <?php
 
 //da far girare con CRON nella folder corrente per salvare i file XML nella cartella data
