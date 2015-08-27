@@ -4,8 +4,11 @@
  * @author Gabriele Grillo <gabry.grillo@alice.it>
  */
 
+include(dirname(__FILE__).'/../settings.php');
+
+
 class Telegram {
-	private $bot_id = "";
+	private $bot_id = TELEGRAM_BOT;
 	private $data = array();
 	private $updates = array();
 	

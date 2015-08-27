@@ -15,13 +15,14 @@ Use this token to access the HTTP API:
 For a description of the Bot API, see this page: https://core.telegram.org/bots/api
  */
 
+include(dirname(__FILE__).'/../settings.php');
 include(dirname(__FILE__).'/../getdata.php');
 include("Telegram.php");
 
 date_default_timezone_set('Europe/Rome');
 $today = date("Y-m-d H:i:s"); 
 
-$bot_id = "";
+$bot_id = TELEGRAM_BOT ;
 $telegram = new Telegram($bot_id);
 $data=new getdata();
 

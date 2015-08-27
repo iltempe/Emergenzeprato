@@ -5,10 +5,12 @@
   * designed starting from https://github.com/Eleirbag89/TelegramBotPHP
 
  */
-include("Telegram.php");
 
-// Set the bot TOKEN
-$bot_id = "";
+include(dirname(__FILE__).'/../settings.php');
+include("Telegram.php");
+ 
+// Set the bot TOKEN in setting.php
+$bot_id = TELEGRAM_BOT;
 // Instances the class
 $telegram = new Telegram($bot_id);
 
