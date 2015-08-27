@@ -13,7 +13,7 @@ private function get_biometeo_ita() {
 	//remote
 	//$biometeo_ita_xml=simplexml_load_file("http://data.biometeo.it/PRATO/PRATO_ITA.xml") or die("Errore nella ricerca del file relativo al biometeo ITA");
 	//local
-	$biometeo_ita_xml=simplexml_load_file("data/biometeo_ITA.xml") or die("Errore nella ricerca del file relativo al biometeo ITA");
+	$biometeo_ita_xml=simplexml_load_file(dirname(__FILE__). "/data/biometeo_ITA.xml") or die("Errore nella ricerca del file relativo al biometeo ITA");
 	return $biometeo_ita_xml;
 
 }
@@ -23,7 +23,7 @@ private function get_biometeo_eng() {
 
 	//biometeo
 	//$biometeo_eng_xml=simplexml_load_file("http://data.biometeo.it/PRATO/PRATO_ENG.xml") or die("Errore nella ricerca del file relativo al biometeo ENG");
-	$biometeo_eng_xml=simplexml_load_file("data/biometeo_ENG.xml") or die("Errore nella ricerca del file relativo al biometeo ENG");
+	$biometeo_eng_xml=simplexml_load_file(dirname(__FILE__). "/data/biometeo_ENG.xml") or die("Errore nella ricerca del file relativo al biometeo ENG");
 	return $biometeo_eng_xml;
 }
 
@@ -32,7 +32,7 @@ private function get_lamma() {
 
 	//lamma opentoscana
 	//$lamma_xml=simplexml_load_file("http://www.lamma.rete.toscana.it/previ/ita/xml/comuni_web/dati/prato.xml") or die("Errore nella ricerca del file relativo alla previsione LAMMA");
-	$lamma_xml=simplexml_load_file("data/meteo.xml") or die("Errore nella ricerca del file relativo alla previsione LAMMA");
+	$lamma_xml=simplexml_load_file(dirname(__FILE__). "/data/meteo.xml") or die("Errore nella ricerca del file relativo alla previsione LAMMA");
 	return $lamma_xml;
 
 }
@@ -287,7 +287,7 @@ public function select_risk_data($when, $zone, $type){
 public function lamma_text($today) {
 
 //string setting
-$lamma_str=($this->select_meteo_data($today,"-")."\r\nminime " .$this->select_meteo_data($today,"min"). "\r\nmassime " .$this->select_meteo_data($today,"max") ."\r\n");
+$lamma_str=($this->select_meteo_data($today,"-")." min " .$this->select_meteo_data($today,"min"). " max " .$this->select_meteo_data($today,"max") ."\r\n");
 
 return $lamma_str;
 
@@ -296,9 +296,25 @@ return $lamma_str;
 //prepara la stringa per il biometeo di oggi/domani
 public function biometeo_text($today){
 
-	$biometeo_ita_str=("mattina " .$this->select_biometeo_data($today,"mattina","ita"). "\r\npomeriggio " .$this->select_biometeo_data($today,"pomeriggio","ita"). "\r\nsera " .$this->select_biometeo_data($today,"sera","ita")."\r\n");
-	$biometeo_eng_str=("morning " .$this->select_biometeo_data($today,"mattina","eng"). "\r\nafternoon " .$this->select_biometeo_data($today,"pomeriggio","eng"). "\r\nevening " .$this->select_biometeo_data($today,"sera","eng")."\r\n");
+	$biometeo_ita_str=biometeo_ita_text("domani");
+	$biometeo_eng_str=biometeo_eng_text("domani");
 	$biometeo = $biometeo_ita_str. " " .$biometeo_eng_str;
+	return $biometeo;
+}
+
+//prepara la stringa per il biometeo di oggi/domani
+public function biometeo_ita_text($today){
+
+	$biometeo_ita_str=("mat " .$this->select_biometeo_data($today,"mattina","ita"). " pom " .$this->select_biometeo_data($today,"pomeriggio","ita"). " sera " .$this->select_biometeo_data($today,"sera","ita"));
+	$biometeo = $biometeo_ita_str;
+	return $biometeo;
+}
+
+//prepara la stringa per il biometeo di oggi/domani
+public function biometeo_eng_text($today){
+
+	$biometeo_eng_str=("mor " .$this->select_biometeo_data($today,"mattina","eng"). " aft " .$this->select_biometeo_data($today,"pomeriggio","eng"). " eve " .$this->select_biometeo_data($today,"sera","eng"));
+	$biometeo = $biometeo_eng_str;
 	return $biometeo;
 }
 
