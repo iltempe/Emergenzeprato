@@ -41,29 +41,35 @@ for ($i = 0; $i < $telegram-> UpdateCount(); $i++) {
 		$telegram->sendMessage($content);
 		print($today. " new chat started " .$chat_id. "\r\n");
 	}
-	if ($text == "/meteo" || $text == "meteo") {
+	elseif ($text == "/meteo" || $text == "meteo") {
 		$reply = $data->getdata();
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
 		print($today. " meteo sent " .$chat_id. "\r\n");
 	}
-	if ($text == "/previsioni" || $text == "previsioni") {
+	elseif ($text == "/previsioni" || $text == "previsioni") {
 		$reply = $data->getdata_tomorrow();
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
 		print($today. " previsioni sent " .$chat_id. "\r\n");
 	}
-	if ($text == "/rischi" || $text == "rischi") {
+	elseif ($text == "/rischi" || $text == "rischi") {
 		$reply = $data->getdata_risk();
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
 		print($today. " rischi sent " .$chat_id. "\r\n");
 	}
-	if ($text == "/crediti" || $text == "crediti") {
+	elseif ($text == "/crediti" || $text == "crediti") {
 	 $reply = "Applicazione sviluppata da Matteo Tempestini, dettagli e fonti dei dati presenti su : http://pratosmart.teo-soft.com/emergenzeprato/";
      $content = array('chat_id' => $chat_id, 'text' => $reply);
      $telegram->sendMessage($content);
      print($today. " crediti sent " .$chat_id. "\r\n");		
+	}
+	else{
+	 $reply = "Hai selezionato un comando non previsto. Per informazioni visita : http://pratosmart.teo-soft.com/emergenzeprato/";
+     $content = array('chat_id' => $chat_id, 'text' => $reply);
+     $telegram->sendMessage($content);
+     print($today. " wrong command sent " .$chat_id. "\r\n");	
 	}
 }
 

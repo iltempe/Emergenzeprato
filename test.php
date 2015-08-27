@@ -4,6 +4,8 @@
 
 include("getting.php");
 
+
+
 $data=new getdata();
 
 print("---Biometeo di Oggi---\r\n");

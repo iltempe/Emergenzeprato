@@ -15,6 +15,8 @@ $meteo_file = "http://www.lamma.rete.toscana.it/previ/ita/xml/comuni_web/dati/pr
 //si aggiorna dalle 10 alle 13 del mattino
 $risk_file = "http://www.sir.toscana.it/supports/xml/risks_395/".$today.".xml";
 
+
+
 store($biometeo_ITA_file, "data/biometeo_ITA.xml");
 store($biometeo_ENG_file, "data/biometeo_ENG.xml");
 store($meteo_file, "data/meteo.xml");
@@ -22,11 +24,17 @@ store($risk_file, "data/risk.xml");
 
 function store($xmlFile,$dest)
 {
-	if( !simplexml_load_file($xmlFile) ) die('Missing file: ' . $xmlFile);
+	if(!simplexml_load_file($xmlFile)) 
+	{
+		print($xmlFile. " non correttamente scaricato\r\n");
+	
+	}
 	else
 	{
 		$s = simplexml_load_file($xmlFile);
 		$s->saveXML($dest);
+		print($xmlFile. " salvato\r\n");
+
 	}
 }
 ?>
