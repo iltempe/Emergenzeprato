@@ -1,16 +1,19 @@
 <?php
 
-//Parser and tweeter per XML #pratopioggia previsioni per domani
+//Tweet previsioni per domani
 //by MT
+
+include(dirname(__FILE__).'/../settings.php');
+include(dirname(__FILE__).'/../getdata.php');
 
 // Include twitteroauth
 require_once('twitteroauth.php');
 
 // Set keys
-$consumerKey = '';
-$consumerSecret = '';
-$accessToken = '';
-$accessTokenSecret = '';
+$consumerKey = CONSURMER_KEY;
+$consumerSecret = CONSUMER_SECRET;
+$accessToken = ACCESS_TOKEN;
+$accessTokenSecret = ACCESS_TOKEN_SECRET;
 
 date_default_timezone_set('UTC');
 $today = date("Ymd");                           // data di oggi

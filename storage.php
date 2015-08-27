@@ -14,12 +14,16 @@ $meteo_file = "http://www.lamma.rete.toscana.it/previ/ita/xml/comuni_web/dati/pr
 
 //si aggiorna dalle 10 alle 13 del mattino
 $risk_file = "http://www.sir.toscana.it/supports/xml/risks_395/".$today.".xml";
+//$risk_file = "http://www.sir.toscana.it/supports/xml/risks_395/20150829.xml";
 
 
 
 store($biometeo_ITA_file, "data/biometeo_ITA.xml");
 store($biometeo_ENG_file, "data/biometeo_ENG.xml");
 store($meteo_file, "data/meteo.xml");
+
+//cancello il file in locale in quanto cambia il nome da un giorno all'altro ed esiste un momento del giorno in cui non esiste il file (la mattina)
+unlink ("data/risk.xml");
 store($risk_file, "data/risk.xml");
 
 function store($xmlFile,$dest)
