@@ -33,7 +33,7 @@ Per usare Emergenzeprato su Telegram:
 GESTIONE DEI JOB
 Un esempio di come va strutturata la tabella dei CRON per schedulare i task.
 
-* * * * * php /home/pi/emergenzeprato/TelegramBot/getUpdates.php 
+(* * * * * php /home/pi/emergenzeprato/TelegramBot/getUpdates.php)
 
 00  00-16 * * * cd /home/pi/emergenzeprato && php storage.php
 
