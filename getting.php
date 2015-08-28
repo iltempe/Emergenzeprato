@@ -1,10 +1,10 @@
 <?php
 
-//Getdata per XML #emergenzeprato e Preparazione testo
+//Getdata #emergenzeprato e preparazione dati
+//questa classe deve essere istanziata nei vari JOB che vogliono usare i dati
 //by MT 
 
 class getdata {
-
 
 //legge i dati dal biometeo in italiano
 private function get_biometeo_ita() {
@@ -45,7 +45,7 @@ $today = date("Ymd");
 
 //Gestione Rischio Centro Funzionale Regione Toscana
 //$sir_xml=simplexml_load_file("http://www.sir.toscana.it/supports/xml/risks_395/".$today.".xml"); 
-$sir_xml=simplexml_load_file("data/risk.xml"); 
+$sir_xml=simplexml_load_file(dirname(__FILE__). "/data/risk.xml"); 
 
 if ($sir_xml==false)
 	{
@@ -354,11 +354,60 @@ public function risk_text($today,$zone)
 	return $sir_str;
 }
 
-}        
+//monitoraggio temperatura
+public function get_temperature($where)
+{
+ switch ($where) {
+
+		//prato
+		case "prato est":
+		$json_string = file_get_contents("http://api.wunderground.com/api/35e826e307f0a35e/conditions/q/pws:ITOSCANA124.json"); 
+		$parsed_json = json_decode($json_string); 
+		$location = $parsed_json->{'location'}->{'city'}; 
+		$temp_c = $parsed_json->{'current_observation'}->{'temp_c'};
+		break;
+
+		//carmignano
+		case "carmignano":
+		$json_string = file_get_contents("http://api.wunderground.com/api/35e826e307f0a35e/conditions/q/pws:IPRATOTO3.json"); 
+		$parsed_json = json_decode($json_string); 
+		$location = $parsed_json->{'location'}->{'city'}; 
+		$temp_c = $parsed_json->{'current_observation'}->{'temp_c'};
+		break;
+
+		//vaiano sofignano
+		case "vaiano sofignano":
+		$json_string = file_get_contents("http://api.wunderground.com/api/35e826e307f0a35e/conditions/q/pws:IPOVAIAN2.json"); 
+		$parsed_json = json_decode($json_string); 
+		$location = $parsed_json->{'location'}->{'city'}; 
+		$temp_c = $parsed_json->{'current_observation'}->{'temp_c'};
+		break;
+
+		//vaiano schignano
+		case "vaiano schignano":
+		$json_string = file_get_contents("http://api.wunderground.com/api/35e826e307f0a35e/conditions/q/pws:IPRATOVA2.json"); 
+		$parsed_json = json_decode($json_string); 
+		$location = $parsed_json->{'location'}->{'city'}; 
+		$temp_c = $parsed_json->{'current_observation'}->{'temp_c'};
+		break;
+
+		//montepiano vernio
+		case "montepiano vernio":
+		$json_string = file_get_contents("http://api.wunderground.com/api/35e826e307f0a35e/conditions/q/pws:IPOMONTE2.json"); 
+		$parsed_json = json_decode($json_string); 
+		$location = $parsed_json->{'location'}->{'city'}; 
+		$temp_c = $parsed_json->{'current_observation'}->{'temp_c'};
+		break;
+}
+ return $temp_c;
+
+}  
+}      
 //Fonti
 //http://www.lamma.rete.toscana.it/…/comuni_web/dati/prato.xml
 //http://data.biometeo.it/BIOMETEO.xml
 //http://data.biometeo.it/PRATO/PRATO_ITA.xml
 //http://www.sir.toscana.it/supports/xml/risks_395/".$today.".xml"
-
+//http://www.wunderground.com/weather/api/
+//https://github.com/alfcrisci/WU_weather_list/blob/master/WU_stations.csv
 ?>
