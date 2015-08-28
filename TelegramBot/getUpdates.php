@@ -16,7 +16,7 @@ For a description of the Bot API, see this page: https://core.telegram.org/bots/
  */
 
 include(dirname(__FILE__).'/../settings.php');
-include(dirname(__FILE__).'/../getdata.php');
+include(dirname(__FILE__).'/../getting.php');
 include("Telegram.php");
 
 date_default_timezone_set('Europe/Rome');
@@ -38,24 +38,24 @@ for ($i = 0; $i < $telegram-> UpdateCount(); $i++) {
 		 $option = array( array("meteo","previsioni", "rischi", "crediti") );
     	// Crea la tastiera
     	$keyb = $telegram->buildKeyBoard($option, $onetime=false);
-    	$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "Benvenuto in emergenzeprato, seleziona la tua opzione per essere aggiornato");
+    	$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "Benvenuto in emergenzeprato, seleziona una opzione per essere aggiornato");
 		$telegram->sendMessage($content);
 		print($today. " new chat started " .$chat_id. "\r\n");
 	}
 	elseif ($text == "/meteo" || $text == "meteo") {
-		$reply = $data->getdata();
+		$reply = "Previsioni Meteo per oggi " .$data->lamma_text("oggi").$data->biometeo_text("oggi");
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
 		print($today. " meteo sent " .$chat_id. "\r\n");
 	}
 	elseif ($text == "/previsioni" || $text == "previsioni") {
-		$reply = $data->getdata_tomorrow();
+		$reply = "Previsioni Meteo per domani " .$data->lamma_text("domani").$data->biometeo_text("domani");
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
 		print($today. " previsioni sent " .$chat_id. "\r\n");
 	}
 	elseif ($text == "/rischi" || $text == "rischi") {
-		$reply = $data->getdata_risk();
+		$reply = "Rischi di oggi:\r\n".$data->risk_text("oggi","B").$data->risk_text("oggi","R1");
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
 		print($today. " rischi sent " .$chat_id. "\r\n");

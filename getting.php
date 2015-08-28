@@ -60,39 +60,39 @@ return $sir_xml;
 //seleziona un dato del biometeo specificando se si tratta di oggi/domani, mattina/pomeriggio/sera e la lingua ita/eng
 public function select_biometeo_data($today, $when, $lang){
 
-if($lang=="ita")
-{
- $xml_file=$this->get_biometeo_ita();
-}
-else
-{
- $xml_file=$this->get_biometeo_eng();
-}
+	if($lang=="ita")
+	{
+	 $xml_file=$this->get_biometeo_ita();
+	}
+	else
+	{
+	 $xml_file=$this->get_biometeo_eng();
+	}
 
-if($today=="oggi")
-{
- if($when="mattina"){
-  $data=$xml_file->localita->AA_des_m_oggi;
- }
- if($when="pomeriggio"){
-  $data=$xml_file->localita->AA_des_p_oggi;
- }
- if($when="sera"){
-  $data=$xml_file->localita->AA_des_s_oggi;
- }
-}
-else{
- if($when="mattina"){
-  $data=$xml_file->localita->AA_des_m_domani;
- }
- if($when="pomeriggio"){
-  $data=$xml_file->localita->AA_des_p_domani;
- }
- if($when="sera"){
-  $data=$xml_file->localita->AA_des_s_domani;
- }
-}
-return $data;
+	if($today=="oggi")
+	{
+	 if($when="mattina"){
+	  $data=$xml_file->localita->AA_des_m_oggi;
+	 }
+	 if($when="pomeriggio"){
+	  $data=$xml_file->localita->AA_des_p_oggi;
+	 }
+	 if($when="sera"){
+	  $data=$xml_file->localita->AA_des_s_oggi;
+	 }
+	}
+	else{
+	 if($when="mattina"){
+	  $data=$xml_file->localita->AA_des_m_domani;
+	 }
+	 if($when="pomeriggio"){
+	  $data=$xml_file->localita->AA_des_p_domani;
+	 }
+	 if($when="sera"){
+	  $data=$xml_file->localita->AA_des_s_domani;
+	 }
+	}
+	return $data;
 
 }
 
@@ -294,15 +294,6 @@ return $lamma_str;
 }
 
 //prepara la stringa per il biometeo di oggi/domani
-public function biometeo_text($today){
-
-	$biometeo_ita_str=biometeo_ita_text("domani");
-	$biometeo_eng_str=biometeo_eng_text("domani");
-	$biometeo = $biometeo_ita_str. " " .$biometeo_eng_str;
-	return $biometeo;
-}
-
-//prepara la stringa per il biometeo di oggi/domani
 public function biometeo_ita_text($today){
 
 	$biometeo_ita_str=("mat " .$this->select_biometeo_data($today,"mattina","ita"). " pom " .$this->select_biometeo_data($today,"pomeriggio","ita"). " sera " .$this->select_biometeo_data($today,"sera","ita"));
@@ -317,6 +308,17 @@ public function biometeo_eng_text($today){
 	$biometeo = $biometeo_eng_str;
 	return $biometeo;
 }
+
+//prepara la stringa per il biometeo di oggi/domani
+public function biometeo_text($today){
+
+	print("biometeotext");
+	$biometeo_ita_str=$this->biometeo_ita_text($today);
+	$biometeo_eng_str=$this->biometeo_eng_text($today);
+	$biometeo = $biometeo_ita_str. "\r\n" .$biometeo_eng_str;
+	return $biometeo;
+}
+
 
 //prepara la stringa dei rischi di oggi/domani in base alla zona B/R
 public function risk_text($today,$zone)
