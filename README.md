@@ -35,11 +35,11 @@ Un esempio di come va strutturata la tabella dei CRON per schedulare i task.
 
 (* * * * * php /home/pi/emergenzeprato/TelegramBot/getUpdates.php)
 
-00  00-16 * * * cd /home/pi/emergenzeprato && php storage.php
+(00  00-16 * * * cd /home/pi/emergenzeprato && php storage.php)
 
-00 09,10 * * * cd /home/pi/emergenzeprato/TwitterBot && php tweet_meteo.php "oggi" 
+(00 09,10 * * * cd /home/pi/emergenzeprato/TwitterBot && php tweet_meteo.php "oggi") 
 
-00 07,12,16,00 * * * cd /home/pi/emergenzeprato/TwitterBot && php tweet_temperature.php 
+(00 07,12,16,00 * * * cd /home/pi/emergenzeprato/TwitterBot && php tweet_temperature.php)
 
 etc...
 
