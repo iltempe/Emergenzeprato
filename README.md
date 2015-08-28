@@ -8,15 +8,13 @@ Alcune fonti sono dati aperti della regione Toscana.
 ---------
 TWITTER
 
-Gli script "parse_and_tweet.php" e "parse_and_tweet_risk.php" vanno eseguiti con la periodicità con cui si vuole tuittare le informazioni, è possibile creare secondo lo stesso approccio tanti script quanti se ne vogliono.
+Gli script per inviare i tweet vanno eseguiti con la periodicità con cui si vuole tuittare le informazioni, è possibile creare secondo lo stesso approccio tanti script quanti se ne vogliono.
 
 Si preleva i dati delle fonti Lamma, Biometeo e CFR Toscana e si tuittano i dati su @emergenzeprato
 
 L'account @emergenzeprato rituitta tutti i tweet con tag ben precisi e le foto Instagram #pratopioggia
 
 Inoltre tutti i tweet taggati con un ht definito e geolocalizzazione vengono mappati su pratosmart.org
-
-(attualmente questa parte del progetto è in fase di refactoring).
 
 ----------
 TELEGRAM
@@ -32,6 +30,21 @@ Per usare Emergenzeprato su Telegram:
 - inviare a emergenzeprato i comandi per ricevere gli aggiornamenti come indicato qui http://pratosmart.teo-soft.com/emergenzeprato-cresce-telegram-per-sapere-il-meteo-a-prato/
 
 --------
+GESTIONE DEI JOB
+Un esempio di come va strutturata la tabella dei CRON per schedulare i task.
+
+#telegram service ogni minuto
+* * * * * php /home/pi/emergenzeprato/TelegramBot/getUpdates.php 
+#aggiornamento dati in locale 
+00  00-16 * * * cd /home/pi/emergenzeprato && php storage.php
+#twitter meteo e biometeo di oggi
+00 09,10 * * * cd /home/pi/emergenzeprato/TwitterBot && php tweet_meteo.php "oggi" 
+#twitter temperature
+00 07,12,16,00 * * * cd /home/pi/emergenzeprato/TwitterBot && php tweet_temperature.php 
+
+etc...
+
+---------
 SOCIAL NETWORK
 
 Se si vuole integrare con regole sui social network può essere usato IFTTT come usato qui
