@@ -31,7 +31,7 @@ Per usare Emergenzeprato su Telegram:
 
 --------
 GESTIONE DEI JOB
-Un esempio di come va strutturata la tabella dei CRON per schedulare i task.
+Un esempio di come va strutturata la tabella dei CRON per schedulare i task. Occorre schedulare i cron sulla base delle esigenze. il file storage.php aggiorna (ogni ora) i dati dai rispettivi siti alla cartella data da cui poi i BOT li prelevano. 
 
 (* * * * * php /home/pi/emergenzeprato/TelegramBot/getUpdates.php)
 
