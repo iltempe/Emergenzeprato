@@ -1,9 +1,12 @@
 Emergenzeprato data manager
 ===========================
 
-Parser fonti per il progetto @emergenzeprato
+Gestore fonti e dati per il progetto @emergenzeprato
 
-Le fonti sono dati aperti della regione Toscana e sono elencate al termine del file.
+Alcune fonti sono dati aperti della regione Toscana.
+
+---------
+TWITTER
 
 Gli script "parse_and_tweet.php" e "parse_and_tweet_risk.php" vanno eseguiti con la periodicità con cui si vuole tuittare le informazioni, è possibile creare secondo lo stesso approccio tanti script quanti se ne vogliono.
 
@@ -11,7 +14,9 @@ Si preleva i dati delle fonti Lamma, Biometeo e CFR Toscana e si tuittano i dati
 
 L'account @emergenzeprato rituitta tutti i tweet con tag ben precisi e le foto Instagram #pratopioggia
 
-Inoltre tutti i tweet taggati #pratopioggia con localizzazione vengono mappati su pratosmart.org
+Inoltre tutti i tweet taggati con un ht definito e geolocalizzazione vengono mappati su pratosmart.org
+
+(attualmente questa parte del progetto è in fase di refactoring).
 
 ----------
 TELEGRAM
