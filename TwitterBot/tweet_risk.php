@@ -11,13 +11,17 @@ include(dirname(__FILE__).'/../getting.php');
 // Include twitteroauth
 require_once('twitteroauth.php');
 
+$logfile=(dirname(__FILE__).'/../log/twitter.log');
+
+
 //esegue la funzione
 $when=$argv[1];
 $data=new getdata();
 tweet_risk($when, $data);
 
-print_r("eseguito tweet_risk");
-
+//log
+$log=$today ";" $xmlFile." eseguito tweet rischi\n";
+file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
 
 
 function tweet_risk($when, $data)

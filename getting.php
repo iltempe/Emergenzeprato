@@ -312,7 +312,6 @@ public function biometeo_eng_text($today){
 //prepara la stringa per il biometeo di oggi/domani
 public function biometeo_text($today){
 
-	print("biometeotext");
 	$biometeo_ita_str=$this->biometeo_ita_text($today);
 	$biometeo_eng_str=$this->biometeo_eng_text($today);
 	$biometeo = $biometeo_ita_str. "\r\n" .$biometeo_eng_str;

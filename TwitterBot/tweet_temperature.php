@@ -9,6 +9,9 @@ include(dirname(__FILE__).'/../getting.php');
 // Include twitteroauth
 require_once('twitteroauth.php');
 
+$logfile=(dirname(__FILE__).'/../log/twitter.log');
+
+
 //esegue la funzione
 $data=new getdata();
 tweet_temperature("prato est", $data);
@@ -21,7 +24,9 @@ tweet_temperature("vaiano schignano", $data);
 sleep(60);
 tweet_temperature("montepiano vernio", $data);
 
-print_r("eseguito tweet_temperatura");
+//log
+$log=$today ";" $xmlFile." eseguito tweet temperature\n";
+file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
 
 
 function tweet_temperature($where, $data)

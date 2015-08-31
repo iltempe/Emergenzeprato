@@ -26,6 +26,8 @@ $bot_id = TELEGRAM_BOT ;
 $telegram = new Telegram($bot_id);
 $data=new getdata();
 
+$logfile=(dirname(__FILE__).'/../log/telegram.log');
+
 // Get all the new updates and set the new correct update_id
 $req = $telegram->getUpdates();
 for ($i = 0; $i < $telegram-> UpdateCount(); $i++) {
@@ -35,43 +37,49 @@ for ($i = 0; $i < $telegram-> UpdateCount(); $i++) {
 	$chat_id = $telegram->ChatID();
 
 	if ($text == "/start") {
-		 $option = array( array("meteo","previsioni", "rischi", "crediti") );
+		 $option = array(["meteo","previsioni"],["rischi", "crediti"]);
     	// Crea la tastiera
     	$keyb = $telegram->buildKeyBoard($option, $onetime=false);
     	$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "Benvenuto in emergenzeprato, seleziona una opzione per essere aggiornato");
 		$telegram->sendMessage($content);
-		print($today. " new chat started " .$chat_id. "\r\n");
+		$log=$today. ";new chat started;" .$chat_id. "\n";
+		file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
+
 	}
 	elseif ($text == "/meteo" || $text == "meteo") {
 		$reply = "Previsioni Meteo per oggi " .$data->lamma_text("oggi").$data->biometeo_text("oggi");
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
-		print($today. " meteo sent " .$chat_id. "\r\n");
-	}
+		$log=$today. ";meteo sent;" .$chat_id. "\n";
+		file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);	
+		}
 	elseif ($text == "/previsioni" || $text == "previsioni") {
 		$reply = "Previsioni Meteo per domani " .$data->lamma_text("domani").$data->biometeo_text("domani");
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
-		print($today. " previsioni sent " .$chat_id. "\r\n");
+		$log=$today. ";previsioni sent;" .$chat_id. "\n";
+		file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
 	}
 	elseif ($text == "/rischi" || $text == "rischi") {
 		$reply = "Rischi di oggi:\r\n".$data->risk_text("oggi","B").$data->risk_text("oggi","R1");
 		$content = array('chat_id' => $chat_id, 'text' => $reply);
 		$telegram->sendMessage($content);
-		print($today. " rischi sent " .$chat_id. "\r\n");
+		$log=$today. ";rischi sent;" .$chat_id. "\n";
+		file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
 	}
 	elseif ($text == "/crediti" || $text == "crediti") {
 	 $reply = "Applicazione sviluppata da Matteo Tempestini, dettagli e fonti dei dati presenti su : http://pratosmart.teo-soft.com/emergenzeprato/";
      $content = array('chat_id' => $chat_id, 'text' => $reply);
      $telegram->sendMessage($content);
-     print($today. " crediti sent " .$chat_id. "\r\n");		
+	 $log=$today. ";crediti sent;" .$chat_id. "\n";
+	 file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);	
 	}
 	else{
 	 $reply = "Hai selezionato un comando non previsto. Per informazioni visita : http://pratosmart.teo-soft.com/emergenzeprato/";
      $content = array('chat_id' => $chat_id, 'text' => $reply);
      $telegram->sendMessage($content);
-     print($today. " wrong command sent " .$chat_id. "\r\n");	
-	}
+	 $log=$today. ";wrong command sent;" .$chat_id. "\n";
+	 file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);	}
 }
 
 ?>

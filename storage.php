@@ -26,19 +26,24 @@ store($meteo_file, "data/meteo.xml");
 unlink ("data/risk.xml");
 store($risk_file, "data/risk.xml");
 
+$logfile=(dirname(__FILE__).'/../log/storedata.log');
+
+
 function store($xmlFile,$dest)
 {
 	if(!simplexml_load_file($xmlFile)) 
 	{
 		print($xmlFile. " non correttamente scaricato\r\n");
+		$log=$today ";" $xmlFile." non correttamente scaricato\n";
+		file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
 	
 	}
 	else
 	{
 		$s = simplexml_load_file($xmlFile);
 		$s->saveXML($dest);
-		print($xmlFile. " salvato\r\n");
-
+		$log=$today ";" $xmlFile." salvato\n";
+		file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
 	}
 }
 ?>

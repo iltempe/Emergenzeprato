@@ -12,14 +12,18 @@ include(dirname(__FILE__).'/../getting.php');
 // Include twitteroauth
 require_once('twitteroauth.php');
 
+$logfile=(dirname(__FILE__).'/../log/twitter.log');
+
+
 //esegue la funzione
 $when=$argv[1];
 $data=new getdata();
 tweet_meteo($when, $data);
 
-print_r("eseguito tweet_meteo");
-
-
+//log
+$log=$today ";" $xmlFile." eseguito tweet meteo\n";
+file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
+		
 
 
 //prepara i tweet e li invia a distanza di 35 secondi circa
