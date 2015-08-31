@@ -1,7 +1,8 @@
 <?php
 /**
  * Telegram Bot Class.
- * @author Gabriele Grillo <gabry.grillo@alice.it>
+ * based on first version by @author Gabriele Grillo <gabry.grillo@alice.it>
+ * 
  */
 
 include(dirname(__FILE__).'/../settings.php');
@@ -21,6 +22,12 @@ class Telegram {
 		$this->sendAPIRequest($url, $content);
 
 	}
+
+	public function sendLocation(array $content) {
+		$url = 'https://api.telegram.org/bot' . $this->bot_id . '/sendLocation';
+		$this->sendAPIRequest($url, $content);
+	}
+	
 	public function getData() {
 		if ( empty($this->data)) {
 			$rawData = file_get_contents("php://input");
