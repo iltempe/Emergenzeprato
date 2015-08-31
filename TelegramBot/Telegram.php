@@ -28,6 +28,11 @@ class Telegram {
 		$this->sendAPIRequest($url, $content);
 	}
 	
+	public function sendPhoto(array $content) {
+		$url = 'https://api.telegram.org/bot' . $this->bot_id . '/sendPhoto';
+		$this->sendAPIRequest($url, $content);
+	}
+	
 	public function getData() {
 		if ( empty($this->data)) {
 			$rawData = file_get_contents("php://input");
