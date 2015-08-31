@@ -26,7 +26,7 @@ store($meteo_file, "data/meteo.xml");
 unlink ("data/risk.xml");
 store($risk_file, "data/risk.xml");
 
-$logfile=(dirname(__FILE__).'/../log/storedata.log');
+$logfile=(dirname(__FILE__).'/../logs/storedata.log');
 
 
 function store($xmlFile,$dest)

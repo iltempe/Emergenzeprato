@@ -19,6 +19,12 @@ include(dirname(__FILE__).'/../settings.php');
 include(dirname(__FILE__).'/../getting.php');
 include("Telegram.php");
 
+//per gestione segnalazione
+include(dirname(__FILE__).'/GeoJSON/vendor/autoload.php');
+use GeoJSON\FeatureCollection;
+use GeoJSON\Feature;
+use GeoJSON\Point;
+use GeoJSON\MultiPoint;
 
 
 date_default_timezone_set('Europe/Rome');
@@ -28,10 +34,11 @@ $bot_id = TELEGRAM_BOT ;
 $telegram = new Telegram($bot_id);
 $data=new getdata();
 
-$logfile=(dirname(__FILE__).'/../logs/telegram.log');
+$logfile=(dirname(__FILE__).'/../log/telegram.log');
 
 // Get all the new updates and set the new correct update_id
 $req = $telegram->getUpdates();
+print_r($req[1]);
 for ($i = 0; $i < $telegram-> UpdateCount(); $i++) {
 	// You NEED to call serveUpdate before accessing the values of message in Telegram Class
 	$telegram->serveUpdate($i);
@@ -76,21 +83,7 @@ for ($i = 0; $i < $telegram-> UpdateCount(); $i++) {
 	 $log=$today. ";crediti sent;" .$chat_id. "\n";
 	 file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);	
 	}
-	elseif ($text == "/temperatura" || $text == "temperatura") {
-	 $reply = "Temperatura misurata in zona Prato Est : " .$data->get_temperature("prato est");
-     $content = array('chat_id' => $chat_id, 'text' => $reply);
-     $telegram->sendMessage($content);
-	 $log=$today. ";temperatura sent;" .$chat_id. "\n";
-	 file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);	
-	}
 	 
-	else{
-	 $reply = "Hai selezionato un comando non previsto. Per informazioni visita : http://pratosmart.teo-soft.com/emergenzeprato/";
-     $content = array('chat_id' => $chat_id, 'text' => $reply);
-     $telegram->sendMessage($content);
-	 $log=$today. ";wrong command sent;" .$chat_id. "\n";
-	 file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);	
-	 }
 }
 
 

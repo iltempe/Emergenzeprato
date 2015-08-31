@@ -11,7 +11,7 @@ include(dirname(__FILE__).'/../getting.php');
 // Include twitteroauth
 require_once('twitteroauth.php');
 
-$logfile=(dirname(__FILE__).'/../log/twitter.log');
+$logfile=(dirname(__FILE__).'/../logs/twitter.log');
 
 
 //esegue la funzione
