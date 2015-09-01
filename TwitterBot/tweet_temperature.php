@@ -25,7 +25,7 @@ sleep(60);
 tweet_temperature("montepiano vernio", $data);
 
 //log
-$log=$today ";" $xmlFile." eseguito tweet temperature\n";
+$log=$today. ";" .$xmlFile." eseguito tweet temperature\n";
 file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
 
 

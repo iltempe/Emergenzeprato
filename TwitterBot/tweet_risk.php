@@ -20,7 +20,7 @@ $data=new getdata();
 tweet_risk($when, $data);
 
 //log
-$log=$today ";" $xmlFile." eseguito tweet rischi\n";
+$log=$today. ";" .$xmlFile." eseguito tweet rischi\n";
 file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
 
 
