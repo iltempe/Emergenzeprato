@@ -12,7 +12,10 @@ include(dirname(__FILE__).'/../getting.php');
 require_once('twitteroauth.php');
 
 $logfile=(dirname(__FILE__).'/../logs/twitter.log');
+$xmlFile=(dirname(__FILE__).'/../data/risk.xml');
 
+date_default_timezone_set('Europe/Rome');
+$today = date("Y-m-d H:i:s");
 
 //esegue la funzione
 $when=$argv[1];
