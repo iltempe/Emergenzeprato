@@ -19,11 +19,13 @@ Inoltre tutti i tweet taggati con un ht definito e geolocalizzazione vengono map
 ----------
 TELEGRAM
 
-Aggiunto anche Telegram bot (sviluppato a partire da https://github.com/Eleirbag89/TelegramBotPHP). 
+Aggiunto anche Telegram bot (sviluppato da https://github.com/Eleirbag89/TelegramBotPHP). 
 - Creare un bot su Telegram 
 - definire i comandi da inviare e gestire con getUpdates.php
 - definire come prelevare i dati con getdata.php
 - Creare un Cron Job per eseguire getUpadates.php ad intervalli di tempo regolari (per emergenzeprato è eseguito ogni minuto).
+
+Nel caso si voglia gestire emergenzepratbot con un webhook su un server allora utilizzare update.php
 
 Per usare Emergenzeprato su Telegram:
 - aggiungere  @emergenzeprato_bot su Telegram
