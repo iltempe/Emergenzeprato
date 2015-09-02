@@ -7,11 +7,18 @@
  */
 
 include('settings.php');
+include('getting.php');
 include("Telegram.php");
  
+$logfile=(dirname(__FILE__).'/./telegram.log');
+
+date_default_timezone_set('Europe/Rome');
+$today = date("Y-m-d H:i:s");
+
 // Set the bot TOKEN in setting.php
 $bot_id = TELEGRAM_BOT;
 // Instances the class
+$data=new getdata();
 $telegram = new Telegram($bot_id);
 
 /* If you need to manually take some parameters
@@ -21,8 +28,12 @@ $telegram = new Telegram($bot_id);
 */
 
 // Take text and chat_id from the message
-$text = $telegram->Text();
-$chat_id = $telegram->ChatID();
+//$text = $telegram->Text();
+//$chat_id = $telegram->ChatID();
+
+$result = $telegram->getData();
+$text = $result["message"] ["text"];
+$chat_id = $result["message"] ["chat"]["id"];
 
 if ($text == "/start") {
     	create_keyboard($telegram,$chat_id);
@@ -122,7 +133,7 @@ if ($text == "/start") {
 		 $log=$today. ";wrong command sent;" .$chat_id. "\n";
 		 file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);	
 	 }
-}
+
 
 // Crea la tastiera
 function create_keyboard($telegram, $chat_id)
