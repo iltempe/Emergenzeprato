@@ -131,7 +131,7 @@ for ($i = 0; $i < $telegram-> UpdateCount(); $i++) {
 	}
 	//comando errato
 	else{
-		 $reply = "Hai selezionato un comando non previsto. Per informazioni visita : http://pratosmart.teo-soft.com/emergenzeprato/";
+		 $reply = "Hai selezionato un comando errato. Per informazioni visita : http://pratosmart.teo-soft.com/emergenzeprato/";
 		 $content = array('chat_id' => $chat_id, 'text' => $reply);
 		 $telegram->sendMessage($content);
 		 $log=$today. ";wrong command sent;" .$chat_id. "\n";
