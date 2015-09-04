@@ -19,8 +19,10 @@ date_default_timezone_set('Europe/Rome');
 $today = date("Y-m-d H:i:s");
 
 //esegue la funzione
-$when=$argv[1];
+	$when=$argv[1];
+
 $data=new getdata();
+
 tweet_meteo($when, $data);
 
 //log
@@ -30,7 +32,7 @@ file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
 
 
 //prepara i tweet e li invia a distanza di 35 secondi circa
-function tweet_meteo($when, $data)
+function tweet_meteo($when="oggi", $data)
 {
 	// Set keys
 	$consumerKey = CONSUMER_KEY;

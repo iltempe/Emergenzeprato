@@ -6,6 +6,8 @@
 date_default_timezone_set('UTC');
 $today = date("Ymd");   
 
+$logfile=(dirname(__FILE__).'/logs/storedata.log');
+
 //si aggiorna verso le 10.00 del mattino
 $biometeo_ITA_file = "http://data.biometeo.it/PRATO/PRATO_ITA.xml";
 $biometeo_ENG_file = "http://data.biometeo.it/PRATO/PRATO_ENG.xml";
@@ -18,23 +20,23 @@ $risk_file = "http://www.sir.toscana.it/supports/xml/risks_395/".$today.".xml";
 
 
 
-store($biometeo_ITA_file, "data/biometeo_ITA.xml");
-store($biometeo_ENG_file, "data/biometeo_ENG.xml");
+store($biometeo_ITA_file, "data/biometeo_ITA.xml",$logfile);
+store($biometeo_ENG_file, "data/biometeo_ENG.xml",$logfile);
 store($meteo_file, "data/meteo.xml");
 
 //cancello il file in locale in quanto cambia il nome da un giorno all'altro ed esiste un momento del giorno in cui non esiste il file (la mattina)
 unlink ("data/risk.xml");
-store($risk_file, "data/risk.xml");
-
-$logfile=(dirname(__FILE__).'/../logs/storedata.log');
+store($risk_file, "data/risk.xml",$logfile);
 
 
-function store($xmlFile,$dest)
+
+function store($xmlFile,$dest,$logfile)
 {
+	$today = date("Y-m-d H:i:s"); 
 	if(!simplexml_load_file($xmlFile)) 
 	{
 		print($xmlFile. " non correttamente scaricato\r\n");
-		$log=$today ";" $xmlFile." non correttamente scaricato\n";
+		$log=$today. ";" .$xmlFile." non correttamente scaricato\n";
 		file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
 	
 	}
@@ -42,7 +44,7 @@ function store($xmlFile,$dest)
 	{
 		$s = simplexml_load_file($xmlFile);
 		$s->saveXML($dest);
-		$log=$today ";" $xmlFile." salvato\n";
+		$log=$today. ";" .$xmlFile." salvato\n";
 		file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
 	}
 }
