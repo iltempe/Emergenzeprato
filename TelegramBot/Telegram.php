@@ -5,17 +5,23 @@
  * 
  */
 
-include(dirname(__FILE__).'/../settings.php');
+include('settings.php');
 
 
 class Telegram {
 	private $bot_id = TELEGRAM_BOT;
 	private $data = array();
 	private $updates = array();
+	public $inited = false;
 	
  public function __construct($bot_id) {
         $this->bot_id = $bot_id;
         $this->data = $this->getData();
+    }
+    public function init() {
+    	if ($this->inited) {
+      	return true;
+    	}
     }
     public function getMe() {
         return $this->endpoint("getMe", array(), false);
@@ -55,9 +61,15 @@ class Telegram {
         return $this->endpoint("sendChatAction", $content);
     }
     public function setWebhook($url) {
+
         $content = array('url' => $url);
         return $this->endpoint("setWebhook", $content);
     }
+	public function removeWebhook() {
+    	//$this->init();
+    	$content = array('url' => '');
+    	return $this->endpoint('setWebhook', $content);
+  	}
     public function getData() {
         if (empty($this->data)) {
             $rawData = file_get_contents("php://input");

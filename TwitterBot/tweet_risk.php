@@ -69,6 +69,22 @@ function tweet_risk($when, $data)
 	// Create object
 	$tweet = new TwitterOAuth($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);
 
+	//just for debug
+	print_r($sir_str_1_1. "\n");
+	print_r($sir_str_2_1. "\n");
+	print_r($sir_str_3_1. "\n");
+	print_r($sir_str_4_1. "\n");
+	print_r($sir_str_5_1. "\n");
+	print_r($sir_str_6_1. "\n");
+	print_r($sir_str_7_1. "\n");
+	print_r($sir_str_1_2. "\n");
+	print_r($sir_str_2_2. "\n");
+	print_r($sir_str_3_2. "\n");
+	print_r($sir_str_4_2. "\n");
+	print_r($sir_str_5_2. "\n");
+	print_r($sir_str_6_2. "\n");
+	print_r($sir_str_7_2. "\n");
+	
 	if($data->select_risk_data($when, "B","idrogeologico") != "nessuno" && $data->select_risk_data($when, "B","idrogeologico") != "")
 	{
 		// Set status message

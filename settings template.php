@@ -3,6 +3,9 @@
 
 //Telegram
 define('TELEGRAM_BOT','');
+define('BOT_WEBHOOK', 'https://.....php');
+
+
 
 //Twitter
 define('CONSUMER_KEY','');
