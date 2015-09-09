@@ -73,22 +73,22 @@
 
 <p>L'account @emergenzeprato rituitta tutti i tweet con tag ben precisi e le foto Instagram #pratopioggia</p>
 
-<p>Inoltre tutti i tweet taggati con un ht definito e geolocalizzazione vengono mappati su pratosmart.org</p>
+<p>Inoltre tutti i tweet taggati con un ht definito e geolocalizzazione possono essere mappati</p>
 
 <hr>
 
 <p>TELEGRAM</p>
 
-<p>Aggiunto anche Telegram bot (sviluppato da <a href="https://github.com/Eleirbag89/TelegramBotPHP">https://github.com/Eleirbag89/TelegramBotPHP</a>). </p>
+<p>Aggiunto Telegram bot (sviluppato da <a href="https://github.com/Eleirbag89/TelegramBotPHP">https://github.com/Eleirbag89/TelegramBotPHP</a>). </p>
 
 <ul>
 <li>Creare un bot su Telegram </li>
-<li>definire i comandi da inviare e gestire con getUpdates.php</li>
-<li>definire come prelevare i dati con getdata.php</li>
-<li>Creare un Cron Job per eseguire getUpadates.php ad intervalli di tempo regolari (per emergenzeprato è eseguito ogni minuto).</li>
+<li>definire i comandi da inviare. Decidere se gestire in modalità getUpdates.php o con webhook.</li>
+<li>Schedulare ad intervalli di tempo regolare il prelievo dati con storage.php</li>
+<li>Definire come prelevare/parsare i dati con getting.php</li>
+<li>Eseguire getUpadates.php ad intervalli di tempo regolari per gestione manuale del servizio</li>
 </ul>
-
-<p>Nel caso si voglia gestire emergenzepratbot con un webhook su un server allora utilizzare update.php</p>
+<p>Nel caso si voglia gestire emergenzepratbot con un webhook (default) su un server allora utilizzare start.php su server HTTPS. La funzionalità webhook può essere settata o rimossa con lo script start.php da riga di comando ed opportuni parametro</p>
 
 <p>Per usare Emergenzeprato su Telegram:</p>
 
