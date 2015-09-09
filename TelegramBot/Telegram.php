@@ -5,7 +5,7 @@
  * 
  */
 
-include('settings.php');
+include('settings_t.php');
 
 
 class Telegram {

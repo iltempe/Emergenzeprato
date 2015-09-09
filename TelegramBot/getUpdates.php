@@ -15,7 +15,7 @@ Use this token to access the HTTP API:
 For a description of the Bot API, see this page: https://core.telegram.org/bots/api
  */
 
-include('settings.php');
+include('settings_t.php');
 include("emergenzeprato.php");
 
 //aggiorna con getUpdates

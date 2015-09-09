@@ -6,7 +6,7 @@
 
  */
 
-include('settings.php');
+include('settings_t.php');
 include('getting.php');
 include("Telegram.php");
 
@@ -106,6 +106,12 @@ class emergenzeprato{
 				 $log=$today. ";temperatura Montepiano/Vernio sent;" .$chat_id. "\n";
 
 			}
+			elseif ($text=="Dati Stazioni" || $text =="/dati-stazioni")
+			{
+				//invio immagini stazioni meteo	
+			
+			} 
+			
 			//comando errato
 			else{
 				 $reply = "Hai selezionato un comando non previsto. Per informazioni visita : http://pratosmart.teo-soft.com/emergenzeprato/";
