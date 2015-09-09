@@ -403,6 +403,13 @@ public function get_temperature($where)
  return $temp_c;
 
 }  
+
+//definisci il path dell'immagine
+public function get_image_path($image)
+{
+	return "data/". $image. ".jpg";		
+}
+
 }      
 //Fonti
 //http://www.lamma.rete.toscana.it/…/comuni_web/dati/prato.xml

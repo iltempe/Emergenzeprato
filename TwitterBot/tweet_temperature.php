@@ -3,7 +3,7 @@
 //tweeter per temperature @pratopioggia
 //by MT
 
-include(dirname(__FILE__).'/../settings.php');
+include('settings.php');
 include(dirname(__FILE__).'/../getting.php');
 
 // Include twitteroauth
@@ -16,17 +16,17 @@ $today = date("Y-m-d H:i:s");
 //esegue la funzione
 $data=new getdata();
 tweet_temperature("prato est", $data);
-sleep(60);
+sleep(TWEET_PAUSE);
 tweet_temperature("carmignano", $data);
-sleep(60);
+sleep(TWEET_PAUSE);
 tweet_temperature("vaiano sofignano", $data);
-sleep(60);
+sleep(TWEET_PAUSE);
 tweet_temperature("vaiano schignano", $data);
-sleep(60);
+sleep(TWEET_PAUSE);
 tweet_temperature("montepiano vernio", $data);
 
 //log
-$log=$today. ";" .$xmlFile." eseguito tweet temperature\n";
+$log=$today. ";eseguito tweet temperature\n";
 file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
 
 

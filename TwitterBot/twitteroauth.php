@@ -1,241 +1,454 @@
 <?php
-
-/*
- * Abraham Williams (abraham@abrah.am) http://abrah.am
+/**
+ * The most popular PHP library for use with the Twitter OAuth REST API.
  *
- * The first PHP Library to support OAuth for Twitter's REST API.
+ * @license MIT
  */
 
-/* Load OAuth lib. You can find it at http://oauth.net */
-require_once('OAuth.php');
+include 'Config.php';
+include 'Response.php';
+include 'HmacSha1.php';
+include 'Consumer.php';
+include 'Token.php';
+include 'Request.php';
+include 'TwitterOAuthException.php';
+include 'JsonDecoder.php';
 
 /**
- * Twitter OAuth class
+ * TwitterOAuth class for interacting with the Twitter API.
+ *
+ * @author Abraham Williams <abraham@abrah.am>
  */
-class TwitterOAuth {
-  /* Contains the last HTTP status code returned. */
-  public $http_code;
-  /* Contains the last API call. */
-  public $url;
-  /* Set up the API root URL. */
-  public $host = "https://api.twitter.com/1.1/";
-  /* Set timeout default. */
-  public $timeout = 30;
-  /* Set connect timeout. */
-  public $connecttimeout = 30; 
-  /* Verify SSL Cert. */
-  public $ssl_verifypeer = TRUE;
-  /* Respons format. */
-  public $format = 'json';
-  /* Decode returned json data. */
-  public $decode_json = TRUE;
-  /* Contains the last HTTP headers returned. */
-  public $http_info;
-  /* Set the useragnet. */
-  public $useragent = 'TwitterOAuth v0.2.0-beta2';
-  /* Immediately retry the API call if the response was not successful. */
-  //public $retry = TRUE;
+class TwitterOAuth extends Config
+{
+    const API_VERSION = '1.1';
+    const API_HOST = 'https://api.twitter.com';
+    const UPLOAD_HOST = 'https://upload.twitter.com';
+    const UPLOAD_CHUNK = 40960; // 1024 * 40
 
+    /** @var Response details about the result of the last request */
+    private $response;
+    /** @var string|null Application bearer token */
+    private $bearer;
+    /** @var Consumer Twitter application details */
+    private $consumer;
+    /** @var Token|null User access token details */
+    private $token;
+    /** @var HmacSha1 OAuth 1 signature type used by Twitter */
+    private $signatureMethod;
 
-
-
-  /**
-   * Set API URLS
-   */
-  function accessTokenURL()  { return 'https://api.twitter.com/oauth/access_token'; }
-  function authenticateURL() { return 'https://api.twitter.com/oauth/authenticate'; }
-  function authorizeURL()    { return 'https://api.twitter.com/oauth/authorize'; }
-  function requestTokenURL() { return 'https://api.twitter.com/oauth/request_token'; }
-
-  /**
-   * Debug helpers
-   */
-  function lastStatusCode() { return $this->http_status; }
-  function lastAPICall() { return $this->last_api_call; }
-
-  /**
-   * construct TwitterOAuth object
-   */
-  function __construct($consumer_key, $consumer_secret, $oauth_token = NULL, $oauth_token_secret = NULL) {
-    $this->sha1_method = new OAuthSignatureMethod_HMAC_SHA1();
-    $this->consumer = new OAuthConsumer($consumer_key, $consumer_secret);
-    if (!empty($oauth_token) && !empty($oauth_token_secret)) {
-      $this->token = new OAuthConsumer($oauth_token, $oauth_token_secret);
-    } else {
-      $this->token = NULL;
-    }
-  }
-
-
-  /**
-   * Get a request_token from Twitter
-   *
-   * @returns a key/value array containing oauth_token and oauth_token_secret
-   */
-  function getRequestToken($oauth_callback) {
-    $parameters = array();
-    $parameters['oauth_callback'] = $oauth_callback; 
-    $request = $this->oAuthRequest($this->requestTokenURL(), 'GET', $parameters);
-    $token = OAuthUtil::parse_parameters($request);
-    $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
-    return $token;
-  }
-
-  /**
-   * Get the authorize URL
-   *
-   * @returns a string
-   */
-  function getAuthorizeURL($token, $sign_in_with_twitter = TRUE) {
-    if (is_array($token)) {
-      $token = $token['oauth_token'];
-    }
-    if (empty($sign_in_with_twitter)) {
-      return $this->authorizeURL() . "?oauth_token={$token}";
-    } else {
-       return $this->authenticateURL() . "?oauth_token={$token}";
-    }
-  }
-
-  /**
-   * Exchange request token and secret for an access token and
-   * secret, to sign API calls.
-   *
-   * @returns array("oauth_token" => "the-access-token",
-   *                "oauth_token_secret" => "the-access-secret",
-   *                "user_id" => "9436992",
-   *                "screen_name" => "abraham")
-   */
-  function getAccessToken($oauth_verifier) {
-    $parameters = array();
-    $parameters['oauth_verifier'] = $oauth_verifier;
-    $request = $this->oAuthRequest($this->accessTokenURL(), 'GET', $parameters);
-    $token = OAuthUtil::parse_parameters($request);
-    $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
-    return $token;
-  }
-
-  /**
-   * One time exchange of username and password for access token and secret.
-   *
-   * @returns array("oauth_token" => "the-access-token",
-   *                "oauth_token_secret" => "the-access-secret",
-   *                "user_id" => "9436992",
-   *                "screen_name" => "abraham",
-   *                "x_auth_expires" => "0")
-   */  
-  function getXAuthToken($username, $password) {
-    $parameters = array();
-    $parameters['x_auth_username'] = $username;
-    $parameters['x_auth_password'] = $password;
-    $parameters['x_auth_mode'] = 'client_auth';
-    $request = $this->oAuthRequest($this->accessTokenURL(), 'POST', $parameters);
-    $token = OAuthUtil::parse_parameters($request);
-    $this->token = new OAuthConsumer($token['oauth_token'], $token['oauth_token_secret']);
-    return $token;
-  }
-
-  /**
-   * GET wrapper for oAuthRequest.
-   */
-  function get($url, $parameters = array()) {
-    $response = $this->oAuthRequest($url, 'GET', $parameters);
-    if ($this->format === 'json' && $this->decode_json) {
-      return json_decode($response);
-    }
-    return $response;
-  }
-  
-  /**
-   * POST wrapper for oAuthRequest.
-   */
-  function post($url, $parameters = array()) {
-    $response = $this->oAuthRequest($url, 'POST', $parameters);
-    if ($this->format === 'json' && $this->decode_json) {
-      return json_decode($response);
-    }
-    return $response;
-  }
-
-  /**
-   * DELETE wrapper for oAuthReqeust.
-   */
-  function delete($url, $parameters = array()) {
-    $response = $this->oAuthRequest($url, 'DELETE', $parameters);
-    if ($this->format === 'json' && $this->decode_json) {
-      return json_decode($response);
-    }
-    return $response;
-  }
-
-  /**
-   * Format and sign an OAuth / API request
-   */
-  function oAuthRequest($url, $method, $parameters) {
-    if (strrpos($url, 'https://') !== 0 && strrpos($url, 'http://') !== 0) {
-      $url = "{$this->host}{$url}.{$this->format}";
-    }
-    $request = OAuthRequest::from_consumer_and_token($this->consumer, $this->token, $method, $url, $parameters);
-    $request->sign_request($this->sha1_method, $this->consumer, $this->token);
-    switch ($method) {
-    case 'GET':
-      return $this->http($request->to_url(), 'GET');
-    default:
-      return $this->http($request->get_normalized_http_url(), $method, $request->to_postdata());
-    }
-  }
-
-  /**
-   * Make an HTTP request
-   *
-   * @return API results
-   */
-  function http($url, $method, $postfields = NULL) {
-    $this->http_info = array();
-    $ci = curl_init();
-    /* Curl settings */
-    curl_setopt($ci, CURLOPT_USERAGENT, $this->useragent);
-    curl_setopt($ci, CURLOPT_CONNECTTIMEOUT, $this->connecttimeout);
-    curl_setopt($ci, CURLOPT_TIMEOUT, $this->timeout);
-    curl_setopt($ci, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ci, CURLOPT_HTTPHEADER, array('Expect:'));
-    curl_setopt($ci, CURLOPT_SSL_VERIFYPEER, $this->ssl_verifypeer);
-    curl_setopt($ci, CURLOPT_HEADERFUNCTION, array($this, 'getHeader'));
-    curl_setopt($ci, CURLOPT_HEADER, FALSE);
-
-    switch ($method) {
-      case 'POST':
-        curl_setopt($ci, CURLOPT_POST, TRUE);
-        if (!empty($postfields)) {
-          curl_setopt($ci, CURLOPT_POSTFIELDS, $postfields);
+    /**
+     * Constructor
+     *
+     * @param string      $consumerKey      The Application Consumer Key
+     * @param string      $consumerSecret   The Application Consumer Secret
+     * @param string|null $oauthToken       The Client Token (optional)
+     * @param string|null $oauthTokenSecret The Client Token Secret (optional)
+     */
+    public function __construct($consumerKey, $consumerSecret, $oauthToken = null, $oauthTokenSecret = null)
+    {
+        $this->resetLastResponse();
+        $this->signatureMethod = new HmacSha1();
+        $this->consumer = new Consumer($consumerKey, $consumerSecret);
+        if (!empty($oauthToken) && !empty($oauthTokenSecret)) {
+            $this->token = new Token($oauthToken, $oauthTokenSecret);
         }
-        break;
-      case 'DELETE':
-        curl_setopt($ci, CURLOPT_CUSTOMREQUEST, 'DELETE');
-        if (!empty($postfields)) {
-          $url = "{$url}?{$postfields}";
+        if (empty($oauthToken) && !empty($oauthTokenSecret)) {
+            $this->bearer = $oauthTokenSecret;
         }
     }
 
-    curl_setopt($ci, CURLOPT_URL, $url);
-    $response = curl_exec($ci);
-    $this->http_code = curl_getinfo($ci, CURLINFO_HTTP_CODE);
-    $this->http_info = array_merge($this->http_info, curl_getinfo($ci));
-    $this->url = $url;
-    curl_close ($ci);
-    return $response;
-  }
-
-  /**
-   * Get the header info to store.
-   */
-  function getHeader($ch, $header) {
-    $i = strpos($header, ':');
-    if (!empty($i)) {
-      $key = str_replace('-', '_', strtolower(substr($header, 0, $i)));
-      $value = trim(substr($header, $i + 2));
-      $this->http_header[$key] = $value;
+    /**
+     * @param string $oauthToken
+     * @param string $oauthTokenSecret
+     */
+    public function setOauthToken($oauthToken, $oauthTokenSecret)
+    {
+        $this->token = new Token($oauthToken, $oauthTokenSecret);
     }
-    return strlen($header);
-  }
+
+    /**
+     * @return string|null
+     */
+    public function getLastApiPath()
+    {
+        return $this->response->getApiPath();
+    }
+
+    /**
+     * @return int
+     */
+    public function getLastHttpCode()
+    {
+        return $this->response->getHttpCode();
+    }
+
+    /**
+     * @return array
+     */
+    public function getLastXHeaders()
+    {
+        return $this->response->getXHeaders();
+    }
+
+    /**
+     * @return array|object|null
+     */
+    public function getLastBody()
+    {
+        return $this->response->getBody();
+    }
+
+    /**
+     * Resets the last response cache.
+     */
+    public function resetLastResponse()
+    {
+        $this->response = new Response();
+    }
+
+    /**
+     * Make URLs for user browser navigation.
+     *
+     * @param string $path
+     * @param array  $parameters
+     *
+     * @return string
+     */
+    public function url($path, array $parameters)
+    {
+        $this->resetLastResponse();
+        $this->response->setApiPath($path);
+        $query = http_build_query($parameters);
+        return sprintf('%s/%s?%s', self::API_HOST, $path, $query);
+    }
+
+    /**
+     * Make /oauth/* requests to the API.
+     *
+     * @param string $path
+     * @param array  $parameters
+     *
+     * @return array
+     * @throws TwitterOAuthException
+     */
+    public function oauth($path, array $parameters = [])
+    {
+        $response = [];
+        $this->resetLastResponse();
+        $this->response->setApiPath($path);
+        $url = sprintf('%s/%s', self::API_HOST, $path);
+        $result = $this->oAuthRequest($url, 'POST', $parameters);
+
+        if ($this->getLastHttpCode() != 200) {
+            throw new TwitterOAuthException($result);
+        }
+
+        parse_str($result, $response);
+        $this->response->setBody($response);
+
+        return $response;
+    }
+
+    /**
+     * Make /oauth2/* requests to the API.
+     *
+     * @param string $path
+     * @param array  $parameters
+     *
+     * @return array|object
+     */
+    public function oauth2($path, array $parameters = [])
+    {
+        $method = 'POST';
+        $this->resetLastResponse();
+        $this->response->setApiPath($path);
+        $url = sprintf('%s/%s', self::API_HOST, $path);
+        $request = Request::fromConsumerAndToken($this->consumer, $this->token, $method, $url, $parameters);
+        $authorization = 'Authorization: Basic ' . $this->encodeAppAuthorization($this->consumer);
+        $result = $this->request($request->getNormalizedHttpUrl(), $method, $authorization, $parameters);
+        $response = JsonDecoder::decode($result, $this->decodeJsonAsArray);
+        $this->response->setBody($response);
+        return $response;
+    }
+
+    /**
+     * Make GET requests to the API.
+     *
+     * @param string $path
+     * @param array  $parameters
+     *
+     * @return array|object
+     */
+    public function get($path, array $parameters = [])
+    {
+        return $this->http('GET', self::API_HOST, $path, $parameters);
+    }
+
+    /**
+     * Make POST requests to the API.
+     *
+     * @param string $path
+     * @param array  $parameters
+     *
+     * @return array|object
+     */
+    public function post($path, array $parameters = [])
+    {
+        return $this->http('POST', self::API_HOST, $path, $parameters);
+    }
+
+    /**
+     * Make DELETE requests to the API.
+     *
+     * @param string $path
+     * @param array  $parameters
+     *
+     * @return array|object
+     */
+    public function delete($path, array $parameters = [])
+    {
+        return $this->http('DELETE', self::API_HOST, $path, $parameters);
+    }
+
+    /**
+     * Make PUT requests to the API.
+     *
+     * @param string $path
+     * @param array  $parameters
+     *
+     * @return array|object
+     */
+    public function put($path, array $parameters = [])
+    {
+        return $this->http('PUT', self::API_HOST, $path, $parameters);
+    }
+
+    /**
+     * Upload media to upload.twitter.com.
+     *
+     * @param string $path
+     * @param array  $parameters
+     * @param boolean  $chunked
+     *
+     * @return array|object
+     */
+    public function upload($path, array $parameters = [], $chunked = false)
+    {
+        if ($chunked) {
+            return $this->uploadMediaChunked($path, $parameters);
+        } else {
+            return $this->uploadMediaNotChunked($path, $parameters);
+        }
+    }
+
+    /**
+     * Private method to upload media (not chunked) to upload.twitter.com.
+     *
+     * @param string $path
+     * @param array  $parameters
+     *
+     * @return array|object
+     */
+    private function uploadMediaNotChunked($path, $parameters)
+    {
+        $file = file_get_contents($parameters['media']);
+        $base = base64_encode($file);
+        $parameters['media'] = $base;
+        return $this->http('POST', self::UPLOAD_HOST, $path, $parameters);
+    }
+
+    /**
+     * Private method to upload media (chunked) to upload.twitter.com.
+     *
+     * @param string $path
+     * @param array  $parameters
+     *
+     * @return array|object
+     */
+    private function uploadMediaChunked($path, $parameters)
+    {
+        // Init
+        $init = $this->http('POST', self::UPLOAD_HOST, $path, [
+            'command' => 'INIT',
+            'media_type' => $parameters['media_type'],
+            'total_bytes' => filesize($parameters['media'])
+        ]);
+        // Append
+        $segment_index = 0;
+        $media = fopen($parameters['media'], 'rb');
+        while (!feof($media))
+        {
+            $this->http('POST', self::UPLOAD_HOST, 'media/upload', [
+                'command' => 'APPEND',
+                'media_id' => $init->media_id_string,
+                'segment_index' => $segment_index++,
+                'media' => base64_encode(fread($media, self::UPLOAD_CHUNK))
+            ]);
+        }
+        fclose($media);
+        // Finalize
+        $finalize = $this->http('POST', self::UPLOAD_HOST, 'media/upload', [
+            'command' => 'FINALIZE',
+            'media_id' => $init->media_id_string
+        ]);
+        return $finalize;
+    }
+
+    /**
+     * @param string $method
+     * @param string $host
+     * @param string $path
+     * @param array  $parameters
+     *
+     * @return array|object
+     */
+    private function http($method, $host, $path, array $parameters)
+    {
+        $this->resetLastResponse();
+        $url = sprintf('%s/%s/%s.json', $host, self::API_VERSION, $path);
+        $this->response->setApiPath($path);
+        $result = $this->oAuthRequest($url, $method, $parameters);
+        $response = JsonDecoder::decode($result, $this->decodeJsonAsArray);
+        $this->response->setBody($response);
+        return $response;
+    }
+
+    /**
+     * Format and sign an OAuth / API request
+     *
+     * @param string $url
+     * @param string $method
+     * @param array  $parameters
+     *
+     * @return string
+     * @throws TwitterOAuthException
+     */
+    private function oAuthRequest($url, $method, array $parameters)
+    {
+        $request = Request::fromConsumerAndToken($this->consumer, $this->token, $method, $url, $parameters);
+        if (array_key_exists('oauth_callback', $parameters)) {
+            // Twitter doesn't like oauth_callback as a parameter.
+            unset($parameters['oauth_callback']);
+        }
+        if ($this->bearer === null) {
+            $request->signRequest($this->signatureMethod, $this->consumer, $this->token);
+            $authorization = $request->toHeader();
+        } else {
+            $authorization = 'Authorization: Bearer ' . $this->bearer;
+        }
+        return $this->request($request->getNormalizedHttpUrl(), $method, $authorization, $parameters);
+    }
+
+    /**
+     * Make an HTTP request
+     *
+     * @param string $url
+     * @param string $method
+     * @param string $authorization
+     * @param array $postfields
+     *
+     * @return string
+     * @throws TwitterOAuthException
+     */
+    private function request($url, $method, $authorization, $postfields)
+    {
+        /* Curl settings */
+        $options = [
+            // CURLOPT_VERBOSE => true,
+            CURLOPT_CAINFO => __DIR__ . DIRECTORY_SEPARATOR . 'cacert.pem',
+            CURLOPT_CONNECTTIMEOUT => $this->connectionTimeout,
+            CURLOPT_HEADER => true,
+            CURLOPT_HTTPHEADER => ['Accept: application/json', $authorization, 'Expect:'],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_TIMEOUT => $this->timeout,
+            CURLOPT_URL => $url,
+            CURLOPT_USERAGENT => $this->userAgent,
+            CURLOPT_ENCODING => 'gzip',
+        ];
+
+        if (!empty($this->proxy)) {
+            $options[CURLOPT_PROXY] = $this->proxy['CURLOPT_PROXY'];
+            $options[CURLOPT_PROXYUSERPWD] = $this->proxy['CURLOPT_PROXYUSERPWD'];
+            $options[CURLOPT_PROXYPORT] = $this->proxy['CURLOPT_PROXYPORT'];
+            $options[CURLOPT_PROXYAUTH] = CURLAUTH_BASIC;
+            $options[CURLOPT_PROXYTYPE] = CURLPROXY_HTTP;
+        }
+
+        switch ($method) {
+            case 'GET':
+                break;
+            case 'POST':
+                $options[CURLOPT_POST] = true;
+                $options[CURLOPT_POSTFIELDS] = Util::buildHttpQuery($postfields);
+                break;
+            case 'DELETE':
+                $options[CURLOPT_CUSTOMREQUEST] = 'DELETE';
+                break;
+            case 'PUT':
+                $options[CURLOPT_CUSTOMREQUEST] = 'PUT';
+                break;
+        }
+
+        if (in_array($method, ['GET', 'PUT', 'DELETE']) && !empty($postfields)) {
+            $options[CURLOPT_URL] .= '?' . Util::buildHttpQuery($postfields);
+        }
+
+
+        $curlHandle = curl_init();
+        curl_setopt_array($curlHandle, $options);
+        $response = curl_exec($curlHandle);
+
+        // Throw exceptions on cURL errors.
+        if (curl_errno($curlHandle) > 0) {
+            throw new TwitterOAuthException(curl_error($curlHandle), curl_errno($curlHandle));
+        }
+
+        $this->response->setHttpCode(curl_getinfo($curlHandle, CURLINFO_HTTP_CODE));
+        $parts = explode("\r\n\r\n", $response);
+        $responseBody = array_pop($parts);
+        $responseHeader = array_pop($parts);
+        $this->response->setHeaders($this->parseHeaders($responseHeader));
+
+        curl_close($curlHandle);
+
+        return $responseBody;
+    }
+
+    /**
+     * Get the header info to store.
+     *
+     * @param string $header
+     *
+     * @return array
+     */
+    private function parseHeaders($header)
+    {
+        $headers = [];
+        foreach (explode("\r\n", $header) as $line) {
+            if (strpos($line, ':') !== false) {
+                list ($key, $value) = explode(': ', $line);
+                $key = str_replace('-', '_', strtolower($key));
+                $headers[$key] = trim($value);
+            }
+        }
+        return $headers;
+    }
+
+    /**
+     * Encode application authorization header with base64.
+     *
+     * @param Consumer $consumer
+     *
+     * @return string
+     */
+    private function encodeAppAuthorization($consumer)
+    {
+        // TODO: key and secret should be rfc 1738 encoded
+        $key = $consumer->key;
+        $secret = $consumer->secret;
+        return base64_encode($key . ':' . $secret);
+    }
 }

@@ -5,7 +5,7 @@
 // php /Users/TeoPro/Documents/git/xml_parser/TwitterBot/tweet_risk.php "domani";
 //by MT
 
-include(dirname(__FILE__).'/../settings.php');
+include('settings.php');
 include(dirname(__FILE__).'/../getting.php');
 
 // Include twitteroauth
@@ -175,7 +175,7 @@ function tweet_risk($when, $data)
 		}
 	}
 	
-	sleep(60);
+	sleep(TWEET_PAUSE);
 	
 	if($data->select_risk_data($when, "R1","idrogeologico") != "nessuno" && $data->select_risk_data($when, "R1","idrogeologico") != "")
 	{

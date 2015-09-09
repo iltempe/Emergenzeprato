@@ -6,7 +6,7 @@
 //by MT
 
 
-include(dirname(__FILE__).'/../settings.php');
+include('settings.php');
 include(dirname(__FILE__).'/../getting.php');
 
 // Include twitteroauth
@@ -64,7 +64,7 @@ function tweet_meteo($when="oggi", $data)
 		$tweet->post('statuses/update', array('status' => $tweetMessage));
 	}
 
-	sleep(35);
+	sleep(TWEET_PAUSE);
 
 	// Set status message
 	$tweetMessage = $biometeo_ita_tweet;
@@ -76,7 +76,7 @@ function tweet_meteo($when="oggi", $data)
 		$tweet->post('statuses/update', array('status' => $tweetMessage));
 	}
 
-	sleep(35);
+	sleep(TWEET_PAUSE);
 
 	// Set status message
 	$tweetMessage = $biometeo_eng_tweet;
