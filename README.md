@@ -7,6 +7,8 @@ Alcune fonti sono opendata della regione Toscana.
 --------
 INFORMAZIONI
 Tutte le informazioni sono disponibili in http://iltempe.github.io/Emergenzeprato
+
 Per altre info pratosmart.org
 
-
+Licenza MIT
+Copyright (c) [2014] [Matteo Tempestini]
