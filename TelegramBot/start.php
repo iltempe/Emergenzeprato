@@ -8,7 +8,6 @@
 
 include('settings_t.php');
 include('getUpdates.php');
-//include('emergenzeprato.php');
 
 
 //istanzia oggetto Telegram

@@ -17,7 +17,7 @@ $today = date("Y-m-d H:i:s");
 $data=new getdata();
 
 tweet_pics("IDROMETRIA_Bisenzio_Prato", $data);
-sleep(TWEET_PAUSE);
+/*sleep(TWEET_PAUSE);
 tweet_pics("IDROMETRIA_Bisenzio_Vaiano_Gamberame", $data);
 sleep(TWEET_PAUSE);
 tweet_pics("IDROMETRIA_Ombrone_PonteAlleVanne", $data);
@@ -54,7 +54,7 @@ tweet_pics("IGROMETRIA_Prato_Città", $data);
 sleep(TWEET_PAUSE);
 tweet_pics("IGROMETRIA_Galceti_Montemurlo", $data);
 sleep(TWEET_PAUSE);
-tweet_pics("IGROMETRIA_Vaiano_Acquedotto", $data);
+tweet_pics("IGROMETRIA_Vaiano_Acquedotto", $data);*/
 
 //log
 $log=$today. ";" .$xmlFile." eseguito tweet immagini\n";
@@ -74,7 +74,7 @@ function tweet_pics($what, $data)
 	$tweet = new TwitterOAuth($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);
 
 	//tweet image
-	$text="Stazione ". str_replace("_"," #",$what);
+	$text="#cfr #toscana http://www.cfr.toscana.it/ ". str_replace("_"," #",$what);
 	$img_path=(dirname(dirname(__FILE__)). "/". $data->get_image_path($what));
 	
 	$media = $tweet->upload('media/upload', array('media' => $img_path));
