@@ -5,7 +5,7 @@
   * designed starting from https://github.com/Eleirbag89/TelegramBotPHP
 
  */
-
+include(dirname(__FILE__).'/../settings.php');
 include('settings_t.php');
 include('getting.php');
 include("Telegram.php");
@@ -106,12 +106,16 @@ class emergenzeprato{
 				 $log=$today. ";temperatura Montepiano/Vernio sent;" .$chat_id. "\n";
 
 			}
-			elseif ($text=="Dati Stazioni" || $text =="/dati-stazioni")
+			elseif ($text=="bisenzio" || $text =="/bisenzio")
 			{
-				//invio immagini stazioni meteo	
-			
+				//invio immagini stazioni meteo
+				$photo="@". dirname(__FILE__).'/data/IDROMETRIA_Bisenzio_Prato.jpg';
+				//$photo=IDROMETRIA_Bisenzio_Prato;
+				$content = array('chat_id' => $chat_id, 'photo' => $photo);
+				print_r($content);
+				$telegram->sendPhoto($content);
+				$log=$today. ";livello Bisenzio sent;" .$chat_id. "\n";
 			} 
-			
 			//comando errato
 			else{
 				 $reply = "Hai selezionato un comando non previsto. Per informazioni visita : http://pratosmart.teo-soft.com/emergenzeprato/";
@@ -129,7 +133,7 @@ class emergenzeprato{
 	// Crea la tastiera
 	public function create_keyboard($telegram, $chat_id)
 		{
-				$option = array(["meteo","previsioni"],["rischi", "temperatura"],["crediti"]);
+				$option = array(["meteo","previsioni"],["rischi", "temperatura"],["bisenzio", "crediti"]);
 				$keyb = $telegram->buildKeyBoard($option, $onetime=false);
 				$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "Seleziona un'opzione per essere aggiornato");
 				$telegram->sendMessage($content);
@@ -144,6 +148,8 @@ class emergenzeprato{
 				$telegram->sendMessage($content);
 
 		}
+
+		
 }
 
 ?>

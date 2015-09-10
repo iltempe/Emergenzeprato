@@ -32,9 +32,14 @@ class Telegram {
     public function endpoint($api, array $content, $post = true) {
         $url = 'https://api.telegram.org/bot' . $this->bot_id . '/' . $api;
         if ($post)
+        {
+        	//print_r($content);
             return $this->sendAPIRequest($url, $content);
+        }
         else
+        {
             return $this->sendAPIRequest($url, array(), false);
+        }
     }
     public function sendPhoto(array $content) {
         return $this->endpoint("sendPhoto", $content);
