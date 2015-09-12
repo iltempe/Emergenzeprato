@@ -6,6 +6,7 @@ Gestore fonti e dati per il progetto @emergenzeprato
 --------
 INFORMAZIONI
 Tutte le informazioni e le fonti utilizzate sono disponibili in http://iltempe.github.io/Emergenzeprato
+
 All sources and informations are available in http://iltempe.github.io/Emergenzeprato
 
 pratosmart.org
