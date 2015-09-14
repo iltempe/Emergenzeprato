@@ -1,9 +1,9 @@
 #!/usr/bin/php
 <?php
 //previsto da chiamare solo php start.php con 1 eventuale parametro che può essere
-//hookset per settare il link di webhook
-//hookremove per rimuovere il link di webhook
-//getupdates per eseguzione a polling (con cron o manualmente)
+	//hookset per settare il link di webhook
+	//hookremove per rimuovere il link di webhook
+	//getupdates per eseguzione a polling (con cron o manualmente)
 //e non si imposta il primo paramentro da shell si assume di avere impostato il webhook e di utilizzare quello
 
 include('settings_t.php');

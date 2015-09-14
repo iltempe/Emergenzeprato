@@ -33,7 +33,6 @@ class Telegram {
         $url = 'https://api.telegram.org/bot' . $this->bot_id . '/' . $api;
         if ($post)
         {
-        	//print_r($content);
             return $this->sendAPIRequest($url, $content);
         }
         else
@@ -104,6 +103,9 @@ class Telegram {
     public function Username() {
         return $this->data["message"]["from"]["username"];
     }
+    public function User_id(){
+    	return $this->data["message"]["from"]["id"];
+    }
     public function Location() {
         return $this->data["message"]["location"];
     }
@@ -119,6 +121,40 @@ class Telegram {
         }
         return true;
     }
+    
+    //gestisce un invio in broadcast a tutti gli utenti registrati in un database
+    public function sendMessageAll($type, $user, $content)
+    {  
+		$apiendpoint = ucfirst($type);
+		if ($type == 'photo' || $type == "audio" || $type == "video" || $type == "document") {
+			$mimetype = mime_content_type($content);
+			$content = new CurlFile($content, $mimetype);
+		} elseif ($type == "message") {
+			$type = 'text';
+		}
+		print_r($user);
+		$ch = curl_init("https://api.telegram.org/bot".$this->bot_id."/send".$apiendpoint);
+		curl_setopt_array($ch, array(
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_POST => true,
+			CURLOPT_HEADER => false,
+			CURLOPT_HTTPHEADER => array(
+				'Host: api.telegram.org',
+				'Content-Type: multipart/form-data'
+			),
+			CURLOPT_POSTFIELDS => array(
+				'chat_id' => $user,
+				$type => $content
+			),
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_CONNECTTIMEOUT => 6000,
+			CURLOPT_SSL_VERIFYPEER => false
+		));
+		curl_exec($ch);
+		curl_close($ch);   
+    }
+    
+    //costruisce la tastiera del servizio
     public function buildKeyBoard(array $options, $onetime = true, $resize = true, $selective = true) {
         $replyMarkup = array(
             'keyboard' => $options,
@@ -143,6 +179,7 @@ class Telegram {
     public function serveUpdate($update) {
         $this->data = $this->updates["result"][$update];
     }
+    
     private function sendAPIRequest($url, array $content, $post = true) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

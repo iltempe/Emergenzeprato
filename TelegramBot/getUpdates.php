@@ -24,9 +24,7 @@ function getUpdates($telegram){
 	date_default_timezone_set('Europe/Rome');
 	$today = date("Y-m-d H:i:s"); 
 	
-	$logfile=(dirname(__FILE__).'/../logs/telegram.log');
-
-	//$telegram = new Telegram($bot_id);
+	$db = new PDO(DB_NAME);
 
 	$data=new getdata();
 
@@ -40,8 +38,8 @@ function getUpdates($telegram){
 		$telegram->serveUpdate($i);
 		$text = $telegram->Text();
 		$chat_id = $telegram->ChatID();
-		$update_manager->shell($telegram,$chat_id,$data,LOG_FILE,$text);
-
+		$user_id= $telegram->User_id();
+		$update_manager->shell($telegram,$db,$data,$text,$chat_id,$user_id);
 	}
 }
 
