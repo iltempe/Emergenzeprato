@@ -31,7 +31,7 @@ function sendMessagetoAll($db,$telegram,$type,$content){
 //verifica se esiste un allarme da inviare broadcast
 function check_alarm()
 {
-	//TBD per ora non invia mai messaggi in broadcast
+	//TBD per ora la applicazione non invia mai messaggi in broadcast inserire qui le condizioni per cui debba inviarle ed i contenuti
 	return false;
 
 }

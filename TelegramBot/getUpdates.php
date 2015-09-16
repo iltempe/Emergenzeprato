@@ -39,8 +39,11 @@ function getUpdates($telegram){
 		$text = $telegram->Text();
 		$chat_id = $telegram->ChatID();
 		$user_id= $telegram->User_id();
-		$update_manager->shell($telegram,$db,$data,$text,$chat_id,$user_id);
+		$location= $telegram->Location();
+		$reply_to_msg= $telegram->ReplyToMessage();
+		$update_manager->shell($telegram,$db,$data,$text,$chat_id,$user_id,$location,$reply_to_msg);
 	}
+
 }
 
 ?>

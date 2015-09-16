@@ -19,37 +19,37 @@ $meteo_file = METEO_LINK;
 //si aggiorna dalle 10 alle 13 del mattino
 $risk_file = RISK_LINK. $today.".xml";
 
-store($biometeo_ITA_file, "data/biometeo_ITA.xml",$logfile);
-store($biometeo_ENG_file, "data/biometeo_ENG.xml",$logfile);
-store($meteo_file, "data/meteo.xml",$logfile);
+store($biometeo_ITA_file, dirname(__FILE__)."/data/biometeo_ITA.xml",$logfile);
+store($biometeo_ENG_file,dirname(__FILE__). "/data/biometeo_ENG.xml",$logfile);
+store($meteo_file, dirname(__FILE__). "/data/meteo.xml",$logfile);
 
 //cancello il file in locale in quanto cambia il nome da un giorno all'altro ed esiste un momento del giorno in cui non esiste il file (la mattina)
-unlink ("data/risk.xml");
-store($risk_file, "data/risk.xml",$logfile);
+unlink (dirname(__FILE__)."/data/risk.xml");
+store($risk_file, dirname(__FILE__)."/data/risk.xml",$logfile);
 
 //download pics
-download_remote_file(IDROMETRIA_Bisenzio_Prato,"data/IDROMETRIA_Bisenzio_Prato.jpg",$logfile);
-download_remote_file(IDROMETRIA_Bisenzio_Vaiano_Gamberame,"data/IDROMETRIA_Bisenzio_Vaiano_Gamberame.jpg",$logfile);
-download_remote_file(IDROMETRIA_Ombrone_PonteAlleVanne,"data/IDROMETRIA_Ombrone_PonteAlleVanne.jpg",$logfile);
-download_remote_file(IDROMETRIA_Ombrone_PoggioACaiano,"data/IDROMETRIA_Ombrone_PoggioACaiano.jpg",$logfile);
+download_remote_file(IDROMETRIA_Bisenzio_Prato,dirname(__FILE__)."/data/IDROMETRIA_Bisenzio_Prato.jpg",$logfile);
+download_remote_file(IDROMETRIA_Bisenzio_Vaiano_Gamberame,dirname(__FILE__)."/data/IDROMETRIA_Bisenzio_Vaiano_Gamberame.jpg",$logfile);
+download_remote_file(IDROMETRIA_Ombrone_PonteAlleVanne,dirname(__FILE__)."/data/IDROMETRIA_Ombrone_PonteAlleVanne.jpg",$logfile);
+download_remote_file(IDROMETRIA_Ombrone_PoggioACaiano,dirname(__FILE__)."/data/IDROMETRIA_Ombrone_PoggioACaiano.jpg",$logfile);
 
-download_remote_file(PLUVIOMETRIA_Prato_Città,"data/PLUVIOMETRIA_Prato_Città.jpg",$logfile);
-download_remote_file(PLUVIOMETRIA_Prato_Università,"data/PLUVIOMETRIA_Prato_Università.jpg",$logfile);
-download_remote_file(PLUVIOMETRIA_Galceti_Montemurlo,"data/PLUVIOMETRIA_Galceti_Montemurlo.jpg",$logfile);
-download_remote_file(PLUVIOMETRIA_Vaiano_Gamberame,"data/PLUVIOMETRIA_Vaiano_Gamberame.jpg",$logfile);
-download_remote_file(PLUVIOMETRIA_Vaiano_Acquedotto,"data/PLUVIOMETRIA_Vaiano_Acquedotto.jpg",$logfile);
-download_remote_file(PLUVIOMETRIA_Fattoria_Iavello_Montemurlo,"data/PLUVIOMETRIA_Fattoria_Iavello_Montemurlo.jpg",$logfile);
-download_remote_file(PLUVIOMETRIA_Cantagallo,"data/PLUVIOMETRIA_Cantagallo.jpg",$logfile);
+download_remote_file(PLUVIOMETRIA_Prato_Città,dirname(__FILE__)."/data/PLUVIOMETRIA_Prato_Città.jpg",$logfile);
+download_remote_file(PLUVIOMETRIA_Prato_Università,dirname(__FILE__)."/data/PLUVIOMETRIA_Prato_Università.jpg",$logfile);
+download_remote_file(PLUVIOMETRIA_Galceti_Montemurlo,dirname(__FILE__)."/data/PLUVIOMETRIA_Galceti_Montemurlo.jpg",$logfile);
+download_remote_file(PLUVIOMETRIA_Vaiano_Gamberame,dirname(__FILE__)."/data/PLUVIOMETRIA_Vaiano_Gamberame.jpg",$logfile);
+download_remote_file(PLUVIOMETRIA_Vaiano_Acquedotto,dirname(__FILE__)."/data/PLUVIOMETRIA_Vaiano_Acquedotto.jpg",$logfile);
+download_remote_file(PLUVIOMETRIA_Fattoria_Iavello_Montemurlo,dirname(__FILE__)."/data/PLUVIOMETRIA_Fattoria_Iavello_Montemurlo.jpg",$logfile);
+download_remote_file(PLUVIOMETRIA_Cantagallo,dirname(__FILE__)."/data/PLUVIOMETRIA_Cantagallo.jpg",$logfile);
 
-download_remote_file(TERMOMETRIA_Prato_Università,"data/TERMOMETRIA_Prato_Università.jpg",$logfile);
-download_remote_file(TERMOMETRIA_Galceti_Montemurlo,"data/TERMOMETIRIA_Galceti_Montemurlo.jpg",$logfile);
+download_remote_file(TERMOMETRIA_Prato_Università,dirname(__FILE__)."/data/TERMOMETRIA_Prato_Università.jpg",$logfile);
+download_remote_file(TERMOMETRIA_Galceti_Montemurlo,dirname(__FILE__)."/data/TERMOMETIRIA_Galceti_Montemurlo.jpg",$logfile);
 
-download_remote_file(ANEMOMETRIA_Prato_Università,"data/ANEMOMETRIA_Prato_Università.jpg",$logfile);
-download_remote_file(ANEMOMETRIA_Galceti_Montemurlo,"data/ANEMOMETRIA_Galceti_Montemurlo.jpg",$logfile);
+download_remote_file(ANEMOMETRIA_Prato_Università,dirname(__FILE__)."/data/ANEMOMETRIA_Prato_Università.jpg",$logfile);
+download_remote_file(ANEMOMETRIA_Galceti_Montemurlo,dirname(__FILE__)."/data/ANEMOMETRIA_Galceti_Montemurlo.jpg",$logfile);
 
-download_remote_file(IGROMETRIA_Prato_Città,"data/IGROMETRIA_Prato_Città.jpg",$logfile);
-download_remote_file(IGROMETRIA_Galceti_Montemurlo,"data/IGROMETRIA_Galceti_Montemurlo.jpg",$logfile);
-download_remote_file(IGROMETRIA_Vaiano_Acquedotto,"data/IGROMETRIA_Vaiano_Acquedotto.jpg",$logfile);
+download_remote_file(IGROMETRIA_Prato_Città,dirname(__FILE__)."/data/IGROMETRIA_Prato_Città.jpg",$logfile);
+download_remote_file(IGROMETRIA_Galceti_Montemurlo,dirname(__FILE__)."/data/IGROMETRIA_Galceti_Montemurlo.jpg",$logfile);
+download_remote_file(IGROMETRIA_Vaiano_Acquedotto,dirname(__FILE__)."/data/IGROMETRIA_Vaiano_Acquedotto.jpg",$logfile);
 
 
 function download_remote_file($file_url, $save_to, $logfile)

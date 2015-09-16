@@ -33,6 +33,5 @@ if (php_sapi_name() == 'cli') {
 $bot->init();
 $update = $bot->getData();
 
-
 $update_manager= new emergenzeprato();
 $update_manager->start($bot,$update);

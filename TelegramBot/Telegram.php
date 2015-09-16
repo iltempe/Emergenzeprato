@@ -115,6 +115,14 @@ class Telegram {
     public function UpdateCount() {
         return count($this->updates["result"]);
     }
+	public function ReplyToMessage() {
+
+        return $this->data["message"]["reply_to_message"];
+    }
+    public function MessageId() {
+
+        return $this->data["message"]["message_id"];
+    }
     public function messageFromGroup() {
         if ($this->data["message"]["chat"]["title"] == "") {
             return false;
@@ -165,6 +173,24 @@ class Telegram {
         $encodedMarkup = json_encode($replyMarkup, true);
         return $encodedMarkup;
     }
+	
+	 public function buildKeyBoardHide($selective = true) {
+        $replyMarkup = array(
+            'hide_keyboard' => true,
+            'selective' => $selective
+        );
+        $encodedMarkup = json_encode($replyMarkup, true);
+        return $encodedMarkup;
+    }
+    public function buildForceReply($selective = true) {
+        $replyMarkup = array(
+            'force_reply' => true,
+            'selective' => $selective
+        );
+        $encodedMarkup = json_encode($replyMarkup, true);
+        return $encodedMarkup;
+    }
+	
     public function getUpdates($offset = 0, $limit = 100, $timeout = 0, $update = true) {
         $content = array('offset' => $offset, 'limit' => $limit, 'timeout' => $timeot);
         $reply = $this->endpoint("getUpdates", $content);
