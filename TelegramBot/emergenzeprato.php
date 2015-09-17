@@ -142,7 +142,8 @@ class emergenzeprato{
 				$telegram->sendMessage($content);
 				$log=$today. ";notification reset;" .$chat_id. "\n";
 			}
-			//gestione segnalazioni georiferite
+
+			//----- gestione segnalazioni georiferite : togliere per non gestire le segnalazioni georiferite -----
 			elseif($location!=null)
 			{
 
@@ -155,7 +156,7 @@ class emergenzeprato{
 				//inserisce la segnalazione nel DB delle segnalazioni georiferite
 				$statement = "UPDATE ".DB_TABLE_GEO ." SET text='".$text."' WHERE bot_request_message ='".$reply_to_msg['message_id']."'";
 				print_r($reply_to_msg['message_id']);
-            	$db->exec($statement);
+				$db->exec($statement);
 				$reply = "Segnalazione Registrata. Grazie!";
 				$content = array('chat_id' => $chat_id, 'text' => $reply);
 				$telegram->sendMessage($content);
@@ -163,7 +164,9 @@ class emergenzeprato{
 				
 				//aggiorno dati mappa
 				exec('sqlite3 -header -csv emergenzeprato.sqlite "select * from segnalazioni;" > map_data.csv');
-			}			
+			}
+			// ----- ------------------------------------------------------------------------------------------
+			
 			//comando errato
 			else{
 				 $reply = "Hai selezionato un comando non previsto. Per informazioni visita : http://iltempe.github.io/Emergenzeprato/";
@@ -172,11 +175,13 @@ class emergenzeprato{
 				 $log=$today. ";wrong command sent;" .$chat_id. "\n";
 			 }
 			
-			//gestione messaggi in broadcast : al momento gestisce il database per iscrizione delle notifiche automatiche
+			//gestione messaggi in broadcast : al momento gestisce il database per iscrizione delle notifiche automatiche ma non invia nessuna notifica
+			//da commentare per disabilitare la gestione delle notifiche automatiche
 			$this->broadcast_manager($db,$telegram);
 			
 			//aggiorna tastiera
 			$this->create_keyboard($telegram,$chat_id);
+			
 			//log			
 			file_put_contents(LOG_FILE, $log, FILE_APPEND | LOCK_EX);
 			
@@ -201,7 +206,7 @@ class emergenzeprato{
 				$telegram->sendMessage($content);
 		}
 		
-		
+	//controlla le condizioni per gestire le notifiche automatiche	
 	function broadcast_manager($db,$telegram)
 		{
 			//gestione allarmi da completare.
@@ -210,7 +215,7 @@ class emergenzeprato{
 				sendMessagetoAll($db,$telegram,'message','TBD'); 
 			}
 		}
-	
+	//controlla la posizione e chiede quale segnalazione si deve fare
 	function location_manager($db,$telegram,$user_id,$chat_id,$location)
 		{
 				$lng=$location["longitude"];
