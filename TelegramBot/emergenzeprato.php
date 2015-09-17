@@ -33,10 +33,9 @@ class emergenzeprato{
 		$chat_id = $update["message"] ["chat"]["id"];
 		$user_id=$update["message"]["from"]["id"];
 		$location=$update["message"]["location"];
-		$reply_to_msg=$update["message"]["reply_to_msg"];
+		$reply_to_msg=$update["message"]["reply_to_message"];
 		
 		$this->shell($telegram, $db,$data,$text,$chat_id,$user_id,$location,$reply_to_msg);
-		$db = NULL;
 
 	}
 
