@@ -70,8 +70,8 @@ class emergenzeprato{
 				$log=$today. ";rischi sent;" .$chat_id. "\n";
 			}
 			//crediti
-			elseif ($text == "/crediti" || $text == "crediti") {
-				 $reply = ('Applicazione sviluppata da Matteo Tempestini, i dettagli e le fonti su : http://iltempe.github.io/Emergenzeprato/');
+			elseif ($text == "/informazioni" || $text == "informazioni") {
+				 $reply = ("Emergenzeprato è un servizio sperimentale e dimostrativo per segnalazioni meteo e rischio a Prato. Applicazione sviluppata da Matteo Tempestini, i dettagli e le fonti su : http://iltempe.github.io/Emergenzeprato/");
 				 $content = array('chat_id' => $chat_id, 'text' => $reply);
 				 $telegram->sendMessage($content);
 				 $log=$today. ";crediti sent;" .$chat_id. "\n";
@@ -169,7 +169,7 @@ class emergenzeprato{
 			
 			//comando errato
 			else{
-				 $reply = "Hai selezionato un comando non previsto. Per informazioni visita : http://iltempe.github.io/Emergenzeprato/";
+				 $reply = "Hai selezionato un comando non previsto";
 				 $content = array('chat_id' => $chat_id, 'text' => $reply);
 				 $telegram->sendMessage($content);
 				 $log=$today. ";wrong command sent;" .$chat_id. "\n";
@@ -191,9 +191,9 @@ class emergenzeprato{
 	// Crea la tastiera
 	 function create_keyboard($telegram, $chat_id)
 		{
-				$option = array(["meteo","previsioni"],["rischi","temperatura"],["bisenzio","crediti"]);
+				$option = array(["meteo","previsioni"],["rischi","temperatura"],["bisenzio","informazioni"]);
 				$keyb = $telegram->buildKeyBoard($option, $onetime=false);
-				$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "[seleziona un'opzione per essere aggiornato, oppure digita /on o /off per abilitare o disabilitare le notifiche]");
+				$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "[seleziona un'opzione per essere aggiornato]");
 				$telegram->sendMessage($content);
 		}
 
