@@ -71,7 +71,13 @@ class emergenzeprato{
 			}
 			//crediti
 			elseif ($text == "/informazioni" || $text == "informazioni") {
-				 $reply = ("Emergenzeprato è un servizio sperimentale e dimostrativo per segnalazioni meteo e rischio a Prato. Applicazione sviluppata da Matteo Tempestini, i dettagli e le fonti su : http://iltempe.github.io/Emergenzeprato/");
+				 $reply = ("Emergenzeprato e' un servizio sperimentale e dimostrativo per segnalazioni meteo e rischio a Prato. 
+				 Puoi:
+				 - selezionare un'opzione in basso,
+				 - digitare /on o /off nella chat per abilitare o disabilitare le notifiche automatiche
+				 - mappare una segnalazione inviando la posizione tramite la molletta in basso a sinistra.
+				 Applicazione sviluppata da Matteo Tempestini (agosto 2015). Licenza MIT.
+				 I dettagli e le fonti su : http://iltempe.github.io/Emergenzeprato/");
 				 $content = array('chat_id' => $chat_id, 'text' => $reply);
 				 $telegram->sendMessage($content);
 				 $log=$today. ";crediti sent;" .$chat_id. "\n";
