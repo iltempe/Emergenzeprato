@@ -191,6 +191,10 @@ class emergenzeprato{
 			//log			
 			file_put_contents(LOG_FILE, $log, FILE_APPEND | LOCK_EX);
 			
+			//db
+			$statement = "INSERT INTO " . DB_TABLE_LOG ." (date, text, chat_id, user_id, location, reply_to_msg) VALUES ('" . $today . "','" . $text . "','" . $chat_id . "','" . $user_id . "','" . $location . "','" . $reply_to_msg . "')";
+            $db->exec($statement);
+			
 	}
 
 
