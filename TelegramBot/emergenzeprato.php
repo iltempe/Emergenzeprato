@@ -154,6 +154,10 @@ class emergenzeprato{
 			{
 
 				$this->location_manager($db,$telegram,$user_id,$chat_id,$location);
+				
+				//db
+				$statement = "INSERT INTO " . DB_TABLE_LOG ." (date, text, chat_id, user_id, location, reply_to_msg) VALUES ('" . $today . "','" . $text . "','" . $chat_id . "','" . $user_id . "','" . $location . "','" . $reply_to_msg . "')";
+            	$db->exec($statement);
 				exit;	
 
 			}
