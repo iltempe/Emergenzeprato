@@ -7,11 +7,14 @@
 //e non si imposta il primo paramentro da shell si assume di avere impostato il webhook e di utilizzare quello
 
 include(dirname(__FILE__).'/../settings.php');
+//include(dirname(__FILE__).'/../getting.php');
 include('settings_t.php');
+include("emergenzeprato.php");
+//include("Telegram.php");
 include('getUpdates.php');
 
 
-//istanzia oggetto Telegram
+	//istanzia oggetto Telegram
 	$bot_id = TELEGRAM_BOT;
 	$bot = new Telegram($bot_id);
 
@@ -30,9 +33,19 @@ if (php_sapi_name() == 'cli') {
   exit;
 }
 
-//legge
+//inizializzo il bot
 $bot->init();
-$update = $bot->getData();
 
+// Instances the class for data
+$db = new PDO(DB_NAME);
+$data=new getdata();
 $update_manager= new emergenzeprato();
-$update_manager->start($bot,$update);
+
+	
+//gestione invio allerte in broadcast da commentare se si vuole disabilitare le allerte in broadcast. 
+//Per ora (in fase di testing) è attivo l'invio dell'allerta da sito della protezione civile. 
+$update_manager->broadcast_manager($db,$bot,$data);
+
+//legge e risponde
+$update = $bot->getData();
+$update_manager->start($bot,$update,$data);

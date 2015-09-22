@@ -16,7 +16,7 @@ For a description of the Bot API, see this page: https://core.telegram.org/bots/
  */
 
 //include('settings_t.php');
-include("emergenzeprato.php");
+//include("emergenzeprato.php");
 
 //aggiorna con getUpdates
 function getUpdates($telegram){

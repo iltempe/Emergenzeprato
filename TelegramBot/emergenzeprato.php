@@ -12,25 +12,16 @@ include("broadcast.php");
 
 class emergenzeprato{
  
- function start($telegram,$update)
+ function start($telegram,$update,$data)
 	{
-
 		date_default_timezone_set('Europe/Rome');
 		$today = date("Y-m-d H:i:s");
-		
-		// Instances the class
-		$data=new getdata();
-		$db = new PDO(DB_NAME);
 
 		/* If you need to manually take some parameters
 		*  $result = $telegram->getData();
 		*  $text = $result["message"] ["text"];
 		*  $chat_id = $result["message"] ["chat"]["id"];
 		*/
-		
-		//gestione invio allerte in broadcast da commentare se si vuole disabilitare le allerte in broadcast. 
-		//Per ora (in fase di testing) è attivo l'invio dell'allerta da sito della protezione civile. 
-		$this->broadcast_manager($db,$telegram,$data);
 		
 		//dati utili ricevuti dagli aggiornamenti
 		$text = $update["message"] ["text"];
@@ -231,7 +222,8 @@ class emergenzeprato{
 				$today = date("Y-m-d H:i:s");
 				$load_data=$data->load_prot(false);
 				$message=$load_data[0]. "\n" ."segnalazione del\n". $load_data[1]. "\n". "per i dettagli consultare il sito della protezione civile di Prato http://www.protezionecivile.comune.prato.it/emergenze/";
-				sendMessagetoAll($db,$telegram,'message',$message); 
+				//commmentare qui se si vuole inibire le notifiche automatiche
+				//sendMessagetoAll($db,$telegram,'message',$message); 
 				
 				//registro l'allerta nel DB
 				$statement = "INSERT INTO " . DB_TABLE_LOG ." (date, text, chat_id, user_id, location, reply_to_msg) VALUES ('" . $today . "','" . $load_data[0] . "','" . $load_data[1] . "','" . "all" . "','" . " " . "','" . " " . "')";
