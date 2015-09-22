@@ -6,6 +6,7 @@
 	//getupdates per eseguzione a polling (con cron o manualmente)
 //e non si imposta il primo paramentro da shell si assume di avere impostato il webhook e di utilizzare quello
 
+include(dirname(__FILE__).'/../settings.php');
 include('settings_t.php');
 include('getUpdates.php');
 

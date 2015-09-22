@@ -5,7 +5,7 @@
  * 
  */
 
-include('settings_t.php');
+//include('settings_t.php');
 
 
 class Telegram {
@@ -192,12 +192,12 @@ class Telegram {
     }
 	
     public function getUpdates($offset = 0, $limit = 100, $timeout = 0, $update = true) {
-        $content = array('offset' => $offset, 'limit' => $limit, 'timeout' => $timeot);
+        $content = array('offset' => $offset, 'limit' => $limit, 'timeout' => $timeout);
         $reply = $this->endpoint("getUpdates", $content);
         $this->updates = json_decode($reply, true);
         if ($update) {
             $last_element_id = $this->updates["result"][count($this->updates["result"]) - 1]["update_id"] + 1;
-            $content = array('offset' => $last_element_id, 'limit' => "1", 'timeout' => $timeot);
+            $content = array('offset' => $last_element_id, 'limit' => "1", 'timeout' => $timeout);
             $this->endpoint("getUpdates", $content);
         }
         return $this->updates;

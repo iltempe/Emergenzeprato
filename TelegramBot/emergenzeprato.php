@@ -5,8 +5,7 @@
   * designed starting from https://github.com/Eleirbag89/TelegramBotPHP
 
  */
-include(dirname(__FILE__).'/../settings.php');
-include('settings_t.php');
+
 include(dirname(dirname(__FILE__)).'/getting.php');
 include("Telegram.php");
 include("broadcast.php");
@@ -29,6 +28,11 @@ class emergenzeprato{
 		*  $chat_id = $result["message"] ["chat"]["id"];
 		*/
 		
+		//gestione invio allerte in broadcast da commentare se si vuole disabilitare le allerte in broadcast. 
+		//Per ora (in fase di testing) è attivo l'invio dell'allerta da sito della protezione civile. 
+		$this->broadcast_manager($db,$telegram,$data);
+		
+		//dati utili ricevuti dagli aggiornamenti
 		$text = $update["message"] ["text"];
 		$chat_id = $update["message"] ["chat"]["id"];
 		$user_id=$update["message"]["from"]["id"];
@@ -74,10 +78,10 @@ class emergenzeprato{
 				 $reply = ("Emergenzeprato e' un servizio sperimentale e dimostrativo per segnalazioni meteo e rischio a Prato. 
 				 Puoi:
 				 - selezionare un'opzione in basso,
-				 - digitare /on o /off nella chat per abilitare o disabilitare le notifiche automatiche
+				 - digitare /on o /off nella chat per abilitare o disabilitare le notifiche automatiche (funzione in sperimentazione)
 				 - mappare una segnalazione inviando la posizione tramite la molletta in basso a sinistra.
-				 Applicazione sviluppata da Matteo Tempestini (agosto 2015). Licenza MIT.
-				 I dettagli e le fonti su : http://iltempe.github.io/Emergenzeprato/");
+				 Applicazione sviluppata da Matteo Tempestini (Agosto 2015). Licenza MIT.
+				 I dettagli e le fonti sono su : http://iltempe.github.io/Emergenzeprato/");
 				 $content = array('chat_id' => $chat_id, 'text' => $reply);
 				 $telegram->sendMessage($content);
 				 $log=$today. ";crediti sent;" .$chat_id. "\n";
@@ -185,9 +189,6 @@ class emergenzeprato{
 				 $log=$today. ";wrong command sent;" .$chat_id. "\n";
 			 }
 			
-			//gestione messaggi in broadcast : al momento gestisce il database per iscrizione delle notifiche automatiche ma non invia nessuna notifica
-			//da commentare per disabilitare la gestione delle notifiche automatiche
-			$this->broadcast_manager($db,$telegram);
 			
 			//aggiorna tastiera
 			$this->create_keyboard($telegram,$chat_id);
@@ -200,7 +201,6 @@ class emergenzeprato{
             $db->exec($statement);
 			
 	}
-
 
 	// Crea la tastiera
 	 function create_keyboard($telegram, $chat_id)
@@ -220,13 +220,25 @@ class emergenzeprato{
 				$telegram->sendMessage($content);
 		}
 		
-	//controlla le condizioni per gestire le notifiche automatiche	
-	function broadcast_manager($db,$telegram)
+	//controlla le condizioni per gestire le notifiche automatiche (in fase di testing!)
+	function broadcast_manager($db,$telegram,$data)
 		{
 			//gestione allarmi da completare.
-			if(check_alarm()) 
+			if($this->check_alarm($data)) 
 			{
-				sendMessagetoAll($db,$telegram,'message','TBD'); 
+				echo "Allarme inviato";
+				date_default_timezone_set('Europe/Rome');
+				$today = date("Y-m-d H:i:s");
+				$load_data=$data->load_prot(false);
+				$message=$load_data[0]. "\n" ."segnalazione del\n". $load_data[1]. "\n". "per i dettagli consultare il sito della protezione civile di Prato http://www.protezionecivile.comune.prato.it/emergenze/";
+				sendMessagetoAll($db,$telegram,'message',$message); 
+				
+				//registro l'allerta nel DB
+				$statement = "INSERT INTO " . DB_TABLE_LOG ." (date, text, chat_id, user_id, location, reply_to_msg) VALUES ('" . $today . "','" . $load_data[0] . "','" . $load_data[1] . "','" . "all" . "','" . " " . "','" . " " . "')";
+				$db->exec($statement);	
+			}else
+			{
+				echo "Nessun allarme inviato";
 			}
 		}
 	//controlla la posizione e chiede quale segnalazione si deve fare
@@ -255,6 +267,23 @@ class emergenzeprato{
             	$db->exec($statement);
 		}
 		
+		//verifica se esiste un allarme da inviare broadcast
+		//inserire qui la logica secondo la quale si vuole inviare un messaggio broadcast
+	function check_alarm($data)
+		{
+			//controllo se la protezione civile ha aggiornato i dati dell'emergenza
+			$old=$data->load_prot(true);
+			$new=$data->load_prot(false);
+			if(array_diff($old,$new)==null)
+			{
+				echo "non ci sono aggiornamenti";
+				return false;
+			}
+			else{
+				echo "ci sono aggiornamenti";
+				return true;
+			}
+		}
 		
 }
 

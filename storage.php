@@ -8,7 +8,6 @@ include('settings.php');
 date_default_timezone_set('UTC');
 $today = date("Ymd");   
 
-$logfile=(dirname(__FILE__).'/logs/storedata.log');
 
 //si aggiorna verso le 10.00 del mattino
 $biometeo_ITA_file = BIOMETEO_ITA_LINK;;
@@ -18,6 +17,8 @@ $meteo_file = METEO_LINK;
 
 //si aggiorna dalle 10 alle 13 del mattino
 $risk_file = RISK_LINK. $today.".xml";
+
+$logfile=LOG;
 
 store($biometeo_ITA_file, dirname(__FILE__)."/data/biometeo_ITA.xml",$logfile);
 store($biometeo_ENG_file,dirname(__FILE__). "/data/biometeo_ENG.xml",$logfile);

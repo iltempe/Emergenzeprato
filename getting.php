@@ -1,6 +1,6 @@
 <?php
 
-//Getdata #emergenzeprato e preparazione dati
+//Wrapper delle fonti #emergenzeprato e preparazione dati di interesse per i vari bot
 //questa classe deve essere istanziata nei vari JOB che vogliono usare i dati
 //by MT 
 
@@ -408,6 +408,39 @@ public function get_temperature($where)
 public function get_image_path($image)
 {
 	return "data/". $image. ".jpg";		
+}
+
+//preleva ultima allerta del feed protezione civile di Prato o in locale o in remoto e ritorna titolo e data.
+public function load_prot($islocal)
+{
+	date_default_timezone_set('UTC');
+
+	$logfile=(dirname(__FILE__).'/logs/storedata.log');
+	
+	if($islocal)
+	{
+		//carico dati salvati in locale per confrontarli con quelli remoti
+		$prot_civ=dirname(__FILE__)."/data/prot.xml";
+	}
+	else
+	{
+		//carico dati salvati in remoto
+		$prot_civ=PROT_CIV;
+	}
+
+	$xml_file=simplexml_load_file($prot_civ); 
+
+	if ($xml_file==false)
+		{
+			print("Errore nella ricerca del file relativo alla protezione civile");
+		}
+		
+		//ritorna il primo elemento del feed rss
+		$data[0]=$xml_file->channel->item->title;
+		//print_r($data[0]);
+		$data[1]=$xml_file->channel->item->pubDate;
+		//print_r($data[1]);
+		return $data;
 }
 
 }      
