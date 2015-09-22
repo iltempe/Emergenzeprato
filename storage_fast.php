@@ -3,19 +3,18 @@
 //è necessario uno storage locale del feed creato con page2rss della pagina web della protezione civile di Prato
 //storage che può essere schedulato con un CRON (ogni minuto) in un file XML tramite la funzione get_prot() Storage Veloce.
 
-include(dirname(__FILE__).'/./settings.php');
+include('settings.php');
+date_default_timezone_set('Europe/Rome');
 
 //salva i dati in locale
-get_prot();
+get_prot($logfile);
 
 function get_prot()
 {
 	$prot_civ=PROT_CIV;
-	$logfile=LOG;
-
 
 	//per memorizzare il dato
-	store($prot_civ, dirname(__FILE__)."/data/prot.xml",$logfile);
+	store($prot_civ, dirname(__FILE__)."/data/prot.xml",'./logs/storedata.log');
 }
 	
 //salvo i dati

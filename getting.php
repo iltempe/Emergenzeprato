@@ -421,11 +421,16 @@ public function load_prot($islocal)
 	{
 		//carico dati salvati in locale per confrontarli con quelli remoti
 		$prot_civ=dirname(__FILE__)."/data/prot.xml";
+		echo "carico dati in locale";
+		print_r($prot_civ);
 	}
 	else
 	{
 		//carico dati salvati in remoto
 		$prot_civ=PROT_CIV;
+		echo "carico dati da remoto";
+		print_r($prot_civ);
+
 	}
 
 	$xml_file=simplexml_load_file($prot_civ); 
@@ -442,6 +447,23 @@ public function load_prot($islocal)
 		//print_r($data[1]);
 		return $data;
 }
+
+public function update_prot($data)
+{
+	$prot_civ=dirname(__FILE__)."/data/prot.xml";
+
+	// load the document
+	$info = simplexml_load_file($prot_civ);
+
+	// update
+	$info->channel->item->title = $data[0];
+	$info->channel->item->pubDate = $data[1];
+
+	// save the updated document
+	$info->asXML($prot_civ);
+
+}
+
 
 }      
 //Fonti

@@ -4,8 +4,7 @@
 	Script to send message in broadcast to a list of all subscribers
 	
  */
-//include(dirname(__FILE__).'/../settings.php');
-//include('settings_t.php');
+
  
 //invia un dato in broadcast a tutti gli utenti iscritti
 function sendMessagetoAll($db,$telegram,$type,$content){
@@ -18,11 +17,12 @@ function sendMessagetoAll($db,$telegram,$type,$content){
         $user = $user->fetchAll();
         $i = 0;
         foreach ($user as $user_id) {
+        			//comment this to avoid broadcast message
                     $telegram->sendMessageAll($type, $user[$i]['user_id'], $content);
 					$i++;
                 }
         
-    	$log=$today. ";Sent message to ".$i." subscribers\n";
+    	$log=$today. ";Sent message ".$content. " to ".$i." subscribers\n";
     	file_put_contents(LOG_FILE, $log, FILE_APPEND | LOCK_EX);	
 }
 
