@@ -1,18 +1,33 @@
 <?php
 //modulo per la gestione dei dati provenienti dal sito protezione civile di Prato
 
+define("PROT_CIV", "http://page2rss.com/rss/28dbb41c5e425167e4d73bf1b00dd7cd");
+
 function get_prot()
+{
+	$prot_civ=PROT_CIV;
+
+	//per memorizzare il dato
+	store($prot_civ, dirname(__FILE__)."/data/prot.xml",$logfile);
+}
+
+
+function load_prot($islocal)
 {
 	date_default_timezone_set('UTC');
 
 	$logfile=(dirname(__FILE__).'/logs/storedata.log');
-
-	//scrape protezione civile feed
-	define("PROT_CIV", "http://page2rss.com/rss/28dbb41c5e425167e4d73bf1b00dd7cd");
-	$prot_civ=PROT_CIV;
-
-	//per memorizzare il dato
-	//store($prot_civ, dirname(__FILE__)."/data/prot.xml",$logfile);
+	
+	if($islocal)
+	{
+		//carico dati salvati in locale per confrontarli con quelli remoti
+		$prot_civ=dirname(__FILE__)."/data/prot.xml";
+	}
+	else
+	{
+		//carico dati salvati in remoto
+		$prot_civ=PROT_CIV;
+	}
 
 	$xml_file=simplexml_load_file($prot_civ); 
 
@@ -26,10 +41,22 @@ function get_prot()
 		print_r($data[0]);
 		$data[1]=$xml_file->channel->item->pubDate;
 		print_r($data[1]);
-		$data[2]=$xml_file->channel->item->description;
-		print_r($data[2]);
 		return $data;
 }
+
+
+function isequal_check($source, $dest)
+{
+	if($source==$dest)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 	
 //salvo i dati
 function store($xmlFile,$dest,$logfile)
@@ -52,6 +79,7 @@ function store($xmlFile,$dest,$logfile)
 }
 
 //da inserire dove si vuol fare il controllo
+
 
 
 ?>
