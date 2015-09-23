@@ -12,7 +12,7 @@ include("broadcast.php");
 
 class emergenzeprato{
  
- function start($telegram,$update,$data)
+ function start($telegram, $db, $update,$data)
 	{
 		date_default_timezone_set('Europe/Rome');
 		$today = date("Y-m-d H:i:s");
@@ -22,7 +22,7 @@ class emergenzeprato{
 		*  $text = $result["message"] ["text"];
 		*  $chat_id = $result["message"] ["chat"]["id"];
 		*/
-		
+
 		//dati utili ricevuti dagli aggiornamenti
 		$text = $update["message"] ["text"];
 		$chat_id = $update["message"] ["chat"]["id"];
@@ -217,21 +217,31 @@ class emergenzeprato{
 			//gestione allarmi da completare.
 			if($this->check_alarm($data)) 
 			{
-				echo "Allarme inviato";
 				date_default_timezone_set('Europe/Rome');
 				$today = date("Y-m-d H:i:s");
 				$load_data=$data->load_prot(false);
+				//log			
+				file_put_contents(LOG_FILE, $load_data[0], FILE_APPEND | LOCK_EX);
+				file_put_contents(LOG_FILE, $load_data[1], FILE_APPEND | LOCK_EX);
+
 				$message=$load_data[0]. "\n" ."segnalazione del\n". $load_data[1]. "\n". "per i dettagli consultare il sito della protezione civile di Prato http://www.protezionecivile.comune.prato.it/emergenze/";
+				
 				//commmentare qui se si vuole inibire le notifiche automatiche
-				//sendMessagetoAll($db,$telegram,'message',$message); 
+				sendMessagetoAll($db,$telegram,'message',$message); 
 				
 				//registro l'allerta nel DB
 				$statement = "INSERT INTO " . DB_TABLE_LOG ." (date, text, chat_id, user_id, location, reply_to_msg) VALUES ('" . $today . "','" . $load_data[0] . "','" . $load_data[1] . "','" . "all" . "','" . " " . "','" . " " . "')";
-				$db->exec($statement);	
+				$db->exec($statement);
+				
+				//update file
+				$data->update_prot($load_data);
+				echo "Allarme inviato";
+		
 			}else
 			{
 				echo "Nessun allarme inviato";
-			}
+			}					
+
 		}
 	//controlla la posizione e chiede quale segnalazione si deve fare
 	function location_manager($db,$telegram,$user_id,$chat_id,$location)
@@ -266,7 +276,10 @@ class emergenzeprato{
 			//controllo se la protezione civile ha aggiornato i dati dell'emergenza
 			$old=$data->load_prot(true);
 			$new=$data->load_prot(false);
-			if(array_diff($old,$new)==null)
+			//print_r($old);
+			//print_r($new);
+			//print_r(array_diff($new,$old));
+			if(array_diff($new,$old)==null)
 			{
 				echo "non ci sono aggiornamenti";
 				return false;
