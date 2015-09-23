@@ -41,11 +41,10 @@ $db = new PDO(DB_NAME);
 $data=new getdata();
 $update_manager= new emergenzeprato();
 
-	
-//gestione invio allerte in broadcast da commentare se si vuole disabilitare le allerte in broadcast. 
-//Per ora (in fase di testing) è attivo l'invio dell'allerta da sito della protezione civile. 
-$update_manager->broadcast_manager($db,$bot,$data);
-
 //legge e risponde
 $update = $bot->getData();
 $update_manager->start($bot,$update,$data);
+
+		//gestione invio allerte in broadcast da commentare se si vuole disabilitare le allerte in broadcast. 
+		//Per ora (in fase di testing) è attivo l'invio dell'allerta da sito della protezione civile. 
+		$update_manager->broadcast_manager($db,$bot,$data);

@@ -18,7 +18,7 @@ function sendMessagetoAll($db,$telegram,$type,$content){
         $i = 0;
         foreach ($user as $user_id) {
         			//comment this to avoid broadcast message
-                    $telegram->sendMessageAll($type, $user[$i]['user_id'], $content);
+                    //$telegram->sendMessageAll($type, $user[$i]['user_id'], $content);
 					$i++;
                 }
         
