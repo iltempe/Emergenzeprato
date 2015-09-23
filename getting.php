@@ -4,7 +4,11 @@
 //questa classe deve essere istanziata nei vari JOB che vogliono usare i dati
 //by MT 
 
+const PROT_CIV = 'http://page2rss.com/rss/28dbb41c5e425167e4d73bf1b00dd7cd';
+
+
 class getdata {
+
 
 //legge i dati dal biometeo in italiano
 private function get_biometeo_ita() {
