@@ -65,7 +65,7 @@ class emergenzeprato{
 				$log=$today. ";rischi sent;" .$chat_id. "\n";
 			}
 			//crediti
-			elseif ($text == "/informazioni" || $text == "informazioni") {
+			elseif ($text == "/info" || $text == "info") {
 				 $reply = ("Emergenzeprato e' un servizio sperimentale e dimostrativo per segnalazioni meteo e rischio a Prato. 
 				 Puoi:
 				 - selezionare un'opzione in basso,
@@ -143,6 +143,22 @@ class emergenzeprato{
 				$telegram->sendMessage($content);
 				$log=$today. ";notification reset;" .$chat_id. "\n";
 			}
+			elseif ($text=="->")
+			{
+				$this->create_keyboard_2($telegram,$chat_id);
+				exit;
+			}
+			elseif ($text=="<-")
+			{
+				$this->create_keyboard($telegram,$chat_id);
+				exit;
+			}
+			elseif ($text=="aree di protezione" || $text="/aree")
+			{
+				$reply = "comando da implementare";
+				$content = array('chat_id' => $chat_id, 'text' => $reply);
+				$telegram->sendMessage($content);
+			}
 
 			//----- gestione segnalazioni georiferite : togliere per non gestire le segnalazioni georiferite -----
 			elseif($location!=null)
@@ -196,7 +212,16 @@ class emergenzeprato{
 	// Crea la tastiera
 	 function create_keyboard($telegram, $chat_id)
 		{
-				$option = array(["meteo","previsioni"],["rischi","temperatura"],["bisenzio","informazioni"]);
+				$option = array(["meteo","previsioni"],["rischi","temperatura"],["bisenzio","->"]);
+				$keyb = $telegram->buildKeyBoard($option, $onetime=false);
+				$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "[seleziona un'opzione per essere aggiornato]");
+				$telegram->sendMessage($content);
+		}
+		
+	//Crea la seconda tastiera
+	function create_keyboard_2($telegram, $chat_id)
+		{
+				$option = array(["notifiche on","notifiche off"],["aree di protezione","info"],["<-"]);
 				$keyb = $telegram->buildKeyBoard($option, $onetime=false);
 				$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "[seleziona un'opzione per essere aggiornato]");
 				$telegram->sendMessage($content);
