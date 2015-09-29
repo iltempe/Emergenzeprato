@@ -220,9 +220,6 @@ class emergenzeprato{
 				date_default_timezone_set('Europe/Rome');
 				$today = date("Y-m-d H:i:s");
 				$load_data=$data->load_prot(false);
-				//log			
-				file_put_contents(LOG_FILE, $load_data[0], FILE_APPEND | LOCK_EX);
-				file_put_contents(LOG_FILE, $load_data[1], FILE_APPEND | LOCK_EX);
 
 				$message=$load_data[0]. "\n" ."segnalazione del\n". $load_data[1]. "\n". "per i dettagli consultare il sito della protezione civile di Prato http://www.protezionecivile.comune.prato.it/emergenze/";
 				
@@ -279,13 +276,17 @@ class emergenzeprato{
 			//print_r($old);
 			//print_r($new);
 			//print_r(array_diff($new,$old));
+			$today = date("Y-m-d H:i:s");
+
 			if(array_diff($new,$old)==null)
 			{
 				echo "non ci sono aggiornamenti";
+				
 				return false;
 			}
 			else{
-				echo "ci sono aggiornamenti";
+				$logged=$today. "-ci sono aggiornamenti: ". $old[0]. "-" .$old[1]. " a ". $new[0]. "-" .$new[1];
+				file_put_contents(LOG_FILE, $logged, FILE_APPEND | LOCK_EX);
 				return true;
 			}
 		}

@@ -7,10 +7,8 @@
 //e non si imposta il primo paramentro da shell si assume di avere impostato il webhook e di utilizzare quello
 
 include(dirname(__FILE__).'/../settings.php');
-//include(dirname(__FILE__).'/../getting.php');
 include('settings_t.php');
 include("emergenzeprato.php");
-//include("Telegram.php");
 include('getUpdates.php');
 
 
@@ -42,7 +40,7 @@ $data=new getdata();
 $update_manager= new emergenzeprato();
 
 //gestione invio allerte in broadcast da commentare se si vuole disabilitare le allerte in broadcast. 
-//Per ora (in fase di testing) è attivo l'invio dell'allerta da sito della protezione civile. 
+//Per ora (in fase di testing) è attivo l'invio dell'allerta su aggiornamento del sito della protezione civile. 
 $update_manager->broadcast_manager($db,$bot,$data);
 
 //legge e risponde
