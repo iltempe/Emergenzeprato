@@ -15,8 +15,6 @@ Use this token to access the HTTP API:
 For a description of the Bot API, see this page: https://core.telegram.org/bots/api
  */
 
-//include('settings_t.php');
-//include("emergenzeprato.php");
 
 //aggiorna con getUpdates
 function getUpdates($telegram){
@@ -32,7 +30,7 @@ function getUpdates($telegram){
 	
 	//gestore broadcast
 	//commentare in modalita DEBUG per evitare invio messaggi agli utenti!
-	//$update_manager->broadcast_manager($db,$telegram,$data);
+	$update_manager->broadcast_manager($db,$telegram,$data);
 	
 	// Get all the new updates and set the new correct update_id
 	$req = $telegram->getUpdates();

@@ -127,7 +127,7 @@ class emergenzeprato{
 				//memorizza lo user_id
             	$statement = "INSERT INTO " . DB_TABLE ." (user_id) VALUES ('" . $user_id . "')";
             	$db->exec($statement);
-				$reply = "Notifiche da emergenzeprato abilitate. Per disabilitarle digita /off";
+				$reply = "Notifiche da emergenzeprato abilitate";
 				$content = array('chat_id' => $chat_id, 'text' => $reply);
 				$telegram->sendMessage($content);
 				$log=$today. ";notification set;" .$chat_id. "\n";
@@ -138,7 +138,7 @@ class emergenzeprato{
 				//memorizza lo user_id
             	$statement = "DELETE FROM ". DB_TABLE ." where user_id = '" . $user_id . "'";
             	$db->exec($statement);
-				$reply = "Notifiche da emergenzeprato disabilitate. Per abilitarle digita /on";
+				$reply = "Notifiche da emergenzeprato disabilitate";
 				$content = array('chat_id' => $chat_id, 'text' => $reply);
 				$telegram->sendMessage($content);
 				$log=$today. ";notification reset;" .$chat_id. "\n";
