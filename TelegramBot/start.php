@@ -40,8 +40,8 @@ $data=new getdata();
 $update_manager= new emergenzeprato();
 
 //gestione invio allerte in broadcast da commentare se si vuole disabilitare le allerte in broadcast. 
-//Per ora (in fase di testing) è attivo l'invio dell'allerta su aggiornamento del sito della protezione civile. 
-broadcast_manager($db,$bot,$data);
+//Per ora in fase di testing è attivo l'invio dell'allerta su aggiornamento del sito della protezione civile. 
+broadcast($bot);
 
 //legge e risponde
 $update = $bot->getData();
