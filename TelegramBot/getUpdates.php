@@ -30,7 +30,7 @@ function getUpdates($telegram){
 	
 	//gestore broadcast
 	//commentare in modalita DEBUG per evitare invio messaggi agli utenti!
-	$update_manager->broadcast_manager($db,$telegram,$data);
+	broadcast_manager($db,$telegram,$data);
 	
 	// Get all the new updates and set the new correct update_id
 	$req = $telegram->getUpdates();
@@ -46,8 +46,6 @@ function getUpdates($telegram){
 		$update_manager->shell($telegram,$db,$data,$text,$chat_id,$user_id,$location,$reply_to_msg);
 	}
 	
-	
-
 }
 
 ?>
