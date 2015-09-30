@@ -153,11 +153,13 @@ class emergenzeprato{
 				$this->create_keyboard($telegram,$chat_id);
 				exit;
 			}
-			elseif ($text=="aree di protezione" || $text="/aree")
+			elseif ($text=="aree di protezione" || $text=="/aree")
 			{
-				$reply = "comando da implementare";
+				$reply = "Comando in sviluppo";
 				$content = array('chat_id' => $chat_id, 'text' => $reply);
 				$telegram->sendMessage($content);
+				$log=$today. ";aree request;" .$chat_id. "\n";	
+
 			}
 
 			//----- gestione segnalazioni georiferite : togliere per non gestire le segnalazioni georiferite -----
