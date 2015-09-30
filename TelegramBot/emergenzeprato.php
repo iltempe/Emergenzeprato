@@ -300,15 +300,12 @@ class emergenzeprato{
 			//controllo se la protezione civile ha aggiornato i dati dell'emergenza
 			$old=$data->load_prot(true);
 			$new=$data->load_prot(false);
-			//print_r($old);
-			//print_r($new);
-			//print_r(array_diff($new,$old));
+
 			$today = date("Y-m-d H:i:s");
 
 			if(array_diff($new,$old)==null)
 			{
 				echo "non ci sono aggiornamenti";
-				
 				return false;
 			}
 			else{

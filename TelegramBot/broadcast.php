@@ -15,14 +15,14 @@ function sendMessagetoAll($db,$telegram,$type,$content){
         $statement = "SELECT * FROM ".DB_TABLE;
         $user = $db->query($statement);
         $user = $user->fetchAll();
-        
+        print_r($user);
         //remove duplicates 
         $user_uni=array_unique($user);
         
         $i = 0;
         foreach ($user_uni as $user_id) {
         			//comment this to avoid broadcast message
-                    $telegram->sendMessageAll($type, $user[$i]['user_id'], $content);
+                    $telegram->sendMessageAll($type, $user_uni[$i]['user_id'], $content);
 					$i++;
                 }
         
