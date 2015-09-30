@@ -140,7 +140,6 @@ class Telegram {
 		} elseif ($type == "message") {
 			$type = 'text';
 		}
-		print_r($user);
 		$ch = curl_init("https://api.telegram.org/bot".$this->bot_id."/send".$apiendpoint);
 		curl_setopt_array($ch, array(
 			CURLOPT_RETURNTRANSFER => true,
