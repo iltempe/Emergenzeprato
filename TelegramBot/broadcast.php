@@ -70,16 +70,19 @@ function sendMessagetoAll($db,$telegram,$type,$content){
         $user = $user->fetchAll();
         
         //remove duplicates 
-        $user_uni=array_unique($user);
-        //print_r($user_uni);
-        
+        $user_uni=array_unique($user,SORT_REGULAR);
+        print_r($user_uni);
         $i = 0;
-        foreach ($user_uni as $user_id) {
-        			//comment this to avoid broadcast message
-                    $telegram->sendMessageAll($type, $user_id['user_id'], $content);
-                    //print_r("-------".$user_uni[$i]['user_id']);
-
-					$i++;
+        foreach ($user_uni as $users) {
+        		
+        		//comment this to avoid broadcast message
+                $telegram->sendMessageAll($type, $users['user_id'], $content);
+                //print_r($user_uni);
+                //print_r("invio a ".$users['user_id'].";");
+                    
+				//$content = array('chat_id' => $users['user_id'], 'text' => $content);
+				//$telegram->sendMessage($content);
+				$i++;
                 }
         
     	$log=$today. ";Sent message ".$content. " to ".$i." subscribers\n";
