@@ -50,16 +50,33 @@ class emergenzeprato{
 				$telegram->sendMessage($content);
 				$log=$today. ";meteo sent;" .$chat_id. "\n";
 				}
-			//richiede previsioni meteo di domani
+			//richiede previsioni meteo e rischio di domani
 			elseif ($text == "/previsioni" || $text == "previsioni") {
 				$reply = "Previsioni Meteo per domani " .$data->lamma_text("domani").$data->biometeo_text("domani");
+				$content = array('chat_id' => $chat_id, 'text' => $reply);
+				$telegram->sendMessage($content);
+				
+				if($data->risk_text("domani","B")!=null)
+				{
+					$reply = "Rischi previsti per domani:\r\n".$data->risk_text("domani","B").$data->risk_text("domani","R1");
+				}else
+				{
+					$reply = "Rischi previsti per domani non ancora disponibili\r\n"
+				}
 				$content = array('chat_id' => $chat_id, 'text' => $reply);
 				$telegram->sendMessage($content);
 				$log=$today. ";previsioni sent;" .$chat_id. "\n";
 			}
 			//richiede rischi di oggi a Prato
 			elseif ($text == "/rischi" || $text == "rischi") {
-				$reply = "Rischi di oggi:\r\n".$data->risk_text("oggi","B").$data->risk_text("oggi","R1");
+				if($data->risk_text("oggi","B")!=null)
+				{
+					$reply = "Rischi di oggi:\r\n".$data->risk_text("oggi","B").$data->risk_text("oggi","R1");
+				}
+				else
+				{
+					$reply = "Rischi previsti per oggi non ancora disponibili\r\n"
+				}
 				$content = array('chat_id' => $chat_id, 'text' => $reply);
 				$telegram->sendMessage($content);
 				$log=$today. ";rischi sent;" .$chat_id. "\n";

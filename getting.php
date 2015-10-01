@@ -353,7 +353,7 @@ public function risk_text($today,$zone)
 	}
 	else
 	{
-		$sir_str="Rischi non ancora disponibili";
+		$sir_str=null;
 	}
 	
 	return $sir_str;
