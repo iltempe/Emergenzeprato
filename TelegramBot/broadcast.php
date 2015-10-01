@@ -6,25 +6,11 @@
  */
 
 
-function broadcast($bot)
-{
-	
-	$db = new PDO(DB_NAME);
-
-	$data=new getdata();
-
-	$update_manager= new emergenzeprato();
-	
-	//gestore broadcast
-	broadcast_manager($db,$telegram,$data);
-
-}
-
 //controlla le condizioni per gestire le notifiche automatiche (in fase di testing!)
 function broadcast_manager($db,$telegram,$data)
 {	
 			//gestione allarmi da completare.
-			if(!check_alarm($data)) 
+			if(check_alarm($data)) 
 			{
 				date_default_timezone_set('Europe/Rome');
 				$today = date("Y-m-d H:i:s");
