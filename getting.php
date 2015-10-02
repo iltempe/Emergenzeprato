@@ -329,26 +329,25 @@ public function risk_text($today,$zone)
 	//verifica se il file è vuoto
 	if($this->select_risk_data($today,$zone,"idrogeologico"))
 	{
-		if($zone=="B")
-		{
-			$sir_str_1=("Rischio idrogeologico a Prato: " .$this->select_risk_data($today,"B","idrogeologico"). "\r\n");
-			$sir_str_2=("Rischio idraulico a Prato: " .$this->select_risk_data($today,"B","idraulico"). "\r\n");
-			$sir_str_3=("Rischio vento a Prato: " .$this->select_risk_data($today,"B","vento"). "\r\n");
-			$sir_str_4=("Rischio mareggiate a Prato: " .$this->select_risk_data($today,"B","mareggiate"). "\r\n");
-			$sir_str_5=("Rischio neve a Prato: " .$this->select_risk_data($today,"B","neve"). "\r\n");
-			$sir_str_6=("Rischio ghiaccio a Prato: " .$this->select_risk_data($today,"B","ghiaccio"). "\r\n");
-			$sir_str_7=("Rischio temporali a Prato: " .$this->select_risk_data($today,"B","temporali"). "\r\n");
-		}
-		else{
-			$sir_str_1=("Rischio idrogeologico a Vernio: " .$this->select_risk_data($today,"R","idrogeologico"). "\r\n");
-			$sir_str_2=("Rischio idraulico a Vernio: " .$this->select_risk_data($today,"R","idraulico"). "\r\n");
-			$sir_str_3=("Rischio vento a Vernio: " .$this->select_risk_data($today,"R","vento"). "\r\n");
-			$sir_str_4=("Rischio mareggiate a Vernio: " .$this->select_risk_data($today,"R","mareggiate"). "\r\n");
-			$sir_str_5=("Rischio neve a Vernio: " .$this->select_risk_data($today,"R","neve"). "\r\n");
-			$sir_str_6=("Rischio ghiaccio a Vernio: " .$this->select_risk_data($today,"R","ghiaccio"). "\r\n");
-			$sir_str_7=("Rischio temporali a Vernio: " .$this->select_risk_data($today,"R","temporali"). "\r\n");
-		}
-	
+			if($zone=="B")
+			{
+				$sir_str_1=("Rischio idrogeologico a Prato: " .$this->select_risk_data($today,"B","idrogeologico"). "\r\n");
+				$sir_str_2=("Rischio idraulico a Prato: " .$this->select_risk_data($today,"B","idraulico"). "\r\n");
+				$sir_str_3=("Rischio vento a Prato: " .$this->select_risk_data($today,"B","vento"). "\r\n");
+				$sir_str_4=("Rischio mareggiate a Prato: " .$this->select_risk_data($today,"B","mareggiate"). "\r\n");
+				$sir_str_5=("Rischio neve a Prato: " .$this->select_risk_data($today,"B","neve"). "\r\n");
+				$sir_str_6=("Rischio ghiaccio a Prato: " .$this->select_risk_data($today,"B","ghiaccio"). "\r\n");
+				$sir_str_7=("Rischio temporali a Prato: " .$this->select_risk_data($today,"B","temporali"). "\r\n");
+			}
+			else{
+				$sir_str_1=("Rischio idrogeologico a Vernio: " .$this->select_risk_data($today,"R","idrogeologico"). "\r\n");
+				$sir_str_2=("Rischio idraulico a Vernio: " .$this->select_risk_data($today,"R","idraulico"). "\r\n");
+				$sir_str_3=("Rischio vento a Vernio: " .$this->select_risk_data($today,"R","vento"). "\r\n");
+				$sir_str_4=("Rischio mareggiate a Vernio: " .$this->select_risk_data($today,"R","mareggiate"). "\r\n");
+				$sir_str_5=("Rischio neve a Vernio: " .$this->select_risk_data($today,"R","neve"). "\r\n");
+				$sir_str_6=("Rischio ghiaccio a Vernio: " .$this->select_risk_data($today,"R","ghiaccio"). "\r\n");
+				$sir_str_7=("Rischio temporali a Vernio: " .$this->select_risk_data($today,"R","temporali"). "\r\n");
+			}
 			$sir_str = $sir_str_1. $sir_str_2. $sir_str_3. $sir_str_4. $sir_str_5. $sir_str_6. $sir_str_7;
 	}
 	else

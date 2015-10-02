@@ -1,9 +1,8 @@
 <?php
 /**
  * Telegram Bot example.
- * @author Gabriele Grillo <gabry.grillo@alice.it>
+ * @author Matteo Tempestini
   * designed starting from https://github.com/Eleirbag89/TelegramBotPHP
-
  */
 
 include(dirname(dirname(__FILE__)).'/getting.php');
@@ -31,7 +30,6 @@ class emergenzeprato{
 		$reply_to_msg=$update["message"]["reply_to_message"];
 		
 		$this->shell($telegram, $db,$data,$text,$chat_id,$user_id,$location,$reply_to_msg);
-
 	}
 
 	//gestisce l'interfaccia utente
@@ -61,7 +59,7 @@ class emergenzeprato{
 					$reply = "Rischi previsti per domani:\r\n".$data->risk_text("domani","B").$data->risk_text("domani","R1");
 				}else
 				{
-					$reply = "Rischi previsti per domani non ancora disponibili\r\n"
+					$reply = "Rischi previsti per domani non ancora disponibili\r\n";
 				}
 				$content = array('chat_id' => $chat_id, 'text' => $reply);
 				$telegram->sendMessage($content);
@@ -75,7 +73,7 @@ class emergenzeprato{
 				}
 				else
 				{
-					$reply = "Rischi previsti per oggi non ancora disponibili\r\n"
+					$reply = "Rischi previsti per oggi non ancora disponibili\r\n";
 				}
 				$content = array('chat_id' => $chat_id, 'text' => $reply);
 				$telegram->sendMessage($content);
