@@ -1,7 +1,0 @@
-<?php    
-
-  define('GOOGLECAL_CLIENT_ID','');
-  define('GOOGLECAL_CLIENT_SECRET','');
-  define('GOOGLECAL_REDIRECT_URI','');
-  
-?>
