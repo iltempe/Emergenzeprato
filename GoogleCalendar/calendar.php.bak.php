@@ -1,28 +1,61 @@
 <?php    
     require_once 'Google/autoload.php';
+    require_once 'settings.php';
     require_once '../getting.php';
     
+    session_start(); 
+
     // ********************************************************  //
     // Get these values from https://console.developers.google.com
     // Be sure to enable the Analytics API
     // ********************************************************    //
     
-    define('CREDENTIALS_PATH', 'credential.json');
-    define('APPLICATION_NAME', 'emergenzeprato');
-	define('CLIENT_SECRET_PATH', 'client_secret.json');
-	define('SCOPES', implode(' ', array(
-  Google_Service_Calendar::CALENDAR)
-));
-        
+    
+    $client_id = GOOGLECAL_CLIENT_ID;
+    $client_secret = GOOGLECAL_CLIENT_SECRET;
+    $redirect_uri = GOOGLECAL_REDIRECT_URI;
 
-//data getter
+    $client = new Google_Client();
+    $client->setApplicationName("emergenzeprato");
+    $client->setClientId($client_id);
+    $client->setClientSecret($client_secret);
+    $client->setRedirectUri($redirect_uri);
+    $client->setAccessType('offline');   // Gets us our refreshtoken
+    $client->setScopes(array('https://www.googleapis.com/auth/calendar'));
+	
+	//data getter
 	$data=new getdata();
-    $client=getClient(); 
+
+    // For loging out.
+    if (isset($_GET['logout'])) {
+	unset($_SESSION['token']);
+    }
+
+    // Step 2: The user accepted your access now you need to exchange it.
+    if (isset($_GET['code'])) {
+	
+	$client->authenticate($_GET['code']);  
+	$_SESSION['token'] = $client->getAccessToken();
+	$redirect = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+	header('Location: ' . filter_var($redirect, FILTER_SANITIZE_URL));
+    }
+    // Step 1:  The user has not authenticated we give them a link to login    
+    if (!isset($_SESSION['token'])) {
+	$authUrl = $client->createAuthUrl();
+	print "<a class='login' href='$authUrl'>Connect Me!</a>";
+    }   
+
+    // Step 3: We have access we can now create our service
+    if (isset($_SESSION['token'])) {
+	$client->setAccessToken($_SESSION['token']);
+	print "<a class='logout' ". $redirect_uri. "?logout=1'>LogOut</a><br>";	
+	
 	$service = new Google_Service_Calendar($client);    
 	
 	$calendarList  = $service->calendarList->listCalendarList();
 
 	//selezionare cosa postare sul calendario
+	
 	if($_GET["what"]=="meteo_oggi")
 	{
 		//prepara evento meteo
@@ -57,73 +90,33 @@
 	else{
 	
 	//do nothing
-	}  
-	
-	
+	}
 
 
-/**
- * Returns an authorized API client.
- * @return Google_Client the authorized client object
- */
-function getClient() {
-  $client = new Google_Client();
-  $client->setApplicationName(APPLICATION_NAME);
-  $client->setScopes(SCOPES);
-  $client->setAuthConfigFile(CLIENT_SECRET_PATH);
-  $client->setAccessType('offline');
+	while(true) {
+		 foreach ($calendarList->getItems() as $calendarListEntry) {
 
-  // Load previously authorized credentials from a file.
-  $credentialsPath = expandHomeDirectory(CREDENTIALS_PATH);
-  if (file_exists($credentialsPath)) {
-    $accessToken = file_get_contents($credentialsPath);
-  } else {
-    // Request authorization from the user.
-    $authUrl = $client->createAuthUrl();
-    printf("Open the following link in your browser:\n%s\n", $authUrl);
-    print 'Enter verification code: ';
-    $authCode = trim(fgets(STDIN));
+			// echo $calendarListEntry->getSummary()."<br>\n";
 
-    // Exchange authorization code for an access token.
-    $accessToken = $client->authenticate($authCode);
+			 $events = $service->events->listEvents($calendarListEntry->id);
 
-    // Store the credentials to disk.
-    if(!file_exists(dirname($credentialsPath))) {
-      mkdir(dirname($credentialsPath), 0700, true);
+
+			 foreach ($events->getItems() as $event) {
+			     echo "-----".$event->getSummary()."<br>";
+			 }
+		 }
+		 $pageToken = $calendarList->getNextPageToken();
+		 if ($pageToken) {
+			 $optParams = array('pageToken' => $pageToken);
+			 $calendarList = $service->calendarList->listCalendarList($optParams);
+		 } else {
+			 break;
+		 }
+	 }
     }
-    file_put_contents($credentialsPath, $accessToken);
-    printf("Credentials saved to %s\n", $credentialsPath);
-  }
-  $client->setAccessToken($accessToken);
-
-  // Refresh the token if it's expired.
-  if ($client->isAccessTokenExpired()) {
-    $client->refreshToken($client->getRefreshToken());
-    file_put_contents($credentialsPath, $client->getAccessToken());
-  }
-  return $client;
-}
-
-/**
- * Expands the home directory alias '~' to the full path.
- * @param string $path the path to expand.
- * @return string the expanded path.
- */
-function expandHomeDirectory($path) {
-  $homeDirectory = getenv('HOME');
-  if (empty($homeDirectory)) {
-    $homeDirectory = getenv("HOMEDRIVE") . getenv("HOMEPATH");
-  }
-  return str_replace('~', realpath($homeDirectory), $path);
-}	
-
-
-
-
-
-	
-		//prepara l'evento meteo di oggi
-function prepare_event_meteo_oggi($data)
+    
+	//prepara l'evento meteo di oggi
+    function prepare_event_meteo_oggi($data)
     {
 		date_default_timezone_set('Europe/Rome');
 		$today = date("Y-m-d H:i:s");
@@ -204,6 +197,5 @@ function prepare_event_meteo_oggi($data)
 		  
 		  return $event_data;
     }
-      
     
 ?>
