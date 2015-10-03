@@ -6,17 +6,21 @@
     // Get these values from https://console.developers.google.com
     // Be sure to enable the Analytics API
     // ********************************************************    //
-    
-    define('CREDENTIALS_PATH', 'credential.json');
+
+    //nome applicazione da autorizzare
     define('APPLICATION_NAME', 'emergenzeprato');
+    //file scaricato da consol google dev.
 	define('CLIENT_SECRET_PATH', 'client_secret.json');
+	
 	define('SCOPES', implode(' ', array(
   Google_Service_Calendar::CALENDAR)
 ));
         
 
-//data getter
+	//data getter
 	$data=new getdata();
+	
+	//client per calendario
     $client=getClient(); 
 	$service = new Google_Service_Calendar($client);    
 	
@@ -62,18 +66,22 @@
 	
 
 
-/**
- * Returns an authorized API client.
- * @return Google_Client the authorized client object
- */
+ //Returns an authorized API client.
+ //@return Google_Client the authorized client object
+
 function getClient() {
+
+    //credenziali memorizzate
+  define('CREDENTIALS_PATH', 'credential.json');
+    
   $client = new Google_Client();
   $client->setApplicationName(APPLICATION_NAME);
   $client->setScopes(SCOPES);
   $client->setAuthConfigFile(CLIENT_SECRET_PATH);
   $client->setAccessType('offline');
-
-  // Load previously authorized credentials from a file.
+  $client->setApprovalPrompt('force');
+   
+ // Load previously authorized credentials from a file.
   $credentialsPath = expandHomeDirectory(CREDENTIALS_PATH);
   if (file_exists($credentialsPath)) {
     $accessToken = file_get_contents($credentialsPath);
@@ -94,21 +102,22 @@ function getClient() {
     file_put_contents($credentialsPath, $accessToken);
     printf("Credentials saved to %s\n", $credentialsPath);
   }
+  
   $client->setAccessToken($accessToken);
 
   // Refresh the token if it's expired.
   if ($client->isAccessTokenExpired()) {
-    $client->refreshToken($client->getRefreshToken());
+  	$new=$client->getRefreshToken();
+    $client->refreshToken($new);
     file_put_contents($credentialsPath, $client->getAccessToken());
   }
   return $client;
 }
 
-/**
- * Expands the home directory alias '~' to the full path.
- * @param string $path the path to expand.
- * @return string the expanded path.
- */
+
+  //Expands the home directory alias '~' to the full path.
+ //@param string $path the path to expand.
+ //@return string the expanded path.
 function expandHomeDirectory($path) {
   $homeDirectory = getenv('HOME');
   if (empty($homeDirectory)) {
@@ -117,12 +126,8 @@ function expandHomeDirectory($path) {
   return str_replace('~', realpath($homeDirectory), $path);
 }	
 
-
-
-
-
 	
-		//prepara l'evento meteo di oggi
+//prepara l'evento meteo di oggi
 function prepare_event_meteo_oggi($data)
     {
 		date_default_timezone_set('Europe/Rome');
