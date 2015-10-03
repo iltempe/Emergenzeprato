@@ -53,7 +53,7 @@ function check_alarm($data)
 				return false;
 			}
 			else{
-				if(new[0]!="" && new[1]!="")
+				if($new[0]!="" && $new[1]!="")
 				{
 					$logged=$today. "-ci sono aggiornamenti: ". $old[0]. "-" .$old[1]. " a ". $new[0]. "-" .$new[1];
 					file_put_contents(LOG_FILE, $logged, FILE_APPEND | LOCK_EX);
