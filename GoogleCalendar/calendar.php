@@ -1,20 +1,15 @@
 <?php    
     require_once 'Google/autoload.php';
     require_once '../getting.php';
-    
-    // ********************************************************  //
-    // Get these values from https://console.developers.google.com
-    // Be sure to enable the Analytics API
-    // ********************************************************    //
 
     //nome applicazione da autorizzare
     define('APPLICATION_NAME', 'emergenzeprato');
+   
     //file scaricato da consol google dev.
 	define('CLIENT_SECRET_PATH', 'client_secret.json');
-	
-	define('SCOPES', implode(' ', array(
-  Google_Service_Calendar::CALENDAR)
-));
+	//file del token di accesso a google
+	define('CREDENTIALS_PATH', 'credential.json');
+	define('SCOPES', implode(' ', array(Google_Service_Calendar::CALENDAR)));
         
 	//data getter
 	$data=new getdata();
@@ -71,8 +66,6 @@
 function getClient() {
 
     //credenziali memorizzate
-  define('CREDENTIALS_PATH', 'credential.json');
-  unlink('credential.json');
   $client = new Google_Client();
   $client->setApplicationName(APPLICATION_NAME);
   $client->setScopes(SCOPES);
