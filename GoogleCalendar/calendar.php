@@ -16,7 +16,6 @@
   Google_Service_Calendar::CALENDAR)
 ));
         
-
 	//data getter
 	$data=new getdata();
 	
@@ -73,7 +72,7 @@ function getClient() {
 
     //credenziali memorizzate
   define('CREDENTIALS_PATH', 'credential.json');
-    
+  unlink('credential.json');
   $client = new Google_Client();
   $client->setApplicationName(APPLICATION_NAME);
   $client->setScopes(SCOPES);
