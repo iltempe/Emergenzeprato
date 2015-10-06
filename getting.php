@@ -5,6 +5,8 @@
 //by MT 
 
 const PROT_CIV = 'http://page2rss.com/rss/28dbb41c5e425167e4d73bf1b00dd7cd';
+require_once __DIR__.'/./HTMLscraper/src/ScraperInterface.php';
+require_once __DIR__.'/./HTMLscraper/src/Scraper.php';
 
 
 class getdata {
@@ -465,6 +467,48 @@ public function update_prot($data)
 	// save the updated document
 	$info->asXML($prot_civ);
 
+}
+//preleva dati protezione civile da sito
+public function getting_actual_website_prot()
+{
+	$object = new Scraper();
+
+	//eseguo lo scrape della pagina
+	$html = file_get_contents(PROT_CIV_WEB);
+
+	// seleziono titolo
+	$titolo = $object->execute('#head1 h1', $html);	
+
+	//seleziono il contenuto
+	$descrizione = $object->execute('#main div div', $html);
+	
+	$descrizione=implode(" ",$descrizione[1]);
+
+
+	//rimuovo testo inutile
+	$descrizione=str_replace('Numero verde emergenze 800 30 15 30 
+    
+      
+        Gallerie  fotografiche
+      
+      
+        Video delle emergenze
+      
+      
+        Meteo a Prato  e dintorni
+        
+      
+        Comportamenti in caso di...', '',$descrizione);
+
+	$current=$titolo[0]. "\n". $descrizione;
+	//print_r($current);
+
+	return $current;
+
+}
+
+function array_delete($array, $element) {
+    return array_diff($array, [$element]);
 }
 
 

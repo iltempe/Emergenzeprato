@@ -4,44 +4,23 @@
 
 //main file to define and send alert
 //to be managed as CRON JOB to send alert 
+//NOT USED YET
 
-require_once __DIR__.'/./HTMLscraper/src/ScraperInterface.php';
-require_once __DIR__.'/./HTMLscraper/src/Scraper.php';
 require_once __DIR__.'/./settings.php';
+require_once __DIR__.'/./TelegramBot/broadcast2.php';
+require_once __DIR__.'/./TwitterBot/tweet_something.php';
 
+
+// file di appoggio per i dati
 $file = dirname(__FILE__).'/data/protezione_civile.txt';
 
-$object = new Scraper();
+//preparo il getter
+$data= new getdata();
 
-//eseguo lo scrape della pagina
-$html = file_get_contents(PROT_CIV);
+//prelevo il dato attuale dal sito
+$current=$data->getting_actual_website_prot();
 
-// seleziono titolo
-$titolo = $object->execute('#head1 h1', $html);	
-
-//seleziono il contenuto
-$descrizione = $object->execute('#main div div', $html);
-
-//rimuovo testo inutile
-$descrizione=array_delete($descrizione[1],'Numero verde emergenze 800 30 15 30 
-    
-      
-        Gallerie  fotografiche
-      
-      
-        Video delle emergenze
-      
-      
-        Meteo a Prato  e dintorni
-        
-      
-        Comportamenti in caso di...');
-
-$descrizione=implode("','",$descrizione);
-
-$current=$titolo[0]. "\n". $descrizione;
-
-//stampo il file (basta la prima volta)
+//stampo il file (la prima volta)
 if(!file_exists($file))
 {
 	file_put_contents($file, $current);
@@ -52,30 +31,26 @@ else{
 	$old=file_get_contents($file);
 	if($old!=$current)
 	{
-	
-		send_alert();
+		send_alert($current);
 		file_put_contents($file, $current);
-	
 	}
 	else
 	{
 		//se non ci sono aggiornamenti non fare nulla
-	
 	}
 }
 
-
-function send_alert()
+function send_alert($current)
 {
-
 	//inserire cosa fare in caso di invio allerta
 	print_r("invio allerta");
-
+	//TELEGRAM BROADCAST
+	broadcast_go($current);
+	
+	//TWEET
+	tweet_something($current,"..aggiornamento da #protezionecivile di #prato goo.gl/2wwPts #allertameteoTOS");
 }
 
-function array_delete($array, $element) {
-    return array_diff($array, [$element]);
-}
+
 			
 ?>
-

@@ -7,7 +7,7 @@
 
 include(dirname(dirname(__FILE__)).'/getting.php');
 include("Telegram.php");
-include("broadcast.php");
+//include("broadcast.php");
 
 class emergenzeprato{
  
