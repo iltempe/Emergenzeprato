@@ -7,7 +7,7 @@
 //NOT USED YET
 
 require_once __DIR__.'/./settings.php';
-require_once __DIR__.'/./TelegramBot/broadcast2.php';
+require_once __DIR__.'/./TelegramBot/broadcast_sender.php';
 require_once __DIR__.'/./TwitterBot/tweet_something.php';
 
 

@@ -4,9 +4,7 @@
 	Script to send message in broadcast to a list of all subscribers
 	
  */
-//NOT USED YET
-
-
+//TO BE USED WITH AN ALERT FILE IN AN APPLICATION (LIKE EMERGENZEPRATO)
 include(dirname(__FILE__).'/../settings.php');
 include('settings_t.php');
 include("emergenzeprato.php");
@@ -70,7 +68,7 @@ function sendMessagetoAll($db,$telegram,$type,$content){
         foreach ($user_uni as $users) {
         		
         		//COMMENT TO AVOID BRODCAST
-        		//$telegram->sendMessageAll($type, $users['user_id'], $content);
+        		$telegram->sendMessageAll($type, $users['user_id'], $content);
                 $i++;
                 }
         
