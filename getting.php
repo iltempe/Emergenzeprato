@@ -483,29 +483,69 @@ public function getting_actual_website_prot()
 	$descrizione = $object->execute('#main div div', $html);
 	
 	$descrizione=implode(" ",$descrizione[1]);
+	
+	$scraped1=$this->format_scrape($descrizione);
+	
+	//concateno il ritorno tutto
+	$current=$titolo[0]. "\n". $scraped1;
+	
+	$scraped2[0]=$this->format_scrape($current);
+	$scraped2[1]=$scraped1;
 
+	//print_r('SCRAPE--------\n'.$scraped2);
+	//print_r('--------------------------');
 
-	//rimuovo testo inutile
-	$descrizione=str_replace('Numero verde emergenze 800 30 15 30 
-    
-      
-        Gallerie  fotografiche
-      
-      
-        Video delle emergenze
-      
-      
-        Meteo a Prato  e dintorni
-        
-      
-        Comportamenti in caso di...', '',$descrizione);
+	//in 1 ritorno il titolo
+	//$current[1]=$titolo[0];
+	//print_r('TITOLO--------'.$current[1]);
+	//print_r('--------------------------');
 
-	$current=$titolo[0]. "\n". $descrizione;
-	//print_r($current);
+	//in 2 ritorno la descrizione
+	//$current[2]=$descrizione;
+	//print_r('ALL-------------'.$current[2]);
+	//print_r('--------------------------');
 
-	return $current;
-
+	return $scraped2;
 }
+
+public function format_scrape($scrape)
+{
+	//rimuovo testo inutile
+	$testo=str_replace('Numero verde emergenze', '',$scrape);
+	$testo=str_replace('800 30 15 30', '',$testo);
+	$testo=str_replace('Gallerie  fotografiche', '',$testo);
+	$testo=str_replace('Video delle emergenze', '',$testo);
+	$testo=str_replace('Meteo a Prato  e dintorni', '',$testo);
+	$testo=str_replace('Comportamenti in caso di...', '',$testo);
+	$testo = preg_replace('/^[ \t]*[\r\n]+/m', '', $testo);
+	
+	$find='var mese = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
+ var currentDate = new Date();
+ var day = currentDate.getDate();
+ var month = currentDate.getMonth();
+ var hours = currentDate.getHours();
+ var minutes = currentDate.getMinutes();
+ var year = currentDate.getFullYear();
+ document.write(day + " " + mese[month] + " " + year + " ore " + hours + ":" + minutes);
+
+ /* today = new Date(); 
+ document.write(today.toLocaleString().substr(0,1).toUpperCase() + today.toLocaleString().substr(1,(today.toLocaleString().length - 9))," ore ",today.toLocaleString().substr(today.toLocaleString().substr(0,(today.toLocaleString().length - 8)).length,5)); */ 
+ 
+ 
+ 
+';
+$pos = strpos($testo, $find);
+
+if($pos===false)
+
+{
+}else
+{
+	$testo=str_replace($find,'',$testo);
+}
+return $testo;
+}
+
 
 function array_delete($array, $element) {
     return array_diff($array, [$element]);

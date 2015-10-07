@@ -26,7 +26,7 @@ function tweet_something($data, $append)
 	$tweet = new TwitterOAuth($consumerKey, $consumerSecret, $accessToken, $accessTokenSecret);
 
 	//tweet qualcosa
-	$tweetMessage=limit_text_tweet($data,55,$append);
+	$tweetMessage=limit_text_tweet($data,59,$append);
 	$tweet->post('statuses/update', array('status' => $tweetMessage));
     print_r($tweetMessage);
 

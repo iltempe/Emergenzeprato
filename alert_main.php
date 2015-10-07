@@ -23,16 +23,19 @@ $current=$data->getting_actual_website_prot();
 //stampo il file (la prima volta)
 if(!file_exists($file))
 {
-	file_put_contents($file, $current);
+	file_put_contents($file, $current[0]);
 }
 else{
 	
 	//se il file esiste già fare il confronto
 	$old=file_get_contents($file);
-	if($old!=$current)
+	//print_r($old);
+	//print_r("----------");
+	//print_r($current[0]);
+	if($old!=$current[0])
 	{
 		send_alert($current);
-		file_put_contents($file, $current);
+		file_put_contents($file, $current[0]);
 	}
 	else
 	{
@@ -44,11 +47,14 @@ function send_alert($current)
 {
 	//inserire cosa fare in caso di invio allerta
 	print_r("invio allerta");
+	
 	//TELEGRAM BROADCAST
-	broadcast_go($current);
+	broadcast_go($current[0]);
+	//print_r($current[0]);
 	
 	//TWEET
-	tweet_something($current,"..aggiornamento da #protezionecivile di #prato goo.gl/2wwPts #allertameteoTOS");
+	tweet_something($current[1],"..aggiornamento #protezionecivile #prato goo.gl/2wwPts #allertameteoTOS");
+	//print_r($current[1]);
 }
 
 
