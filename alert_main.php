@@ -60,7 +60,7 @@ function send_alert($current)
 	//print_r($current[1]);
 	
 	//GROUPME
-	groupme_send("allerta!");
+	groupme_send($current[1]);
 	
 }
 
