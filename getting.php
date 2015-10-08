@@ -550,5 +550,6 @@ function array_delete($array, $element) {
 //http://data.biometeo.it/PRATO/PRATO_ITA.xml
 //http://www.sir.toscana.it/supports/xml/risks_395/".$today.".xml"
 //http://www.wunderground.com/weather/api/
+//http://cnt.rm.ingv.it/
 //https://github.com/alfcrisci/WU_weather_list/blob/master/WU_stations.csv
 ?>
