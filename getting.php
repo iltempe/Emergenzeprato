@@ -517,32 +517,23 @@ public function format_scrape($scrape)
 	$testo=str_replace('Video delle emergenze', '',$testo);
 	$testo=str_replace('Meteo a Prato  e dintorni', '',$testo);
 	$testo=str_replace('Comportamenti in caso di...', '',$testo);
-	$testo = preg_replace('/^[ \t]*[\r\n]+/m', '', $testo);
 	
-	$find='var mese = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
- var currentDate = new Date();
- var day = currentDate.getDate();
- var month = currentDate.getMonth();
- var hours = currentDate.getHours();
- var minutes = currentDate.getMinutes();
- var year = currentDate.getFullYear();
- document.write(day + " " + mese[month] + " " + year + " ore " + hours + ":" + minutes);
+	$testo=str_replace('var mese = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];', '',$testo);
+	$testo=str_replace('var currentDate = new Date();','',$testo);
+	$testo=str_replace('var day = currentDate.getDate();','',$testo);
+ 	$testo=str_replace('var month = currentDate.getMonth();','',$testo);
+  	$testo=str_replace('var hours = currentDate.getHours();','',$testo);
+  	$testo=str_replace('var minutes = currentDate.getMinutes();','',$testo);
+   	$testo=str_replace('var year = currentDate.getFullYear();','',$testo);
+   	$testo=str_replace('document.write(day + " " + mese[month] + " " + year + " ore " + hours + ":" + minutes);','',$testo);
+   	$testo=str_replace('/* today = new Date();','',$testo);
+   	$testo=str_replace(' document.write(today.toLocaleString().substr(0,1).toUpperCase() + today.toLocaleString().substr(1,(today.toLocaleString().length - 9))," ore ",today.toLocaleString().substr(today.toLocaleString().substr(0,(today.toLocaleString().length - 8)).length,5)); */ ','',$testo);
 
- /* today = new Date(); 
- document.write(today.toLocaleString().substr(0,1).toUpperCase() + today.toLocaleString().substr(1,(today.toLocaleString().length - 9))," ore ",today.toLocaleString().substr(today.toLocaleString().substr(0,(today.toLocaleString().length - 8)).length,5)); */ 
- 
- 
- 
-';
-$pos = strpos($testo, $find);
+	$testo = preg_replace('/^[ \t]*[\r\n]+/m', '', $testo);
+	$testo=preg_replace('/[\s]+/mu', ' ', $testo);
 
-if($pos===false)
+	$testo = str_replace(PHP_EOL,null,$testo);
 
-{
-}else
-{
-	$testo=str_replace($find,'',$testo);
-}
 return $testo;
 }
 

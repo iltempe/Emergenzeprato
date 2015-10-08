@@ -20,6 +20,8 @@ $data= new getdata();
 //prelevo il dato attuale dal sito
 $current=$data->getting_actual_website_prot();
 
+print_r($current[1]);
+
 //stampo il file (la prima volta)
 if(!file_exists($file))
 {
@@ -50,7 +52,7 @@ function send_alert($current)
 	
 	//TELEGRAM BROADCAST
 	broadcast_go($current[0]);
-	//print_r($current[0]);
+	
 	
 	//TWEET
 	tweet_something($current[1],"..aggiornamento #protezionecivile #prato goo.gl/2wwPts #allertameteoTOS");
