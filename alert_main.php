@@ -51,17 +51,24 @@ function send_alert($current)
 	//inserire cosa fare in caso di invio allerta
 	print_r("invio allerta");
 	
-	//TELEGRAM BROADCAST
-	broadcast_go($current[0]);
+
+	if($current[0]!="")
+	{
+		//TELEGRAM BROADCAST
+		broadcast_go($current[0]);
+	}
 	
-	
-	//TWEET
-	tweet_something($current[1],"..aggiornamento #protezionecivile #prato goo.gl/2wwPts #allertameteoTOS");
-	//print_r($current[1]);
-	
-	//GROUPME
-	groupme_send($current[1]);
-	
+	if($current[1]!="")
+	{
+		//TWEET
+		tweet_something($current[1],"..aggiornamento #protezionecivile #prato goo.gl/2wwPts #allertameteoTOS");
+		//print_r($current[1]);
+		
+		sleep(30);
+		
+		//GROUPME
+		groupme_send($current[1]. "..aggiornamento #protezionecivile #prato goo.gl/2wwPts #allertameteoTOS");
+	}
 }
 
 
