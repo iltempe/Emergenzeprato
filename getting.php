@@ -492,8 +492,8 @@ public function getting_actual_website_prot()
 	$scraped2[0]=$this->format_scrape($current);
 	$scraped2[1]=$scraped1;
 
-	//print_r('SCRAPE--------\n'.$scraped2);
-	//print_r('--------------------------');
+	//print_r('SCRAPE--------\n'.$scraped2[0]);
+	//print_r('--------------------------'.$scraped2[1]);
 
 	//in 1 ritorno il titolo
 	//$current[1]=$titolo[0];
@@ -517,6 +517,8 @@ public function format_scrape($scrape)
 	$testo=str_replace('Video delle emergenze', '',$testo);
 	$testo=str_replace('Meteo a Prato  e dintorni', '',$testo);
 	$testo=str_replace('Comportamenti in caso di...', '',$testo);
+	$testo=str_replace('Aggiornamenti dei giorni precedenti', '',$testo);
+
 	
 	$testo=str_replace('var mese = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];', '',$testo);
 	$testo=str_replace('var currentDate = new Date();','',$testo);
