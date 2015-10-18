@@ -7,10 +7,12 @@
 
 include(dirname(dirname(__FILE__)).'/getting.php');
 include("Telegram.php");
-//include("broadcast.php");
+include("OSMQueryLocation.php");
+
 
 class emergenzeprato{
  
+ //public $assembly_point_flag=false;
  function start($telegram, $db, $update,$data)
 	{
 		date_default_timezone_set('Europe/Rome');
@@ -37,7 +39,6 @@ class emergenzeprato{
 	{
 		date_default_timezone_set('Europe/Rome');
 		$today = date("Y-m-d H:i:s");
-
 		if ($text == "/start") {
 				$log=$today. ";new chat started;" .$chat_id. "\n";
 			}
@@ -170,17 +171,25 @@ class emergenzeprato{
 			}
 			elseif ($text=="aree di protezione" || $text=="/aree")
 			{
-				$reply = "Comando in sviluppo";
-				$content = array('chat_id' => $chat_id, 'text' => $reply);
-				$telegram->sendMessage($content);
-				$log=$today. ";aree request;" .$chat_id. "\n";	
+				//$reply = "Comando in sviluppo";
+				//$content = array('chat_id' => $chat_id, 'text' => $reply);
+				//$telegram->sendMessage($content);
+				//$log=$today. ";aree request;" .$chat_id. "\n";
+				$this->aree_di_protezione_manager($db,$telegram,$user_id,$chat_id,$location);
+				
+				//db
+				$statement = "INSERT INTO " . DB_TABLE_LOG ." (date, text, chat_id, user_id, location, reply_to_msg) VALUES ('" . $today . "','" . $text . "','" . $chat_id . "','" . $user_id . "','" . $location . "','" . $reply_to_msg . "')";
+            	$db->exec($statement);
+				exit;	
 
 			}
 
 			//----- gestione segnalazioni georiferite : togliere per non gestire le segnalazioni georiferite -----
 			elseif($location!=null)
 			{
-
+				//comunico l'area di assembramento più vicina
+				$this->aree_di_protezione_manager($db,$telegram,$user_id,$chat_id,$location);
+				//gestisco eventuali segnalazioni
 				$this->location_manager($db,$telegram,$user_id,$chat_id,$location);
 				
 				//db
@@ -238,7 +247,7 @@ class emergenzeprato{
 	//Crea la seconda tastiera
 	function create_keyboard_2($telegram, $chat_id)
 		{
-				$option = array(["notifiche on","notifiche off"],["aree di protezione","info"],["<-"]);
+				$option = array(["notifiche on","notifiche off"],["info","<-"]);
 				$keyb = $telegram->buildKeyBoard($option, $onetime=false);
 				$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "[seleziona un'opzione per essere aggiornato]");
 				$telegram->sendMessage($content);
@@ -252,7 +261,7 @@ class emergenzeprato{
 				$content = array('chat_id' => $chat_id, 'reply_markup' => $keyb, 'text' => "[seleziona la zona di cui vuoi sapere la temperatura]");
 				$telegram->sendMessage($content);
 		}
-		
+
 
 	//controlla la posizione e chiede quale segnalazione si deve fare
 	function location_manager($db,$telegram,$user_id,$chat_id,$location)
@@ -279,6 +288,61 @@ class emergenzeprato{
 				$statement = "INSERT INTO ". DB_TABLE_GEO. " (lat,lng,user,text,bot_request_message) VALUES ('" . $lat . "','" . $lng . "','" . $user_id . "',' ','". $id ."')";
             	$db->exec($statement);
 		}
+	
+	//segnala le aree di assmbramento definite dalla protezione civile di Prato
+	function aree_di_protezione_manager($db,$telegram,$user_id,$chat_id,$location)
+	{
+				
+				date_default_timezone_set('Europe/Rome');
+				$today = date("Y-m-d H:i:s");
+				
+
+				$lon=$location["longitude"];
+				$lat=$location["latitude"];
+				
+				//prelevo dati da OSM sulla base della mia posizione
+				$osm_data=give_osm_data($lat,$lon);
+			   
+				
+				//rispondo inviando i dati di Openstreetmap
+				$osm_data_dec = simplexml_load_string($osm_data);
+				
+				//per ogni nodo prelevo coordinate e nome
+				foreach ($osm_data_dec->node as $osm_element) {
+					$nome="";					
+					foreach ($osm_element->tag as $key) {
+
+						if ($key['k']=='name')
+						{
+							$nome=utf8_encode($key['v']);
+							$content = array('chat_id' => $chat_id, 'text' =>$nome);
+							$telegram->sendMessage($content);
+						}
+					}
+					//gestione musei senza il tag nome
+					if($nome=="")
+					{
+							$nome=utf8_encode("Punto di raccolta non identificato su Openstreetmap");
+							$content = array('chat_id' => $chat_id, 'text' =>$nome);
+							$telegram->sendMessage($content);
+					}					
+					$content_geo = array('chat_id' => $chat_id, 'latitude' =>$osm_element['lat'], 'longitude' =>$osm_element['lon']);
+					$telegram->sendLocation($content_geo);
+				 } 
+				
+				//crediti dei dati
+				if((bool)$osm_data_dec->node)
+				{
+					$content = array('chat_id' => $chat_id, 'text' => utf8_encode("Questo il punto di raccolta vicino a te (dati forniti tramite OpenStreetMap. Licenza ODbL © OpenStreetMap contributors)"));
+					$bot_request_message=$telegram->sendMessage($content);				
+				}else
+				{
+					$content = array('chat_id' => $chat_id, 'text' => utf8_encode("Non ci sono punti di raccolta vicini, mi spiace! Se ne conosci uno nelle vicinanze mappalo su www.openstreetmap.org"));
+					$bot_request_message=$telegram->sendMessage($content);	
+				}				
+}
+		
+		
 		
 }
 
