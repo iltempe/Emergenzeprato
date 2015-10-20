@@ -86,7 +86,7 @@ class emergenzeprato{
 				 Puoi:
 				 - selezionare un'opzione in basso,
 				 - digitare /on o /off nella chat per abilitare o disabilitare le notifiche automatiche (funzione in sperimentazione)
-				 - mappare una segnalazione inviando la posizione tramite la molletta in basso a sinistra.
+				 - sapere l'area di assembramento più vicina e mappare una segnalazione inviando la posizione tramite la molletta in basso a sinistra.
 				 Applicazione sviluppata da Matteo Tempestini (Agosto 2015). Licenza MIT.
 				 I dettagli e le fonti sono su : http://iltempe.github.io/Emergenzeprato/");
 				 $content = array('chat_id' => $chat_id, 'text' => $reply);
@@ -169,27 +169,14 @@ class emergenzeprato{
 				$this->create_keyboard($telegram,$chat_id);
 				exit;
 			}
-			elseif ($text=="aree di protezione" || $text=="/aree")
-			{
-				//$reply = "Comando in sviluppo";
-				//$content = array('chat_id' => $chat_id, 'text' => $reply);
-				//$telegram->sendMessage($content);
-				//$log=$today. ";aree request;" .$chat_id. "\n";
-				$this->aree_di_protezione_manager($db,$telegram,$user_id,$chat_id,$location);
-				
-				//db
-				$statement = "INSERT INTO " . DB_TABLE_LOG ." (date, text, chat_id, user_id, location, reply_to_msg) VALUES ('" . $today . "','" . $text . "','" . $chat_id . "','" . $user_id . "','" . $location . "','" . $reply_to_msg . "')";
-            	$db->exec($statement);
-				exit;	
-
-			}
 
 			//----- gestione segnalazioni georiferite : togliere per non gestire le segnalazioni georiferite -----
 			elseif($location!=null)
 			{
 				//comunico l'area di assembramento più vicina
 				$this->aree_di_protezione_manager($db,$telegram,$user_id,$chat_id,$location);
-				//gestisco eventuali segnalazioni
+				
+				//gestisco eventuali segnalazioni commentare se si vuole disabilitare la gestione delle segnalazioni
 				$this->location_manager($db,$telegram,$user_id,$chat_id,$location);
 				
 				//db
