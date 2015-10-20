@@ -1,7 +1,7 @@
 Emergenzeprato data manager
 ===========================
 
-Gestore fonti e dati per il progetto @emergenzeprato
+Codice sorgente del progetto @emergenzeprato , progetto sperimentale per gestione dati e informazioni rischi/meteo e allerte legate alla città di Prato.
 
 --------
 
