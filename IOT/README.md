@@ -1,4 +1,5 @@
-Emergenzeprato Bot for IOT (to use a megaphone connected to a RaspPI that use getting.php file to read opendata of risk and weather
+Emergenzeprato Bot for IOT 
+(to use a megaphone connected to a RaspPI that use getting.php file to read opendata of risk and weather
 ==============
 
 - Setup audio analog source on RaspPI with "amixer cset numid=3 1" in ssh connection
