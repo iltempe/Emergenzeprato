@@ -6,6 +6,7 @@ php start.php 'getupdates' to run getupdates.php
 
 After setup webhook is possible to use telegram managed by webhost
 
-Remember to dreate a sqlite database with tables specified in settings_t.php file (using admin_db.php). DB will be used to log and to make broadcast sending
+Remember to create a sqlite database with tables specified in settings_t.php file (using admin_db.php). DB will be used to log and to make broadcast sending
+this DB shall be composed by at least 2 tables (log for logging and user for broadcast messaging).
 
 
