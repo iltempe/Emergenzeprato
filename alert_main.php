@@ -11,9 +11,15 @@ require_once __DIR__.'/./TelegramBot/broadcast_sender.php';
 require_once __DIR__.'/./TwitterBot/tweet_something.php';
 require_once __DIR__.'/./GroupMeBot/bot.php';
 
+// include the Diff class
+require_once __DIR__.'/./class.Diff.php';
+
 
 // file di appoggio per i dati
 $file = dirname(__FILE__).'/data/protezione_civile.txt';
+//per loggare le differenze
+$file_diff = dirname(__FILE__).'/data/protezione_civile_diff.txt';
+
 
 //preparo il getter
 $data= new getdata();
