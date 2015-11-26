@@ -518,6 +518,7 @@ public function format_scrape($scrape)
 	$testo=str_replace('Meteo a Prato  e dintorni', '',$testo);
 	$testo=str_replace('Comportamenti in caso di...', '',$testo);
 	$testo=str_replace('Aggiornamenti dei giorni precedenti', '',$testo);
+	$testo=str_replace('Mercoledì 28 ottobre 2015', '',$testo);
 
 	
 	$testo=str_replace('var mese = ["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];', '',$testo);
