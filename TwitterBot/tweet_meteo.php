@@ -1,3 +1,5 @@
+#!/usr/bin/php
+
 <?php
 
 //Tweet previsioni per meteo e biometeo di oggi o domani
@@ -19,7 +21,7 @@ date_default_timezone_set('Europe/Rome');
 $today = date("Y-m-d H:i:s");
 
 //esegue la funzione
-	$when=$argv[1];
+$when=$argv[1];
 
 $data=new getdata();
 
@@ -28,8 +30,6 @@ tweet_meteo($when, $data);
 //log
 $log=$today. ";" .$xmlFile." eseguito tweet meteo\n";
 file_put_contents($logfile, $log, FILE_APPEND | LOCK_EX);
-		
-
 
 //prepara i tweet e li invia a distanza di 35 secondi circa
 function tweet_meteo($when="oggi", $data)
@@ -39,10 +39,14 @@ function tweet_meteo($when="oggi", $data)
 	$consumerSecret = CONSUMER_SECRET;
 	$accessToken = ACCESS_TOKEN;
 	$accessTokenSecret = ACCESS_TOKEN_SECRET;
+	
+	$meteo_tweet_text="Previsioni #meteo #Lamma #prato per ". $when;
+	$biometeo_tweet_text="Previsioni #biometeo #Lamma #prato per ". $when;
 
 
-	$lamma_tweet=("Previsioni " .$when. " #meteo #Lamma #prato: " .$data->lamma_text($when));
-	$biometeo_ita_tweet=("Previsioni " .$when. " #Biometeo #prato: " .$data->biometeo_ita_text($when));
+	$lamma_tweet=($meteo_tweet_text. $data->lamma_text($when));
+	$biometeo_ita_tweet=($biometeo_tweet_text. $data->lamma_text($when));
+	
 	if($when=="domani")
 	{
 		$biometeo_eng_tweet=("Forecast tomorrow #Biometeo #prato: " .$data->biometeo_eng_text($when));
