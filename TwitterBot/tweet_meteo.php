@@ -40,8 +40,8 @@ function tweet_meteo($when="oggi", $data)
 	$accessToken = ACCESS_TOKEN;
 	$accessTokenSecret = ACCESS_TOKEN_SECRET;
 	
-	$meteo_tweet_text="Previsioni #meteo #Lamma #prato per ". $when;
-	$biometeo_tweet_text="Previsioni #biometeo #Lamma #prato per ". $when;
+	$meteo_tweet_text="Previsioni #meteo #Lamma #prato per ". strval($when). " ";
+	$biometeo_tweet_text="Previsioni #biometeo #Lamma #prato per ". strval($when). " ";
 
 
 	$lamma_tweet=($meteo_tweet_text. $data->lamma_text($when));
