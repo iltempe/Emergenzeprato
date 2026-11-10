@@ -345,6 +345,19 @@
   };
   const map=L.map('map',{scrollWheelZoom:false}).setView([43.93,11.10],11);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(map);
+  // Radar pioggia (RainViewer) — overlay animato
+  const radarCtl=L.control({position:'bottomleft'});
+  radarCtl.onAdd=function(){const d=L.DomUtil.create('div');d.style.cssText='background:rgba(23,20,15,.78);color:#f7f3ea;font:600 11px/1.3 "IBM Plex Mono",monospace;padding:5px 9px;border-radius:7px';d.id='radar-lab';d.textContent='🌧️ radar…';return d;};
+  radarCtl.addTo(map);
+  fetch('https://api.rainviewer.com/public/weather-maps.json').then(r=>r.json()).then(api=>{
+    const host=api.host, fr=[...(api.radar&&api.radar.past||[])];
+    const lab=document.getElementById('radar-lab');
+    if(!fr.length){if(lab)lab.textContent='🌧️ radar n/d';return;}
+    const f=fr[fr.length-1]; // ultimo frame osservato
+    L.tileLayer(`${host}${f.path}/256/{z}/{x}/{y}/2/1_1.png`,{opacity:0.55,tileSize:256,zIndex:5,maxNativeZoom:8,minZoom:4,maxZoom:18,attribution:'&copy; RainViewer'}).addTo(map);
+    const t=new Date(f.time*1000);
+    if(lab)lab.textContent='🌧️ radar '+t.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+  }).catch(()=>{const lab=document.getElementById('radar-lab');if(lab)lab.textContent='🌧️ radar n/d';});
   const pts=[];
   const mk=(ll,color,radius,popup)=>{L.circleMarker(ll,{radius,color:'#fff',weight:1.5,fillColor:color,fillOpacity:.9}).addTo(map).bindPopup(popup);pts.push(ll);};
   (async function(){
