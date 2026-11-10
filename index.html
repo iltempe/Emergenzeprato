@@ -72,6 +72,9 @@
   .pcbanner{border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:.95rem;line-height:1.45;color:var(--ink);border:1px solid rgba(0,0,0,.12)}
   .pcbanner .pch{font-weight:800;text-transform:uppercase;letter-spacing:.02em;font-size:.82rem;display:block;margin-bottom:4px}
   .pcbanner a{color:inherit;font-weight:700;text-decoration:underline;white-space:nowrap}
+  .dpccrit{margin-top:14px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:10px;padding:12px 15px;font-size:.9rem;line-height:1.45}
+  .dpccrit b{display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.03em;color:var(--red);margin-bottom:5px}
+  .dpccrit .cr{margin:2px 0}.dpccrit a{color:var(--ink);font-weight:700}
   .livegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(152px,1fr));gap:10px}
   .tile{background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 13px;display:flex;flex-direction:column;gap:3px}
   .tile .tl{font-size:.72rem;color:var(--muted);letter-spacing:.02em}
@@ -176,6 +179,7 @@
     <div class="livegrid" id="live-grid">
       <div class="tile skel">Carico i dati dalle fonti…</div>
     </div>
+    <div id="dpc-crit" class="dpccrit" style="display:none"></div>
   </div>
 </section>
 
@@ -312,6 +316,22 @@
         pcb.style.background=bg; pcb.style.display='block';
         pcb.innerHTML=`<span class="pch">${em} Protezione Civile Prato — bollettino in corso</span>${(pc[0].testo||'').replace(/</g,'&lt;')} &nbsp;<a href="https://emergenze.comune.prato.it/mirror_emergenze/it/pagina2413.html" target="_blank" rel="noopener">pagina ufficiale ↗</a>`;
       } else { pcb.style.display='none'; }
+    }
+    // Criticità DPC (dettagli per la zona di Prato) se allerta attiva
+    const dcrit=document.getElementById('dpc-crit');
+    if(dcrit){
+      const o=(dpc[0]?.colore_oggi||'').toLowerCase(), dm=(dpc[0]?.colore_domani||'').toLowerCase();
+      const det=dpc[0]?.dettagli;
+      const pick=g=>[['Idraulico',g&&g.idraulico],['Temporali',g&&g.temporali],['Idrogeologico',g&&g.idrogeologico]].filter(x=>x[1]&&!/NESSUNA ALLERTA/i.test(x[1]));
+      if(dpc.length && det && (o!=='verde'||dm!=='verde')){
+        let tipi=pick(det.oggi), giorno='oggi';
+        if(!tipi.length){tipi=pick(det.domani); giorno='domani';}
+        const pdf=(det.info||{}).link_pdf;
+        let h=`<b>🚨 Criticità DPC (${giorno}) — zona Bisenzio e Ombrone Pt</b>`;
+        h+= tipi.length ? tipi.map(x=>`<div class="cr">• <strong>${x[0]}</strong>: ${String(x[1]).replace(/</g,'&lt;')}</div>`).join('') : '<div class="cr">Vedi codice colore oggi/domani qui sopra.</div>';
+        if(pdf) h+=`<div class="cr" style="margin-top:6px"><a href="${pdf}" target="_blank" rel="noopener">📄 Bollettino di criticità DPC (fonte ufficiale) ↗</a></div>`;
+        dcrit.innerHTML=h; dcrit.style.display='block';
+      } else { dcrit.style.display='none'; }
     }
     const T=[];
     if(stato.length){const rk={calma:0,soglia1:1,soglia2:2};let w='calma',t=null;stato.forEach(s=>{if((rk[s.ultimo_stato]??0)>(rk[w]??0))w=s.ultimo_stato;if(!t||s.aggiornato_il>t)t=s.aggiornato_il;});
