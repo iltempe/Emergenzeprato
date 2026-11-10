@@ -289,7 +289,7 @@
   const rel=(iso)=>{if(!iso)return'';const t=new Date(iso).getTime();if(isNaN(t))return'';const s=(Date.now()-t)/1000;if(s<90)return'adesso';if(s<3600)return Math.round(s/60)+' min fa';if(s<86400)return Math.round(s/3600)+' h fa';return Math.round(s/86400)+' g fa';};
   const col={verde:'#2e9e5b',green:'#2e9e5b',giallo:'#f4c430',arancione:'#e8912a',rosso:'#e5342b'};
   const cap=s=>s?s.charAt(0).toUpperCase()+s.slice(1):s;
-  const tile=(ic,label,value,time,dot)=>`<div class="tile"><span class="tl">${ic} ${label}</span><span class="tv">${dot?`<span class="dot" style="background:${dot}"></span>`:''}${value}</span><span class="tt">${time?'agg. '+time:''}</span></div>`;
+  const tile=(ic,label,value,time,dot)=>`<div class="tile"><span class="tl">${ic} ${label}</span><span class="tv">${dot?`<span class="dot" style="background:${dot}"></span>`:''}${value}</span><span class="tt">${time?(/\bfa\b|adesso/.test(time)?'agg. '+time:time):''}</span></div>`;
   const MAXAGE=5*3600; // mostra solo update delle ultime 5 ore (salvo allerte attive)
   const fresh=iso=>{const t=new Date(iso).getTime();return !isNaN(t)&&(Date.now()-t)/1000<=MAXAGE;};
   async function load(){
@@ -297,14 +297,14 @@
       get('em_stato',10),get('em_pluvio',6),get('em_allerta_dpc',1),get('em_sismi',1),get('em_meteo',1),get('em_flood',1),get('em_pc_stato',1),get('em_lamma',1)]);
     const T=[];
     if(stato.length){const rk={calma:0,soglia1:1,soglia2:2};let w='calma',t=null;stato.forEach(s=>{if((rk[s.ultimo_stato]??0)>(rk[w]??0))w=s.ultimo_stato;if(!t||s.aggiornato_il>t)t=s.aggiornato_il;});
-      if(fresh(t)||w!=='calma'){const lbl=w==='calma'?'tutti sotto soglia':w==='soglia1'?'sopra guardia':'sopra allarme';T.push(tile('🌊','Fiumi',lbl,rel(t),w==='calma'?col.verde:w==='soglia1'?col.arancione:col.rosso));}}
+      if(fresh(t)||w!=='calma'){const lbl=w==='calma'?'tutti sotto soglia':w==='soglia1'?'sopra guardia':'sopra allarme';T.push(tile('🌊','Fiumi',lbl,fresh(t)?rel(t):'in corso',w==='calma'?col.verde:w==='soglia1'?col.arancione:col.rosso));}}
     if(pluvio.length&&fresh(pluvio[0].inserito_il)){const mx=Math.max(...pluvio.map(p=>p.max_mm||0));T.push(tile('🌧️','Pioggia a monte',mx.toFixed(1)+' mm',rel(pluvio[0].inserito_il),mx>=40?col.arancione:col.verde));}
     if(dpc.length){const o=(dpc[0].colore_oggi||'').toLowerCase(),dm=(dpc[0].colore_domani||'').toLowerCase();const rk={verde:0,giallo:1,arancione:2,rosso:3};const w=(rk[dm]??0)>(rk[o]??0)?dm:o;
-      if(fresh(dpc[0].inserito_il)||w!=='verde'){const val=o===dm?cap(o):`oggi ${cap(o)} · domani ${cap(dm)}`;T.push(tile('🚨','Allerta DPC',val,rel(dpc[0].inserito_il),col[w]||'#999'));}}
+      if(fresh(dpc[0].inserito_il)||w!=='verde'){const val=o===dm?cap(o):`oggi ${cap(o)} · domani ${cap(dm)}`;T.push(tile('🚨','Allerta DPC',val,fresh(dpc[0].inserito_il)?rel(dpc[0].inserito_il):'in corso',col[w]||'#999'));}}
     if(sismi.length&&fresh(sismi[0].ts)){const s=sismi[0];const d=new Date(s.ts);const dt=isNaN(d.getTime())?'':d.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit'});T.push(tile('🌍','Ultimo sisma','M'+s.mag+' · '+String(s.luogo||'').split(' ').slice(-2).join(' '),rel(s.ts)));}
     if(meteo.length&&fresh(meteo[0].inserito_il)){T.push(tile('⛈️','Pioggia 12h',(meteo[0].pioggia_12h_mm??0)+' mm',rel(meteo[0].inserito_il)));}
     if(flood.length&&fresh(flood[0].inserito_il)){T.push(tile('📈','Portata fiume',(flood[0].discharge_oggi??0)+' m³/s',rel(flood[0].inserito_il)));}
-    if(pc.length){const c=(pc[0].colore||'').toLowerCase();if(fresh(pc[0].aggiornato_il)||c!=='green'){const lab={green:'Normalità',yellow:'Allerta Gialla',orange:'Allerta Arancione',red:'Allerta Rossa'};const dc={green:col.verde,yellow:col.giallo,orange:col.arancione,red:col.rosso};T.push(tile('🛡️','Prot. Civile',lab[c]||cap(c),rel(pc[0].aggiornato_il),dc[c]||col.verde));}}
+    if(pc.length){const c=(pc[0].colore||'').toLowerCase();if(fresh(pc[0].aggiornato_il)||c!=='green'){const lab={green:'Normalità',yellow:'Allerta Gialla',orange:'Allerta Arancione',red:'Allerta Rossa'};const dc={green:col.verde,yellow:col.giallo,orange:col.arancione,red:col.rosso};T.push(tile('🛡️','Prot. Civile',lab[c]||cap(c),fresh(pc[0].aggiornato_il)?rel(pc[0].aggiornato_il):'in corso',dc[c]||col.verde));}}
     if(lamma.length&&fresh(lamma[0].inserito_il)){T.push(tile('🗓️','Previsione','5 giorni',rel(lamma[0].inserito_il)));}
     grid.innerHTML=T.join('')||'<div class="tile skel">nessun aggiornamento nelle ultime 5 ore</div>';
     upd.textContent='solo ultime 5 ore · caricato '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
