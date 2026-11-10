@@ -44,6 +44,19 @@
   .cta.ghost{background:transparent;color:var(--paper);border:1px solid rgba(247,243,234,.35);box-shadow:none;margin-left:10px}
   .cta.ghost:hover{border-color:var(--yellow);color:var(--yellow);transform:none}
 
+  /* LIVE STATUS BAR */
+  .livebar{background:var(--paper-2);border-bottom:1px solid var(--line);padding:20px 0}
+  .livehead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .livehead .kicker{margin:0}
+  .liveupd{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--muted)}
+  .livegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(152px,1fr));gap:10px}
+  .tile{background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 13px;display:flex;flex-direction:column;gap:3px}
+  .tile .tl{font-size:.72rem;color:var(--muted);letter-spacing:.02em}
+  .tile .tv{font-weight:600;font-size:1.02rem;line-height:1.2}
+  .tile .tt{font-family:"IBM Plex Mono",monospace;font-size:.66rem;color:var(--muted)}
+  .tile.skel{color:var(--muted);align-items:center;justify-content:center;min-height:54px}
+  .dot{width:9px;height:9px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:3px}
+
   /* SECTIONS */
   section{padding:58px 0}
   .kicker{font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
@@ -117,6 +130,18 @@
   </div>
 </header>
 
+<section class="livebar" id="stato-live">
+  <div class="wrap">
+    <div class="livehead">
+      <span class="kicker">Stato live · ultimo aggiornamento</span>
+      <span class="liveupd" id="live-updated">lettura in corso…</span>
+    </div>
+    <div class="livegrid" id="live-grid">
+      <div class="tile skel">Carico i dati dalle fonti…</div>
+    </div>
+  </div>
+</section>
+
 <section>
   <div class="wrap">
     <div class="kicker">Cosa fa</div>
@@ -187,8 +212,11 @@
 <section class="disc">
   <div class="wrap">
     <span class="big">⚠️</span>
-    <p>Dati acquisiti in tempo reale e <strong>non validati</strong>: strumento informativo in più, non ufficiale.
-    In emergenza fa sempre fede la <strong>Protezione Civile</strong> (IT-Alert, Comune di Prato, CFR Toscana).</p>
+    <div>
+      <p>Dati acquisiti in tempo reale e <strong>non validati</strong>: strumento informativo in più, non ufficiale.
+      In emergenza fa sempre fede la <strong>Protezione Civile</strong> (IT-Alert, Comune di Prato, CFR Toscana).</p>
+      <p style="margin-top:12px">👉 <a href="https://emergenze.comune.prato.it/mirror_emergenze/it/pagina2413.html" target="_blank" rel="noopener" style="color:var(--ink);font-weight:700;text-decoration:underline">In caso di emergenza consulta la pagina Emergenze della Protezione Civile di Prato →</a></p>
+    </div>
   </div>
 </section>
 
@@ -202,6 +230,37 @@
     <div class="sig">progetto civico di Matteo Tempestini · @iltempe</div>
   </div>
 </footer>
+
+<!-- Stato live: legge l'open data (CORS) e riempie il pannello in alto -->
+<script>
+(function(){
+  const OD="https://pfzfegfaagzeupopqaqj.supabase.co/functions/v1/opendata";
+  const grid=document.getElementById('live-grid');
+  const upd=document.getElementById('live-updated');
+  const get=async(ds,limit=1)=>{try{const r=await fetch(`${OD}?dataset=${ds}&limit=${limit}`);const j=await r.json();return j.dati||[];}catch(e){return[];}};
+  const rel=(iso)=>{if(!iso)return'';const t=new Date(iso).getTime();if(isNaN(t))return'';const s=(Date.now()-t)/1000;if(s<90)return'adesso';if(s<3600)return Math.round(s/60)+' min fa';if(s<86400)return Math.round(s/3600)+' h fa';return Math.round(s/86400)+' g fa';};
+  const col={verde:'#2e9e5b',green:'#2e9e5b',giallo:'#f4c430',arancione:'#e8912a',rosso:'#e5342b'};
+  const cap=s=>s?s.charAt(0).toUpperCase()+s.slice(1):s;
+  const tile=(ic,label,value,time,dot)=>`<div class="tile"><span class="tl">${ic} ${label}</span><span class="tv">${dot?`<span class="dot" style="background:${dot}"></span>`:''}${value}</span><span class="tt">${time?'agg. '+time:''}</span></div>`;
+  async function load(){
+    const [stato,pluvio,dpc,sismi,meteo,flood,pc,lamma]=await Promise.all([
+      get('em_stato',10),get('em_pluvio',6),get('em_allerta_dpc',1),get('em_sismi',1),get('em_meteo',1),get('em_flood',1),get('em_pc_stato',1),get('em_lamma',1)]);
+    const T=[];
+    if(stato.length){const rk={calma:0,soglia1:1,soglia2:2};let w='calma',t=null;stato.forEach(s=>{if((rk[s.ultimo_stato]??0)>(rk[w]??0))w=s.ultimo_stato;if(!t||s.aggiornato_il>t)t=s.aggiornato_il;});
+      const lbl=w==='calma'?'tutti sotto soglia':w==='soglia1'?'sopra guardia':'sopra allarme';T.push(tile('🌊','Fiumi',lbl,rel(t),w==='calma'?col.verde:w==='soglia1'?col.arancione:col.rosso));}
+    if(pluvio.length){const mx=Math.max(...pluvio.map(p=>p.max_mm||0));T.push(tile('🌧️','Pioggia a monte',mx.toFixed(1)+' mm',rel(pluvio[0].inserito_il),mx>=40?col.arancione:col.verde));}
+    if(dpc.length){const c=(dpc[0].colore_oggi||'').toLowerCase();T.push(tile('🚨','Allerta DPC',cap(c)||'n.d.',rel(dpc[0].inserito_il),col[c]||'#999'));}
+    if(sismi.length){const s=sismi[0];const d=new Date(s.ts);const dt=isNaN(d.getTime())?'':d.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit'});T.push(tile('🌍','Ultimo sisma','M'+s.mag+' · '+String(s.luogo||'').split(' ').slice(-2).join(' '),dt));}
+    if(meteo.length){T.push(tile('⛈️','Pioggia 12h',(meteo[0].pioggia_12h_mm??0)+' mm',rel(meteo[0].inserito_il)));}
+    if(flood.length){T.push(tile('📈','Portata fiume',(flood[0].discharge_oggi??0)+' m³/s',rel(flood[0].inserito_il)));}
+    if(pc.length){const c=(pc[0].colore||'').toLowerCase();T.push(tile('🛡️','Prot. Civile',c==='green'?'Normalità':cap(c),rel(pc[0].aggiornato_il),col[c]||col.green));}
+    if(lamma.length){T.push(tile('🗓️','Previsione','5 giorni',rel(lamma[0].inserito_il)));}
+    grid.innerHTML=T.join('')||'<div class="tile skel">dati non disponibili ora</div>';
+    upd.textContent='fonte: open data · caricato '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+  }
+  load();
+})();
+</script>
 
 <!-- Analytics: GoatCounter (privacy-friendly, senza cookie) -->
 <script data-goatcounter="https://emergenzeprato.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
