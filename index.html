@@ -5,12 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EmergenzePrato — allerta idro-meteo per Prato</title>
 <meta name="description" content="Canale Telegram che avvisa in tempo reale su fiumi, meteo, allerte Protezione Civile e terremoti nella piana pratese. Dati pubblici, aperti e azionabili.">
-<meta property="og:title" content="EmergenzePrato">
-<meta property="og:description" content="Allerta idro-meteo e rischi per Prato, sul canale Telegram. Dati aperti.">
+<meta name="keywords" content="Prato, allerta meteo, fiumi, Bisenzio, Ombrone, Protezione Civile, alluvione, terremoti, open data, allerta idrogeologica">
+<meta name="author" content="Matteo Tempestini">
+<meta name="theme-color" content="#17140f">
+<link rel="canonical" href="https://iltempe.github.io/Emergenzeprato/">
+<!-- Favicon (SVG inline: goccia su ink) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2317140f'/%3E%3Cpath d='M32 13c-9 12-13 20-13 27a13 13 0 0 0 26 0c0-7-4-15-13-27z' fill='%23e5342b'/%3E%3Ccircle cx='32' cy='42' r='4.5' fill='%23f4c430'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2317140f'/%3E%3Cpath d='M32 13c-9 12-13 20-13 27a13 13 0 0 0 26 0c0-7-4-15-13-27z' fill='%23e5342b'/%3E%3Ccircle cx='32' cy='42' r='4.5' fill='%23f4c430'/%3E%3C/svg%3E">
+<!-- Open Graph / social -->
+<meta property="og:site_name" content="EmergenzePrato">
+<meta property="og:title" content="EmergenzePrato — allerta idro-meteo per Prato">
+<meta property="og:description" content="Avvisi in tempo reale su fiumi, pioggia, allerte Protezione Civile e terremoti nella piana pratese. Sul canale Telegram, con dati aperti.">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:url" content="https://iltempe.github.io/Emergenzeprato/">
+<meta property="og:image" content="https://iltempe.github.io/Emergenzeprato/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="EmergenzePrato — allerta idro-meteo per Prato">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="EmergenzePrato — allerta idro-meteo per Prato">
+<meta name="twitter:description" content="Avvisi in tempo reale su fiumi, pioggia, allerte e terremoti a Prato. Canale Telegram + dati aperti.">
+<meta name="twitter:image" content="https://iltempe.github.io/Emergenzeprato/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Work+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <style>
   :root{
     --ink:#17140f; --ink-2:#2c2822; --paper:#f7f3ea; --paper-2:#efe8d8;
@@ -56,6 +76,15 @@
   .tile .tt{font-family:"IBM Plex Mono",monospace;font-size:.66rem;color:var(--muted)}
   .tile.skel{color:var(--muted);align-items:center;justify-content:center;min-height:54px}
   .dot{width:9px;height:9px;border-radius:50%;display:inline-block;vertical-align:middle;margin-right:3px}
+
+  /* MAP */
+  .mapsec{padding:46px 0 10px;background:#fff}
+  .mapsec .wrap{margin-bottom:16px}
+  #map{height:460px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);z-index:0;background:var(--paper-2)}
+  .leaflet-popup-content{font-family:"Work Sans",sans-serif;font-size:.86rem;line-height:1.4}
+  .maplegend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:.8rem;color:var(--muted)}
+  .maplegend span{display:inline-flex;align-items:center;gap:6px}
+  .maplegend i{width:11px;height:11px;border-radius:50%;display:inline-block;border:1.5px solid #fff;box-shadow:0 0 0 1px var(--line)}
 
   /* SECTIONS */
   section{padding:58px 0}
@@ -139,6 +168,25 @@
     <div class="livegrid" id="live-grid">
       <div class="tile skel">Carico i dati dalle fonti…</div>
     </div>
+  </div>
+</section>
+
+<section class="mapsec" id="mappa">
+  <div class="wrap">
+    <div class="kicker">Mappa</div>
+    <h2 style="font-size:clamp(1.7rem,4vw,2.4rem)">Ultimi rilievi sulla mappa</h2>
+    <p class="sub">Stazioni dei fiumi, pluviometri a monte del Bisenzio e terremoti recenti attorno a Prato.</p>
+  </div>
+  <div id="map"></div>
+  <div class="wrap">
+    <div class="maplegend">
+      <span><i style="background:#2e9e5b"></i> sotto soglia / poca pioggia</span>
+      <span><i style="background:#e8912a"></i> attenzione</span>
+      <span><i style="background:#e5342b"></i> allarme / pioggia intensa</span>
+      <span><i style="background:#2f7fd1"></i> pluviometro</span>
+      <span><i style="background:#f4c430"></i> terremoto</span>
+    </div>
+    <p class="note" style="color:var(--muted);margin-top:10px">Posizioni delle stazioni indicative; terremoti con coordinate reali INGV. Fonte: open data EmergenzePrato.</p>
   </div>
 </section>
 
@@ -242,23 +290,53 @@
   const col={verde:'#2e9e5b',green:'#2e9e5b',giallo:'#f4c430',arancione:'#e8912a',rosso:'#e5342b'};
   const cap=s=>s?s.charAt(0).toUpperCase()+s.slice(1):s;
   const tile=(ic,label,value,time,dot)=>`<div class="tile"><span class="tl">${ic} ${label}</span><span class="tv">${dot?`<span class="dot" style="background:${dot}"></span>`:''}${value}</span><span class="tt">${time?'agg. '+time:''}</span></div>`;
+  const MAXAGE=5*3600; // mostra solo update delle ultime 5 ore (salvo allerte attive)
+  const fresh=iso=>{const t=new Date(iso).getTime();return !isNaN(t)&&(Date.now()-t)/1000<=MAXAGE;};
   async function load(){
     const [stato,pluvio,dpc,sismi,meteo,flood,pc,lamma]=await Promise.all([
       get('em_stato',10),get('em_pluvio',6),get('em_allerta_dpc',1),get('em_sismi',1),get('em_meteo',1),get('em_flood',1),get('em_pc_stato',1),get('em_lamma',1)]);
     const T=[];
     if(stato.length){const rk={calma:0,soglia1:1,soglia2:2};let w='calma',t=null;stato.forEach(s=>{if((rk[s.ultimo_stato]??0)>(rk[w]??0))w=s.ultimo_stato;if(!t||s.aggiornato_il>t)t=s.aggiornato_il;});
-      const lbl=w==='calma'?'tutti sotto soglia':w==='soglia1'?'sopra guardia':'sopra allarme';T.push(tile('🌊','Fiumi',lbl,rel(t),w==='calma'?col.verde:w==='soglia1'?col.arancione:col.rosso));}
-    if(pluvio.length){const mx=Math.max(...pluvio.map(p=>p.max_mm||0));T.push(tile('🌧️','Pioggia a monte',mx.toFixed(1)+' mm',rel(pluvio[0].inserito_il),mx>=40?col.arancione:col.verde));}
-    if(dpc.length){const o=(dpc[0].colore_oggi||'').toLowerCase(),dm=(dpc[0].colore_domani||'').toLowerCase();const rk={verde:0,giallo:1,arancione:2,rosso:3};const w=(rk[dm]??0)>(rk[o]??0)?dm:o;const val=o===dm?cap(o):`oggi ${cap(o)} · domani ${cap(dm)}`;T.push(tile('🚨','Allerta DPC',val,rel(dpc[0].inserito_il),col[w]||'#999'));}
-    if(sismi.length){const s=sismi[0];const d=new Date(s.ts);const dt=isNaN(d.getTime())?'':d.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit'});T.push(tile('🌍','Ultimo sisma','M'+s.mag+' · '+String(s.luogo||'').split(' ').slice(-2).join(' '),dt));}
-    if(meteo.length){T.push(tile('⛈️','Pioggia 12h',(meteo[0].pioggia_12h_mm??0)+' mm',rel(meteo[0].inserito_il)));}
-    if(flood.length){T.push(tile('📈','Portata fiume',(flood[0].discharge_oggi??0)+' m³/s',rel(flood[0].inserito_il)));}
-    if(pc.length){const c=(pc[0].colore||'').toLowerCase();const lab={green:'Normalità',yellow:'Allerta Gialla',orange:'Allerta Arancione',red:'Allerta Rossa'};const dc={green:col.verde,yellow:col.giallo,orange:col.arancione,red:col.rosso};T.push(tile('🛡️','Prot. Civile',lab[c]||cap(c),rel(pc[0].aggiornato_il),dc[c]||col.verde));}
-    if(lamma.length){T.push(tile('🗓️','Previsione','5 giorni',rel(lamma[0].inserito_il)));}
-    grid.innerHTML=T.join('')||'<div class="tile skel">dati non disponibili ora</div>';
-    upd.textContent='fonte: open data · caricato '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+      if(fresh(t)||w!=='calma'){const lbl=w==='calma'?'tutti sotto soglia':w==='soglia1'?'sopra guardia':'sopra allarme';T.push(tile('🌊','Fiumi',lbl,rel(t),w==='calma'?col.verde:w==='soglia1'?col.arancione:col.rosso));}}
+    if(pluvio.length&&fresh(pluvio[0].inserito_il)){const mx=Math.max(...pluvio.map(p=>p.max_mm||0));T.push(tile('🌧️','Pioggia a monte',mx.toFixed(1)+' mm',rel(pluvio[0].inserito_il),mx>=40?col.arancione:col.verde));}
+    if(dpc.length){const o=(dpc[0].colore_oggi||'').toLowerCase(),dm=(dpc[0].colore_domani||'').toLowerCase();const rk={verde:0,giallo:1,arancione:2,rosso:3};const w=(rk[dm]??0)>(rk[o]??0)?dm:o;
+      if(fresh(dpc[0].inserito_il)||w!=='verde'){const val=o===dm?cap(o):`oggi ${cap(o)} · domani ${cap(dm)}`;T.push(tile('🚨','Allerta DPC',val,rel(dpc[0].inserito_il),col[w]||'#999'));}}
+    if(sismi.length&&fresh(sismi[0].ts)){const s=sismi[0];const d=new Date(s.ts);const dt=isNaN(d.getTime())?'':d.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit'});T.push(tile('🌍','Ultimo sisma','M'+s.mag+' · '+String(s.luogo||'').split(' ').slice(-2).join(' '),rel(s.ts)));}
+    if(meteo.length&&fresh(meteo[0].inserito_il)){T.push(tile('⛈️','Pioggia 12h',(meteo[0].pioggia_12h_mm??0)+' mm',rel(meteo[0].inserito_il)));}
+    if(flood.length&&fresh(flood[0].inserito_il)){T.push(tile('📈','Portata fiume',(flood[0].discharge_oggi??0)+' m³/s',rel(flood[0].inserito_il)));}
+    if(pc.length){const c=(pc[0].colore||'').toLowerCase();if(fresh(pc[0].aggiornato_il)||c!=='green'){const lab={green:'Normalità',yellow:'Allerta Gialla',orange:'Allerta Arancione',red:'Allerta Rossa'};const dc={green:col.verde,yellow:col.giallo,orange:col.arancione,red:col.rosso};T.push(tile('🛡️','Prot. Civile',lab[c]||cap(c),rel(pc[0].aggiornato_il),dc[c]||col.verde));}}
+    if(lamma.length&&fresh(lamma[0].inserito_il)){T.push(tile('🗓️','Previsione','5 giorni',rel(lamma[0].inserito_il)));}
+    grid.innerHTML=T.join('')||'<div class="tile skel">nessun aggiornamento nelle ultime 5 ore</div>';
+    upd.textContent='solo ultime 5 ore · caricato '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
   }
   load();
+})();
+</script>
+
+<!-- Mappa: Leaflet + OpenStreetMap, rilievi dall'open data -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+(function(){
+  if(typeof L==='undefined'||!document.getElementById('map'))return;
+  const OD="https://pfzfegfaagzeupopqaqj.supabase.co/functions/v1/opendata";
+  const get=async(ds,limit=1)=>{try{const r=await fetch(`${OD}?dataset=${ds}&limit=${limit}`);return (await r.json()).dati||[];}catch(e){return[];}};
+  // Posizioni note (indicative) delle stazioni SIR del bacino pratese
+  const STAZ={
+    'TOS01004779':[44.047,11.160],'TOS01004782':[43.883,11.097],'TOS01004791':[43.826,11.133],'TOS01004875':[43.816,11.048],'TOS15004865':[43.829,11.060],
+    'TOS01001161':[44.078,11.098],'TOS01001171':[44.046,11.150],'TOS01001151':[44.001,11.083],'TOS30290100':[44.083,11.175],'TOS01001273':[43.930,11.070],'TOS11000503':[43.960,11.122]
+  };
+  const map=L.map('map',{scrollWheelZoom:false}).setView([43.93,11.10],11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'&copy; OpenStreetMap'}).addTo(map);
+  const pts=[];
+  const mk=(ll,color,radius,popup)=>{L.circleMarker(ll,{radius,color:'#fff',weight:1.5,fillColor:color,fillOpacity:.9}).addTo(map).bindPopup(popup);pts.push(ll);};
+  (async function(){
+    const [stato,pluvio,sismi]=await Promise.all([get('em_stato',12),get('em_pluvio',6),get('em_sismi',15)]);
+    const stCol={calma:'#2e9e5b',soglia1:'#e8912a',soglia2:'#e5342b'};
+    stato.forEach(s=>{const c=STAZ[s.codice];if(!c)return;const lv=s.ultimo_livello;mk(c,stCol[s.ultimo_stato]||'#2e9e5b',8,`🌊 <b>${s.nome}</b><br>Livello ${lv!=null?Number(lv).toFixed(2)+' m':'n.d.'} · ${s.ultimo_stato||''}`);});
+    pluvio.forEach(p=>{const c=STAZ[p.codice];if(!c)return;const mm=p.max_mm||0;const col=mm>=40?'#e5342b':mm>=20?'#e8912a':mm>=5?'#2f7fd1':'#8bb8e8';mk(c,col,7,`🌧️ <b>${p.nome}</b><br>${Number(mm).toFixed(1)} mm · quota ${p.quota_m||'?'} m`);});
+    sismi.forEach(s=>{if(s.lat==null||s.lon==null)return;const mg=s.mag||0;const col=mg>=4?'#e5342b':mg>=3?'#e8912a':'#f4c430';const d=new Date(s.ts);const dt=isNaN(d.getTime())?'':d.toLocaleDateString('it-IT');mk([s.lat,s.lon],col,4+mg*1.5,`🌍 <b>M ${s.mag}</b> · ${String(s.luogo||'')}<br>${dt} · ${s.distanza_km} km da Prato`);});
+    if(pts.length){try{map.fitBounds(pts,{padding:[30,30],maxZoom:12});}catch(e){}}
+  })();
 })();
 </script>
 
