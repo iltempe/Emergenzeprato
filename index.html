@@ -28,8 +28,9 @@
 
   /* HERO */
   header{background:var(--ink);color:var(--paper);padding:74px 0 64px;position:relative;overflow:hidden}
-  header:before{content:"";position:absolute;inset:0;
+  header:before{content:"";position:absolute;inset:0;pointer-events:none;
     background:radial-gradient(900px 400px at 85% -10%, rgba(244,196,48,.16), transparent 60%);}
+  header .wrap{position:relative;z-index:1}
   .tag{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.22em;
     text-transform:uppercase;color:var(--yellow);border:1px solid rgba(244,196,48,.4);
     padding:5px 11px;border-radius:999px;margin-bottom:22px}
