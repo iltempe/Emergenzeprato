@@ -69,6 +69,9 @@
   .livehead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
   .livehead .kicker{margin:0}
   .liveupd{font-family:"IBM Plex Mono",monospace;font-size:.72rem;color:var(--muted)}
+  .pcbanner{border-radius:12px;padding:14px 16px;margin-bottom:16px;font-size:.95rem;line-height:1.45;color:var(--ink);border:1px solid rgba(0,0,0,.12)}
+  .pcbanner .pch{font-weight:800;text-transform:uppercase;letter-spacing:.02em;font-size:.82rem;display:block;margin-bottom:4px}
+  .pcbanner a{color:inherit;font-weight:700;text-decoration:underline;white-space:nowrap}
   .livegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(152px,1fr));gap:10px}
   .tile{background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 13px;display:flex;flex-direction:column;gap:3px}
   .tile .tl{font-size:.72rem;color:var(--muted);letter-spacing:.02em}
@@ -165,6 +168,7 @@
 
 <section class="livebar" id="stato-live">
   <div class="wrap">
+    <div id="pc-banner" class="pcbanner" style="display:none"></div>
     <div class="livehead">
       <span class="kicker">Stato live · ultimo aggiornamento</span>
       <span class="liveupd" id="live-updated">lettura in corso…</span>
@@ -299,6 +303,16 @@
   async function load(){
     const [stato,pluvio,dpc,sismi,meteo,flood,pc,lamma]=await Promise.all([
       get('em_stato',10),get('em_pluvio',6),get('em_allerta_dpc',1),get('em_sismi',1),get('em_meteo',1),get('em_flood',1),get('em_pc_stato',1),get('em_lamma',1)]);
+    // Banner bollettino Protezione Civile (solo se allerta attiva)
+    const pcb=document.getElementById('pc-banner');
+    if(pcb){const cc=(pc[0]?.colore||'').toLowerCase();
+      if(pc.length&&cc!=='green'){
+        const bg={yellow:'#f6e08a',orange:'#f3c38f',red:'#f2aaa2'}[cc]||'#f6e08a';
+        const em={yellow:'🟡',orange:'🟠',red:'🔴'}[cc]||'🟡';
+        pcb.style.background=bg; pcb.style.display='block';
+        pcb.innerHTML=`<span class="pch">${em} Protezione Civile Prato — bollettino in corso</span>${(pc[0].testo||'').replace(/</g,'&lt;')} &nbsp;<a href="https://emergenze.comune.prato.it/mirror_emergenze/it/pagina2413.html" target="_blank" rel="noopener">pagina ufficiale ↗</a>`;
+      } else { pcb.style.display='none'; }
+    }
     const T=[];
     if(stato.length){const rk={calma:0,soglia1:1,soglia2:2};let w='calma',t=null;stato.forEach(s=>{if((rk[s.ultimo_stato]??0)>(rk[w]??0))w=s.ultimo_stato;if(!t||s.aggiornato_il>t)t=s.aggiornato_il;});
       if(fresh(t)||w!=='calma'){const lbl=w==='calma'?'tutti sotto soglia':w==='soglia1'?'sopra guardia':'sopra allarme';T.push(tile('🌊','Fiumi',lbl,fresh(t)?rel(t):'in corso',w==='calma'?col.verde:w==='soglia1'?col.arancione:col.rosso));}}
