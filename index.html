@@ -1,191 +1,205 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <title>Emergenzeprato by iltempe</title>
-  </head>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EmergenzePrato — allerta idro-meteo per Prato</title>
+<meta name="description" content="Canale Telegram che avvisa in tempo reale su fiumi, meteo, allerte Protezione Civile e terremoti nella piana pratese. Dati pubblici, aperti e azionabili.">
+<meta property="og:title" content="EmergenzePrato">
+<meta property="og:description" content="Allerta idro-meteo e rischi per Prato, sul canale Telegram. Dati aperti.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800;900&family=Work+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#17140f; --ink-2:#2c2822; --paper:#f7f3ea; --paper-2:#efe8d8;
+    --red:#e5342b; --yellow:#f4c430; --muted:#6f685c; --line:#d9d0bd;
+    --green:#2e9e5b;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Work Sans",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  .mono{font-family:"IBM Plex Mono",monospace}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+  h1,h2,h3{font-family:"Big Shoulders Display",sans-serif;line-height:.95;margin:0;letter-spacing:.01em}
 
-  <body>
-    <div id="container">
-      <div class="inner">
+  /* HERO */
+  header{background:var(--ink);color:var(--paper);padding:74px 0 64px;position:relative;overflow:hidden}
+  header:before{content:"";position:absolute;inset:0;
+    background:radial-gradient(900px 400px at 85% -10%, rgba(244,196,48,.16), transparent 60%);}
+  .tag{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:.74rem;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--yellow);border:1px solid rgba(244,196,48,.4);
+    padding:5px 11px;border-radius:999px;margin-bottom:22px}
+  header h1{font-size:clamp(3.2rem,11vw,6.4rem);font-weight:900;text-transform:uppercase}
+  header h1 em{color:var(--red);font-style:normal}
+  .lead{max-width:600px;margin:18px 0 30px;font-size:1.18rem;color:#e9e2d2}
+  .cta{display:inline-flex;align-items:center;gap:10px;background:var(--red);color:#fff;
+    font-weight:600;text-decoration:none;padding:14px 24px;border-radius:12px;font-size:1.05rem;
+    box-shadow:0 6px 0 #a7221c;transition:transform .08s ease,box-shadow .08s ease}
+  .cta:hover{transform:translateY(2px);box-shadow:0 4px 0 #a7221c}
+  .cta.ghost{background:transparent;color:var(--paper);border:1px solid rgba(247,243,234,.35);box-shadow:none;margin-left:10px}
+  .cta.ghost:hover{border-color:var(--yellow);color:var(--yellow);transform:none}
 
-        <header>
-          <h1>Emergenzeprato</h1>
-          <h2>Progetto sperimentale per comunicazione rischi ed emergenze tramite social media. Data management system to inform about meteo and emergency with social media</h2>
-        </header>
+  /* SECTIONS */
+  section{padding:58px 0}
+  .kicker{font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
+  h2{font-size:clamp(2rem,5vw,3rem);font-weight:800;text-transform:uppercase;margin-bottom:8px}
+  .sub{color:var(--muted);max-width:620px;margin-bottom:28px}
 
-        <section id="downloads" class="clearfix">
-          <a href="https://github.com/iltempe/Emergenzeprato/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
-          <a href="https://github.com/iltempe/Emergenzeprato/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
-          <a href="https://github.com/iltempe/Emergenzeprato" id="view-on-github" class="button"><span>View on GitHub</span></a>
-        </section>
+  /* FEATURES */
+  .feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+  .feat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}
+  .feat .ic{font-size:1.5rem}
+  .feat h3{font-size:1.5rem;margin:8px 0 4px;font-weight:700;text-transform:none}
+  .feat p{margin:0;color:var(--muted);font-size:.95rem}
 
-        <hr>
+  /* SOURCES */
+  .srcwrap{background:var(--paper-2)}
+  .src{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start}
+  .card .em{font-size:1.4rem;line-height:1}
+  .card b{display:block;font-size:1.02rem}
+  .card small{color:var(--muted)}
+  .pill{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
+    padding:2px 7px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+  .pill.oss{color:#1763c4;border-color:#bcd3f2}
+  .pill.prev{color:#8a5a00;border-color:#e8d08a}
+  .pill.all{color:var(--red);border-color:#f0b7b3}
 
-        <section id="main_content">
-          <p>Il sistema EmergenzePrato nasce con l’intento di fornire tramite un canale di segnalazioni relative al maltempo a Prato e provincia mischiando informazioni di fonti ufficiali con segnalazioni civiche.</p>
+  /* OPEN DATA */
+  .od{background:var(--ink);color:var(--paper)}
+  .od h2{color:#fff}.od .sub{color:#c9c1b1}
+  .odbox{background:#211d17;border:1px solid #39322700;border-radius:14px;padding:22px;margin-top:8px}
+  .odrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;
+    padding:11px 0;border-bottom:1px dashed #3a332591}
+  .odrow:last-child{border-bottom:0}
+  .odrow code{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--yellow);word-break:break-all}
+  .odrow a{color:#cdd8ff;font-size:.86rem;text-decoration:none;border-bottom:1px solid #3a4a7a}
+  .endpoint{display:flex;gap:10px;align-items:center;background:#000;border-radius:10px;padding:12px 14px;margin:14px 0 4px;overflow:auto}
+  .endpoint .m{font-family:"IBM Plex Mono",monospace;font-size:.7rem;background:var(--green);color:#042;padding:2px 8px;border-radius:6px;font-weight:600}
+  .endpoint .u{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:#f7f3ea;white-space:nowrap}
+  .note{color:#9c9484;font-size:.85rem;margin-top:14px}
 
-<p>EmergenzePrato è un canale che puoi seguire all'interno dei social iscrivendoti gratuitamente per essere informato o per interagire con il servizio.</p>
+  /* STEPS */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;counter-reset:s}
+  .step{position:relative;padding:18px 18px 18px 18px;background:#fff;border:1px solid var(--line);border-radius:12px}
+  .step:before{counter-increment:s;content:counter(s);font-family:"Big Shoulders Display",sans-serif;
+    font-weight:900;font-size:2.2rem;color:var(--yellow);-webkit-text-stroke:1.5px var(--ink);line-height:1}
+  .step h3{font-size:1.2rem;text-transform:none;font-weight:700;margin:6px 0 4px}
+  .step p{margin:0;color:var(--muted);font-size:.92rem}
 
-<p>Il servizio comunica:</p>
+  /* DISCLAIMER + FOOTER */
+  .disc{background:var(--yellow);color:var(--ink)}
+  .disc .wrap{display:flex;gap:16px;align-items:flex-start}
+  .disc .big{font-size:2rem}
+  .disc p{margin:0;font-weight:500}
+  footer{background:var(--ink);color:#c9c1b1;padding:34px 0;font-size:.9rem}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center}
+  footer a{color:var(--yellow);text-decoration:none}
+  footer .sig{font-family:"IBM Plex Mono",monospace;font-size:.8rem;color:#8c8475}
+</style>
+</head>
+<body>
 
-<ul>
-<li>Le previsioni <a href="http://www.lamma.rete.toscana.it/previ/ita/xml/comuni_web/dati/prato.xml">Lamma</a> del giorno e le previsioni del giorno dopo relative a Prato (grazie <a href="http://open.toscana.it/">OpenToscana</a>)</li>
-<li>Il <a href="http://www.biometeo.it/">Biometeo</a> relativo a Prato</li>
-<li>Le situazioni di rischio relative a Prato e le misurazioni dalle stazioni provenienti dal <a href="http://www.cfr.toscana.it/">Centro Funzionale Servizio Idrogeologico Toscana</a> (grazie <a href="https://twitter.com/lucabonuc">Luca Bonuccelli</a>)</li>
-<li>Eventuali Aggiornamenti della <a href="http://www.protezionecivile.comune.prato.it/emergenze/">pagina web emergenze</a> della Protezione Civile di Prato</li>
-<li>Le temperature rilevate tramite <a href="http://www.wunderground.com/weather/api/">questo servizio</a> (grazie <a href="https://twitter.com/alf_crisci">Alfonso Crisci</a>)</li>
-<li>Le aree di emergenza mappate su <a href="www.openstreetmap.org">Openstreetmap</a> a partire da quanto definito dalla protezione civile di Prato in <a href="http://www.protezionecivile.comune.prato.it/?act=f&fid=1396">questa pagina</a> (grazie a Giacomo Bartalesi e David Fastelli)</li>
-<li>Le foto Instagram taggate con #pratopioggia e #emergenzeprato</li>
-<li>I post inviati tramite <a href="https://www.facebook.com/groups/1546332912286384/">il gruppo Facebook</a> #emergenzeprato</li>
-<li>I tweet indirizzati a @emergenzeprato</li>
-<li>I tweet contenenti uno dei seguenti tag:</li>
-<li>#pratoterremoto per segnalazioni relative a terremoto</li>
-<li>#pratoneve per segnalazioni relative a neve a Prato</li>
-<li>#pratopioggia per segnalazioni relative a pioggia a Prato</li>
-<li>#cantagalloneve per segnalazioni relative a neve a Cantagallo</li>
-<li>#vaianoneve per segnalazioni relative a neve a Vaiano</li>
-<li>#vernioneve per segnalazioni relative a neve a Vernio</li>
-<li>#pratovento per le segnalazioni relative a vento a Prato</li>
+<header>
+  <div class="wrap">
+    <span class="tag">Prato · allerta civica</span>
+    <h1>Emergenze<em>Prato</em></h1>
+    <p class="lead">Quando i fiumi della piana salgono, il margine per accorgersene è strettissimo.
+    Questo canale Telegram unisce dati <strong>osservati</strong> e <strong>previsionali</strong> in tempo reale,
+    e ti avvisa <strong>solo quando serve</strong> — con indicazioni concrete, non generiche.</p>
+    <a class="cta" href="https://t.me/+3ip1DgGs4OdkMGI8" target="_blank" rel="noopener">📣 Iscriviti al canale</a>
+    <a class="cta ghost" href="#opendata">Dati aperti ↓</a>
+  </div>
+</header>
 
-<li><p>I dati vengono inviati anche su <strong>Telegram</strong> se si inviano i comandi predefiniti all’utente @emergenzeprato_bot .</p></li>
-</ul>
-
-<p> Attualmente il sistema è predisposto per gestire notifiche automatiche ad una rubrica di utenti che hanno le notifiche abilitate. Nell'attuale imlementazione le notifiche possono arrivare con ritardo perchè si basano sull'update di servizi "esterni" al sito ufficiale delle protezione civile di Prato.
-Il sistema è in grado di registrare segnalazioni georiferite e memorizzarle per mapparle </p>
-<p>Per chi volesse implementare un servizio simile può fare riferimento a <a href="http://pratosmart.teo-soft.com/fatti-un-pratopioggia-tutto-tuo-e-chiamalo-hopratopioggiaancheio/">questo post</a> come linea guida. La presente pagina è da ritenersi documentazione non definitiva per l'applicazione che è in evoluzione.</p>
-
-<p>Per segnalare bug o suggerire nuove funzionalità <a href="https://github.com/iltempe/Emergenzeprato/issues"> scrivi su questa pagina </a> </p>
-
-<h1>
-<a id="emergenzeprato-data-manager" class="anchor" href="#emergenzeprato-data-manager" aria-hidden="true"><span class="octicon octicon-link"></span></a>Emergenzeprato data manager</h1>
-
-<hr>
-
-<p>TWITTER</p>
-
-<p>Gli script per inviare i tweet vanno eseguiti con la periodicità con cui si vuole tuittare le informazioni, è possibile creare secondo lo stesso approccio tanti script quanti se ne vogliono.</p>
-
-<p>Si preleva i dati delle fonti e si tuittano i dati su @emergenzeprato</p>
-
-<p>L'account @emergenzeprato rituitta tutti i tweet con tag ben precisi e le foto Instagram #pratopioggia</p>
-
-<p>Inoltre tutti i tweet taggati con un ht definito e geolocalizzazione possono essere mappati</p>
-
-<p>Twitter Bot è sviluppato a partire da <a href="https://github.com/abraham/twitteroauth">qui</a></p>
-
-<hr>
-
-<p>TELEGRAM</p>
-
-<p>Aggiunto Telegram bot</p>
-
-<ul>
-<li>Creare un bot su Telegram </li>
-<li>definire i comandi da inviare. Decidere se gestire in modalità getUpdates.php o con webhook.</li>
-<li>Schedulare ad intervalli di tempo regolare il prelievo dati con storage.php</li>
-<li>Definire come prelevare/parsare i dati con getting.php</li>
-<li>Eseguire getUpadates.php ad intervalli di tempo regolari per gestione manuale del servizio</li>
-</ul>
-<p>Nel caso si voglia gestire emergenzepratbot con un webhook (default) su un server allora utilizzare start.php su server HTTPS. La funzionalità webhook può essere settata o rimossa con lo script start.php da riga di comando ed opportuni parametro</p>
-
-<p>Per usare Emergenzeprato su Telegram:</p>
-
-<ul>
-<li>aggiungere  @emergenzeprato_bot su Telegram</li>
-<li>Inviare a emergenzeprato i comandi per ricevere gli aggiornamenti come indicato qui <a href="http://pratosmart.teo-soft.com/emergenzeprato-cresce-telegram-per-sapere-il-meteo-a-prato/">http://pratosmart.teo-soft.com/emergenzeprato-cresce-telegram-per-sapere-il-meteo-a-prato/</a></li>
-<li>Attualmente il sistema è predisposto per inviare messaggi in modalità broadcast tramite gestione utenti in un database. La funzione è in testing. Per abilitare le notifiche digitare /on per disabilitarle digitare /off.</li>
-<li>Se in chat si invia la propria posizione geografica il sistema consente di gestire una segnalazione (in formato testo) localizzata richiendo informazioni su cosa stia accadendo in quel luogo</li>
-</ul>
-<p>Telegram Bot è sviluppato a partire da <a href="https://github.com/Eleirbag89/TelegramBotPHP">qui</a></p>
-<hr>
-
-<p>GROUPME</p>
-
-Le comunicazioni di allerta sono postate anche in questo gruppo GroupMe pubblico.  <a href="https://groupme.com/join_group/17026641/v7LE8X">qui</a>
-
-<hr>
-
-<p>GESTIONE DEI JOB
-Un esempio di come va strutturata la tabella dei CRON per schedulare i vari task. Occorre schedulare i cron sulla base delle esigenze. il file storage.php aggiorna (ogni ora) i dati dai rispettivi siti alla cartella data da cui poi i BOT li prelevano. </p>
-
-<p>(* * * * * php /home/pi/emergenzeprato/TelegramBot/getUpdates.php)</p>
-
-<p>(00  00-16 * * * cd /home/pi/emergenzeprato &amp;&amp; php storage.php)</p>
-
-<p>(00 09,10 * * * cd /home/pi/emergenzeprato/TwitterBot &amp;&amp; php tweet_meteo.php "oggi") </p>
-
-<p>(00 07,12,16,00 * * * cd /home/pi/emergenzeprato/TwitterBot &amp;&amp; php tweet_temperature.php)</p>
-
-<p>etc...</p>
-
-<hr>
-
-<p>GOOGLE CALENDAR</p>
-
-Le previsioni, il biometeo ed i rischi sono quotidianamente postati su questo calendario tramite relativo script.
-
-<iframe src="https://www.google.com/calendar/embed?src=pratopioggia%40gmail.com&ctz=Europe/Rome" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
-
-<hr>
-
-<p>IMPORTANTE: SE NON SI VUOLE MODIFICARE IL CODICE (O NON SI SA COME FARE) SCARICARE L'ULTIMO TAG IN RELEASE!!</p>
-
-<hr>
-
-<p>SOCIAL NETWORK</p>
-
-<p>Se si vuole integrare con regole sui social network può essere usato IFTTT come usato qui
-<a href="https://ifttt.com/p/pratopioggia/shared">https://ifttt.com/p/pratopioggia/shared</a></p>
-
-<hr>
-
-<p>MAPPA DELLE SEGNALAZIONI (demo)</p>
-<iframe width="100%" height="300px" frameBorder="0" src="https://umap.openstreetmap.fr/it/map/emergenzeprato_17477?scaleControl=false&miniMap=false&scrollWheelZoom=false&zoomControl=true&allowEdit=false&moreControl=true&datalayersControl=true&onLoadPanel=undefined&captionBar=false"></iframe><p><a href="https://umap.openstreetmap.fr/it/map/emergenzeprato_17477">Visualliza schermo intero</a></p>
-
-<p>CREDITS</p>
-<p>Sperimentano questo progetto:  
-<a href="https://twitter.com/protcivcomunefi">la Protezione Civile di Firenze</a></p>
-
-<p>Parlano di questo progetto:
-<a href="http://ricerca.repubblica.it/repubblica/archivio/repubblica/2015/08/29/una-chat-no-una-vera-innovazione41.html">La Repubblica</a></p>
-<a href="http://fabiomalagnino.nova100.ilsole24ore.com/2015/09/01/comunicare-le-emergenze-con-la-rete/">Nova</a></p>
-<a href="http://www.pratosfera.com/2015/08/20/prato-previsioni-meteo-telegram-bot/">Pratosfera</a></p>
-
-<p>INFORMAZIONI</p>
-
-<p>Per info pratosmart@gmail.com</p>
-
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/yvnzMC90msQPvd" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/pratosmart/emergenzeprato" title="EmergenzePrato" target="_blank">EmergenzePrato</a> </strong> 
-
-        </section>
-
-        <footer>
-          Emergenzeprato is maintained by <a href="https://github.com/iltempe">iltempe</a><br>
-          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
-        </footer>
-
-                  <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-47062888-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
-
-      </div>
+<section>
+  <div class="wrap">
+    <div class="kicker">Cosa fa</div>
+    <h2>Avvisi azionabili, non bollettini</h2>
+    <p class="sub">Non "codice arancione sul Medio Valdarno", ma: quale fiume, quanto sta salendo, cosa fare adesso.</p>
+    <div class="feats">
+      <div class="feat"><div class="ic">🌊</div><h3>Fiumi in tempo reale</h3><p>Livelli di Bisenzio e Ombrone stazione per stazione, da monte a valle, con il rateo di salita.</p></div>
+      <div class="feat"><div class="ic">🎯</div><h3>Soglie → azioni</h3><p>Sopra la guardia l'avviso ricorda i rischi concreti, es. i sottopassi che diventano trappole.</p></div>
+      <div class="feat"><div class="ic">🔕</div><h3>Zero spam</h3><p>In calma tace. Parla solo quando qualcosa supera soglia, sale in fretta o cambia stato.</p></div>
+      <div class="feat"><div class="ic">📋</div><h3>Bollettino giornaliero</h3><p>Ogni mattina un riepilogo di tutti i fiumi; la domenica la previsione della settimana.</p></div>
     </div>
-  </body>
-  
+  </div>
+</section>
+
+<section class="srcwrap">
+  <div class="wrap">
+    <div class="kicker">Le fonti</div>
+    <h2>8 fonti, una voce sola</h2>
+    <p class="sub">Dati <span class="pill oss">osservato</span> (certi, poco anticipo) e <span class="pill prev">previsione</span> (più anticipo, più incerti) tenuti distinti e sempre etichettati con la loro ora.</p>
+    <div class="src">
+      <div class="card"><span class="em">🌊</span><div><b>SIR Toscana — Idrometria</b><br><small>Livelli dei fiumi, soglie e ratei</small> <span class="pill oss">osservato</span></div></div>
+      <div class="card"><span class="em">🌧️</span><div><b>SIR Toscana — Pluviometri a monte</b><br><small>Pioggia nell'alta Val di Bisenzio</small> <span class="pill oss">osservato</span></div></div>
+      <div class="card"><span class="em">🛡️</span><div><b>Protezione Civile Prato</b><br><small>Stato emergenze in corso</small> <span class="pill oss">osservato</span></div></div>
+      <div class="card"><span class="em">🌍</span><div><b>INGV — Terremoti</b><br><small>Sismi entro 30 km (M ≥ 2.0)</small> <span class="pill oss">osservato</span></div></div>
+      <div class="card"><span class="em">🚨</span><div><b>DPC — Allerta meteo</b><br><small>Codice colore oggi/domani</small> <span class="pill all">allerta</span></div></div>
+      <div class="card"><span class="em">⛈️</span><div><b>Open-Meteo</b><br><small>Pioggia prevista oraria</small> <span class="pill prev">previsione</span></div></div>
+      <div class="card"><span class="em">📈</span><div><b>Open-Meteo Flood (GloFAS)</b><br><small>Portata fluviale prevista</small> <span class="pill prev">previsione</span></div></div>
+      <div class="card"><span class="em">🗓️</span><div><b>LaMMA Toscana</b><br><small>Previsione a 5 giorni</small> <span class="pill prev">previsione</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">Come funziona</div>
+    <h2>Automatico, in cloud, h24</h2>
+    <p class="sub">Nessun hardware acceso: tutto gira su funzioni schedulate, con dati pubblici e in tempo reale.</p>
+    <div class="steps">
+      <div class="step"><h3>Legge</h3><p>Ogni 5 minuti interroga le fonti pubbliche di livelli, pioggia, allerte e sismi.</p></div>
+      <div class="step"><h3>Valuta</h3><p>Confronta con le soglie, calcola la velocità di salita e lo stato rispetto al controllo precedente.</p></div>
+      <div class="step"><h3>Archivia</h3><p>Salva ogni dato (serie storica aperta) prima di decidere se c'è qualcosa da dire.</p></div>
+      <div class="step"><h3>Avvisa</h3><p>Solo se qualcosa cambia davvero, pubblica sul canale Telegram l'avviso azionabile.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="od" id="opendata">
+  <div class="wrap">
+    <div class="kicker" style="color:var(--yellow)">Open data</div>
+    <h2>I dati sono aperti</h2>
+    <p class="sub">Tutta la serie storica raccolta è pubblica, senza chiavi, in JSON e CSV. Riusala per mappe, analisi, ricerca.</p>
+    <div class="endpoint">
+      <span class="m">GET</span>
+      <span class="u">https://pfzfegfaagzeupopqaqj.supabase.co/functions/v1/opendata</span>
+    </div>
+    <div class="odbox">
+      <div class="odrow"><code>em_letture</code><span style="color:#9c9484;flex:1;min-width:140px">Livelli fiumi SIR nel tempo</span><a href="https://pfzfegfaagzeupopqaqj.supabase.co/functions/v1/opendata?dataset=em_letture" target="_blank" rel="noopener">JSON</a> <a href="https://pfzfegfaagzeupopqaqj.supabase.co/functions/v1/opendata?dataset=em_letture&format=csv" target="_blank" rel="noopener">CSV</a></div>
+      <div class="odrow"><code>em_pluvio</code><span style="color:#9c9484;flex:1;min-width:140px">Pioggia a monte del Bisenzio</span><a href="https://pfzfegfaagzeupopqaqj.supabase.co/functions/v1/opendata?dataset=em_pluvio" target="_blank" rel="noopener">JSON</a> <a href="https://pfzfegfaagzeupopqaqj.supabase.co/functions/v1/opendata?dataset=em_pluvio&format=csv" target="_blank" rel="noopener">CSV</a></div>
+      <div class="odrow"><code>em_sismi</code><span style="color:#9c9484;flex:1;min-width:140px">Terremoti entro 30 km</span><a href="https://pfzfegfaagzeupopqaqj.supabase.co/functions/v1/opendata?dataset=em_sismi" target="_blank" rel="noopener">JSON</a> <a href="https://pfzfegfaagzeupopqaqj.supabase.co/functions/v1/opendata?dataset=em_sismi&format=csv" target="_blank" rel="noopener">CSV</a></div>
+      <div class="odrow"><code>em_allerta_dpc</code><span style="color:#9c9484;flex:1;min-width:140px">Allerta colore DPC</span><a href="https://pfzfegfaagzeupopqaqj.supabase.co/functions/v1/opendata?dataset=em_allerta_dpc" target="_blank" rel="noopener">JSON</a> <a href="https://pfzfegfaagzeupopqaqj.supabase.co/functions/v1/opendata?dataset=em_allerta_dpc&format=csv" target="_blank" rel="noopener">CSV</a></div>
+      <div class="odrow"><code>…</code><span style="color:#9c9484;flex:1;min-width:140px">Catalogo completo e meteo/flood/lamma</span><a href="https://pfzfegfaagzeupopqaqj.supabase.co/functions/v1/opendata" target="_blank" rel="noopener">vedi indice →</a></div>
+    </div>
+    <p class="note">Parametri: <span class="mono">?dataset=&lt;nome&gt;&amp;format=json|csv&amp;limit=1-5000</span>.
+    Dati aggregati da fonti pubbliche (SIR, INGV, DPC, Open-Meteo, LaMMA); ogni fonte mantiene la propria licenza. Uso civico/indicativo.</p>
+  </div>
+</section>
+
+<section class="disc">
+  <div class="wrap">
+    <span class="big">⚠️</span>
+    <p>Dati acquisiti in tempo reale e <strong>non validati</strong>: strumento informativo in più, non ufficiale.
+    In emergenza fa sempre fede la <strong>Protezione Civile</strong> (IT-Alert, Comune di Prato, CFR Toscana).</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <a href="https://t.me/+3ip1DgGs4OdkMGI8" target="_blank" rel="noopener">Canale Telegram</a> ·
+      <a href="https://pfzfegfaagzeupopqaqj.supabase.co/functions/v1/opendata" target="_blank" rel="noopener">Open data</a>
+    </div>
+    <div class="sig">progetto civico di Matteo Tempestini · @iltempe</div>
+  </div>
+</footer>
+
+</body>
 </html>
