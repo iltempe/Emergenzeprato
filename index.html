@@ -106,6 +106,10 @@
   .card .em{font-size:1.4rem;line-height:1}
   .card b{display:block;font-size:1.02rem}
   .card small{color:var(--muted)}
+  a.card{text-decoration:none;color:inherit;transition:border-color .12s ease,box-shadow .12s ease}
+  a.card:hover{border-color:var(--red);box-shadow:0 4px 14px rgba(0,0,0,.06)}
+  .card .ext{margin-left:auto;align-self:center;color:var(--muted);font-weight:700;font-size:1.05rem}
+  a.card:hover .ext{color:var(--red)}
   .pill{font-family:"IBM Plex Mono",monospace;font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
     padding:2px 7px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
   .pill.oss{color:#1763c4;border-color:#bcd3f2}
@@ -210,14 +214,14 @@
     <h2>8 fonti, una voce sola</h2>
     <p class="sub">Dati <span class="pill oss">osservato</span> (certi, poco anticipo) e <span class="pill prev">previsione</span> (più anticipo, più incerti) tenuti distinti e sempre etichettati con la loro ora.</p>
     <div class="src">
-      <div class="card"><span class="em">🌊</span><div><b>SIR Toscana — Idrometria</b><br><small>Livelli dei fiumi, soglie e ratei</small> <span class="pill oss">osservato</span></div></div>
-      <div class="card"><span class="em">🌧️</span><div><b>SIR Toscana — Pluviometri a monte</b><br><small>Pioggia nell'alta Val di Bisenzio</small> <span class="pill oss">osservato</span></div></div>
-      <div class="card"><span class="em">🛡️</span><div><b>Protezione Civile Prato</b><br><small>Stato emergenze in corso</small> <span class="pill oss">osservato</span></div></div>
-      <div class="card"><span class="em">🌍</span><div><b>INGV — Terremoti</b><br><small>Sismi entro 30 km (M ≥ 2.0)</small> <span class="pill oss">osservato</span></div></div>
-      <div class="card"><span class="em">🚨</span><div><b>DPC — Allerta meteo</b><br><small>Codice colore oggi/domani</small> <span class="pill all">allerta</span></div></div>
-      <div class="card"><span class="em">⛈️</span><div><b>Open-Meteo</b><br><small>Pioggia prevista oraria</small> <span class="pill prev">previsione</span></div></div>
-      <div class="card"><span class="em">📈</span><div><b>Open-Meteo Flood (GloFAS)</b><br><small>Portata fluviale prevista</small> <span class="pill prev">previsione</span></div></div>
-      <div class="card"><span class="em">🗓️</span><div><b>LaMMA Toscana</b><br><small>Previsione a 5 giorni</small> <span class="pill prev">previsione</span></div></div>
+      <a class="card" href="https://www.sir.toscana.it/monitoraggio/stazioni.php?type=idro" target="_blank" rel="noopener"><span class="em">🌊</span><div><b>SIR Toscana — Idrometria</b><br><small>Livelli dei fiumi, soglie e ratei</small> <span class="pill oss">osservato</span></div><span class="ext">↗</span></a>
+      <a class="card" href="https://www.sir.toscana.it/monitoraggio/stazioni.php?type=pluvio" target="_blank" rel="noopener"><span class="em">🌧️</span><div><b>SIR Toscana — Pluviometri a monte</b><br><small>Pioggia nell'alta Val di Bisenzio</small> <span class="pill oss">osservato</span></div><span class="ext">↗</span></a>
+      <a class="card" href="https://emergenze.comune.prato.it/mirror_emergenze/it/pagina2413.html" target="_blank" rel="noopener"><span class="em">🛡️</span><div><b>Protezione Civile Prato</b><br><small>Stato emergenze in corso</small> <span class="pill oss">osservato</span></div><span class="ext">↗</span></a>
+      <a class="card" href="https://terremoti.ingv.it/" target="_blank" rel="noopener"><span class="em">🌍</span><div><b>INGV — Terremoti</b><br><small>Sismi entro 30 km (M ≥ 2.0)</small> <span class="pill oss">osservato</span></div><span class="ext">↗</span></a>
+      <a class="card" href="https://allertameteo.app/" target="_blank" rel="noopener"><span class="em">🚨</span><div><b>DPC — Allerta meteo</b><br><small>Codice colore oggi/domani</small> <span class="pill all">allerta</span></div><span class="ext">↗</span></a>
+      <a class="card" href="https://open-meteo.com/" target="_blank" rel="noopener"><span class="em">⛈️</span><div><b>Open-Meteo</b><br><small>Pioggia prevista oraria</small> <span class="pill prev">previsione</span></div><span class="ext">↗</span></a>
+      <a class="card" href="https://open-meteo.com/en/docs/flood-api" target="_blank" rel="noopener"><span class="em">📈</span><div><b>Open-Meteo Flood (GloFAS)</b><br><small>Portata fluviale prevista</small> <span class="pill prev">previsione</span></div><span class="ext">↗</span></a>
+      <a class="card" href="https://www.lamma.toscana.it/meteo/meteo-prato" target="_blank" rel="noopener"><span class="em">🗓️</span><div><b>LaMMA Toscana</b><br><small>Previsione a 5 giorni</small> <span class="pill prev">previsione</span></div><span class="ext">↗</span></a>
     </div>
   </div>
 </section>
