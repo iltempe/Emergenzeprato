@@ -249,11 +249,11 @@
     if(stato.length){const rk={calma:0,soglia1:1,soglia2:2};let w='calma',t=null;stato.forEach(s=>{if((rk[s.ultimo_stato]??0)>(rk[w]??0))w=s.ultimo_stato;if(!t||s.aggiornato_il>t)t=s.aggiornato_il;});
       const lbl=w==='calma'?'tutti sotto soglia':w==='soglia1'?'sopra guardia':'sopra allarme';T.push(tile('🌊','Fiumi',lbl,rel(t),w==='calma'?col.verde:w==='soglia1'?col.arancione:col.rosso));}
     if(pluvio.length){const mx=Math.max(...pluvio.map(p=>p.max_mm||0));T.push(tile('🌧️','Pioggia a monte',mx.toFixed(1)+' mm',rel(pluvio[0].inserito_il),mx>=40?col.arancione:col.verde));}
-    if(dpc.length){const c=(dpc[0].colore_oggi||'').toLowerCase();T.push(tile('🚨','Allerta DPC',cap(c)||'n.d.',rel(dpc[0].inserito_il),col[c]||'#999'));}
+    if(dpc.length){const o=(dpc[0].colore_oggi||'').toLowerCase(),dm=(dpc[0].colore_domani||'').toLowerCase();const rk={verde:0,giallo:1,arancione:2,rosso:3};const w=(rk[dm]??0)>(rk[o]??0)?dm:o;const val=o===dm?cap(o):`oggi ${cap(o)} · domani ${cap(dm)}`;T.push(tile('🚨','Allerta DPC',val,rel(dpc[0].inserito_il),col[w]||'#999'));}
     if(sismi.length){const s=sismi[0];const d=new Date(s.ts);const dt=isNaN(d.getTime())?'':d.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit'});T.push(tile('🌍','Ultimo sisma','M'+s.mag+' · '+String(s.luogo||'').split(' ').slice(-2).join(' '),dt));}
     if(meteo.length){T.push(tile('⛈️','Pioggia 12h',(meteo[0].pioggia_12h_mm??0)+' mm',rel(meteo[0].inserito_il)));}
     if(flood.length){T.push(tile('📈','Portata fiume',(flood[0].discharge_oggi??0)+' m³/s',rel(flood[0].inserito_il)));}
-    if(pc.length){const c=(pc[0].colore||'').toLowerCase();T.push(tile('🛡️','Prot. Civile',c==='green'?'Normalità':cap(c),rel(pc[0].aggiornato_il),col[c]||col.green));}
+    if(pc.length){const c=(pc[0].colore||'').toLowerCase();const lab={green:'Normalità',yellow:'Allerta Gialla',orange:'Allerta Arancione',red:'Allerta Rossa'};const dc={green:col.verde,yellow:col.giallo,orange:col.arancione,red:col.rosso};T.push(tile('🛡️','Prot. Civile',lab[c]||cap(c),rel(pc[0].aggiornato_il),dc[c]||col.verde));}
     if(lamma.length){T.push(tile('🗓️','Previsione','5 giorni',rel(lamma[0].inserito_il)));}
     grid.innerHTML=T.join('')||'<div class="tile skel">dati non disponibili ora</div>';
     upd.textContent='fonte: open data · caricato '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
